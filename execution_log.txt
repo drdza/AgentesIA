@@ -1,0 +1,307 @@
+[2025-06-02 15:16:27] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «DAYS»
+LINE 6:     CURRENT_DATE - INTERVAL '30' DAYS
+                                         ^
+
+[2025-06-02 15:37:20] Error al ejecutar SQL para el dominio 'tickets': no existe la columna «generated_date»
+LINE 5:   generated_date >= DATE_TRUNC('YEAR', CURRENT_DATE) - INTER...
+          ^
+
+[2025-06-02 15:38:05] Error al ejecutar SQL para el dominio 'tickets': no existe la columna «estado»
+LINE 2:   estado
+          ^
+
+[2025-06-02 15:40:53] Error al ejecutar SQL para el dominio 'tickets': no existe la columna «city»
+LINE 2:   city,
+          ^
+
+[2025-06-03 10:44:33] Error al ejecutar SQL para el dominio 'tickets': no existe la columna «created_at»
+LINE 5:   EXTRACT(MONTH FROM created_at) = 12 AND EXTRACT(YEAR FROM ...
+                             ^
+
+[2025-06-03 11:06:42] Error al ejecutar SQL para el dominio 'tickets': no existe la columna «created_at»
+LINE 5:   EXTRACT(MONTH FROM created_at) = 12 AND EXTRACT(YEAR FROM ...
+                             ^
+
+[2025-06-03 11:15:42] Error al ejecutar SQL para el dominio 'tickets': no existe la columna «created_at»
+LINE 5:   EXTRACT(MONTH FROM created_at) = 12 AND EXTRACT(YEAR FROM ...
+                             ^
+
+[2025-06-03 11:25:13] Error al ejecutar SQL para el dominio 'tickets': no existe la columna «created_at»
+LINE 5:   EXTRACT(MONTH FROM created_at) = 12 AND EXTRACT(YEAR FROM ...
+                             ^
+
+[2025-06-03 11:39:02] Error al ejecutar SQL para el dominio 'tickets': no existe la columna «created_at»
+LINE 5:   EXTRACT(MONTH FROM created_at) = 12 AND EXTRACT(YEAR FROM ...
+                             ^
+
+[2025-06-03 12:42:48] Error al ejecutar SQL para el dominio 'tickets': no existe la columna «created_at»
+LINE 5:   EXTRACT(YEAR FROM created_at) = 2025
+                            ^
+
+[2025-06-04 11:58:46] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 12:34:01] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 13:03:03] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 13:04:28] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 13:39:18] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 13:45:44] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 13:46:36] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 15:16:55] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 15:22:26] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 15:25:48] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 15:26:39] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 15:28:11] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 15:29:29] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 15:30:07] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 15:34:32] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 15:35:54] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 15:36:50] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 15:56:34] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 15:57:39] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 16:00:07] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 16:01:12] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 16:05:42] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 16:07:10] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 16:09:01] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-04 16:26:40] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «MONTHS»
+LINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS
+                                                                 ^
+
+[2025-06-05 09:13:25] Error al ejecutar SQL para el dominio 'tickets': no existe la columna «cantidad_atenciones»
+LINE 7:     ROW_NUMBER() OVER (ORDER BY cantidad_atenciones DESC) AS...
+                                        ^
+
+[2025-06-05 09:14:52] Error al ejecutar SQL para el dominio 'tickets': no existe la columna «cantidad_atenciones»
+LINE 7:     ROW_NUMBER() OVER (ORDER BY cantidad_atenciones DESC) AS...
+                                        ^
+
+[2025-06-05 09:19:07] Error al ejecutar SQL para el dominio 'tickets': la columna «subquery.servicio» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 5:     servicio,
+            ^
+
+[2025-06-05 09:20:37] Error al ejecutar SQL para el dominio 'tickets': la columna «subquery.servicio» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 5:     servicio,
+            ^
+
+[2025-06-05 09:21:15] Error al ejecutar SQL para el dominio 'tickets': la columna «subquery.servicio» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 5:     servicio,
+            ^
+
+[2025-06-05 09:27:33] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «HOURS»
+LINE 9: ...erre IS NULL AND tiempo_solucion_total < INTERVAL '24' HOURS
+                                                                  ^
+
+[2025-06-05 09:28:03] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «HOURS»
+LINE 9: ...erre IS NULL AND tiempo_solucion_total < INTERVAL '24' HOURS
+                                                                  ^
+
+[2025-06-05 09:29:32] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «HOURS»
+LINE 9: ...erre IS NULL AND tiempo_solucion_total < INTERVAL '24' HOURS
+                                                                  ^
+
+[2025-06-05 09:33:57] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «HOURS»
+LINE 9: ...erre IS NULL AND tiempo_solucion_total < INTERVAL '24' HOURS
+                                                                  ^
+
+[2025-06-05 10:00:31] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «DAYS»
+LINE 10:     ) < INTERVAL '3' DAYS
+                              ^
+
+[2025-06-05 10:01:26] Error al ejecutar SQL para el dominio 'tickets': no existe la función datediff(unknown, date, date)
+LINE 3:     CAST(SUM(CASE WHEN DATEDIFF('day', fecha_registro, FECHA...
+                               ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-05 10:02:51] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «DAYS»
+LINE 10:     ) < INTERVAL '3' DAYS
+                              ^
+
+[2025-06-05 10:08:25] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «DAYS»
+LINE 10:     ) < INTERVAL '3' DAYS
+                              ^
+
+[2025-06-05 12:50:44] Error al ejecutar SQL para el dominio 'tickets': no se permiten funciones de ventana deslizante en WHERE
+LINE 27:   ROW_NUMBER() OVER (ORDER BY promedio_tiempo_atencion ASC) ...
+           ^
+
+[2025-06-05 12:51:22] Error al ejecutar SQL para el dominio 'tickets': no se permiten funciones de ventana deslizante en WHERE
+LINE 27:   ROW_NUMBER() OVER (ORDER BY promedio_tiempo_atencion ASC) ...
+           ^
+
+[2025-06-05 12:52:52] Error al ejecutar SQL para el dominio 'tickets': no se permiten funciones de ventana deslizante en WHERE
+LINE 27:   ROW_NUMBER() OVER (ORDER BY promedio_tiempo_atencion ASC) ...
+           ^
+
+[2025-06-05 15:09:37] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «DAYS»
+LINE 15:     tiempo_atencion > INTERVAL '3' DAYS
+                                            ^
+
+[2025-06-05 15:15:35] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «DAYS»
+LINE 15:     tiempo_atencion > INTERVAL '3' DAYS
+                                            ^
+
+[2025-06-05 15:16:42] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «DAYS»
+LINE 15:     tiempo_atencion > INTERVAL '3' DAYS
+                                            ^
+
+[2025-06-05 15:17:04] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «DAYS»
+LINE 15:     tiempo_atencion > INTERVAL '3' DAYS
+                                            ^
+
+[2025-06-05 15:17:55] Error al ejecutar SQL para el dominio 'tickets': error de sintaxis en o cerca de «DAYS»
+LINE 15:     tiempo_atencion > INTERVAL '3' DAYS
+                                            ^
+
+[2025-06-05 15:29:55] Error al ejecutar SQL para el dominio 'tickets': no existe la función pg_catalog.extract(unknown, integer)
+LINE 4:     EXTRACT(EPOCH FROM (
+            ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-05 15:30:43] Error al ejecutar SQL para el dominio 'tickets': no existe la función pg_catalog.extract(unknown, integer)
+LINE 4:     EXTRACT(EPOCH FROM (
+            ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-05 15:31:29] Error al ejecutar SQL para el dominio 'tickets': no existe la función pg_catalog.extract(unknown, integer)
+LINE 4:     EXTRACT(EPOCH FROM (
+            ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-05 15:59:29] Error al ejecutar SQL para el dominio 'tickets': la referencia a la columna «departamento» es ambigua
+LINE 21:   departamento,
+           ^
+
+[2025-06-05 16:00:39] Error al ejecutar SQL para el dominio 'tickets': la referencia a la columna «departamento» es ambigua
+LINE 21:   departamento,
+           ^
+
+[2025-06-06 16:44:26] Error al ejecutar SQL para el dominio 'tickets': la referencia a la columna «unidad_negocio» es ambigua
+LINE 23:   unidad_negocio,
+           ^
+
+[2025-06-06 16:46:45] Error al ejecutar SQL para el dominio 'tickets': falta una entrada para la tabla «tickets_atendidos» en la cláusula FROM
+LINE 20:     tickets_atendidos.tickets_atendidos / tickets_atendidos_...
+             ^
+
+[2025-06-06 17:34:14] Error al ejecutar SQL para el dominio 'tickets': no existe la relación «ft_tickets_ias»
+LINE 3: FROM ft_tickets_ias
+             ^
+
+[2025-06-06 17:37:09] Error al ejecutar SQL para el dominio 'tickets': no existe la relación «ft_tickets_ias»
+LINE 3: FROM ft_tickets_ias
+             ^
+
+[2025-06-06 17:37:30] Error al ejecutar SQL para el dominio 'tickets': no existe la relación «ft_tickets_ias»
+LINE 3: FROM ft_tickets_ias
+             ^
+
+[2025-06-06 17:41:21] Error al ejecutar SQL para el dominio 'tickets': no existe la relación «ft_tickets_ias»
+LINE 3: FROM ft_tickets_ias
+             ^
+
+[2025-06-06 17:45:13] Error al ejecutar SQL para el dominio 'tickets': no existe la relación «ft_tickets_ias»
+LINE 3: FROM ft_tickets_ias
+             ^
+
+[2025-06-06 17:47:21] Error al ejecutar SQL para el dominio 'tickets': no existe la relación «ft_tickets_ias»
+LINE 3: FROM ft_tickets_ias
+             ^
+
+[2025-06-06 17:48:48] Error al ejecutar SQL para el dominio 'tickets': no existe la relación «ft_tickets_ias»
+LINE 3: FROM ft_tickets_ias
+             ^
+
+[2025-06-06 17:51:08] Error al ejecutar SQL para el dominio 'tickets': no existe la relación «ft_tickets_ias»
+LINE 3: FROM ft_tickets_ias
+             ^
+
+[2025-06-06 17:57:00] Error al ejecutar SQL para el dominio 'tickets': no existe la relación «ft_tickets_iaa»
+LINE 3: FROM ft_tickets_iaa
+             ^
+
+[2025-06-06 17:58:01] Error al ejecutar SQL para el dominio 'tickets': no existe la relación «ft_tickets_iaa»
+LINE 3: FROM ft_tickets_iaa
+             ^
+
+[2025-06-07 11:31:35] Error al ejecutar SQL para el dominio 'tickets': could not translate host name "pybddwh.gruporeyes.org" to address: Host desconocido. 
+
+[2025-06-09 09:24:18] Error al ejecutar SQL para el dominio 'tickets': no existe la relación «ft_tickets_ias»
+LINE 5: FROM ft_tickets_ias
+             ^
+
+[2025-06-09 10:03:42] Error al ejecutar SQL para el dominio 'tickets': el operador no existe: text / double precision
+LINE 6:     AVG(tiempo_atencion / tiempo_sla_servicio * 100) AS porc...
+                                ^
+HINT:  Ningún operador coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+

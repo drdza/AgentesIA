@@ -1,0 +1,167 @@
+Tu tarea es generar una consulta SQL válida y ejecutable en PostgreSQL relacionada con las vistas disponibles del modelo de ventas y el contexto siguiente:
+
+
+## **Para resolver la pregunta del usuario siempre debes seguir el flujo que se presenta a continuación:**
+
+{flujo}
+
+---
+
+### 📘 **Esquema disponible**:
+
+#### `vw_ventas_cartera_vendedores` → `ft_ventas`:
+Contiene los datos de hechos de las ventas registradas.
+- PK_CFD (int8): ID principal del documento de venta (CFD o factura).
+- PK_PEDIDO_VENTA (float8): Identificador del pedido de venta relacionado.
+- PK_CLIENTE (int8): Identificador único del cliente.
+- PK_PRODUCTO (int8): Identificador único del producto vendido.
+- FECHA (date): Fecha del movimiento de venta (facturación, embarque, etc.).
+- CONCEPTO (int4): Tipo de operación (VENTA o DEVOLUCION).
+- PK_SUCURSAL (int4): ID de la sucursal donde ocurrió la venta.
+- CANTIDAD_KILOS (float8): Cantidad vendida expresada en la unidad correspondiente al tipo de producto. Si el producto pertenece a la clase CAJAS, representa el número de cajas. Si pertenece a la clase KILOS, representa el peso vendido en kilogramos.
+- TOTAL (float8): Monto total de la transacción (valor monetario).
+
+#### `vw_ventas_clientes` → `dim_ventas` (valores DISTINCT):
+Contiene información descriptiva adicional por documento.
+- PK_CFD (int8): ID principal del documento de venta (CFD o factura).
+- TIPO_VENTA (texto): Tipo de venta, puede ser FISCAL o CONSIGNA
+- DOCUMENTO (texto): Folio del documento de la factura.
+- CIUDAD (texto): Nombre de la ciudad donde se entregó la venta.
+- ESTADO (texto): Nombre del estado donde se entregó la venta.
+Nota: Al usar esta vista, siempre aplicar DISTINCT sobre los campos utilizados.
+
+#### `vw_conteo_ventas` → `dim_clientes`
+Contiene información general de los clientes
+- PK_CLIENTE (int8): Identificador único del cliente.
+- CLIENTE (texto): Número y Nombre del cliente en formato (## - NOMBRE DEL CLIENTE)
+- GRUPO (texto): Número y Nombre del grupo al que pertecene el cliente, formato (## - NOMBRE DEL GRUPO)
+
+#### `vw_productos` → `dim_productos`:
+Información descriptiva del producto vendido.
+- PK_PRODUCTO (int8): Identificador único del producto vendido.
+- PRODUCTO (texto): Clave corta del producto.
+- DESCRIPCION_PRODUCTO (texto): Nombre y descripción del producto.
+- CLASE (texto): Grupo al que pertenece el producto según su tipo de venta CAJAS o KILOS.
+- CATEGORIA (texto): Nombre de la categoría a la que pertence el producto.
+- SUBCATEGORIA (texto): Nombre de la subcategoría a la que pertence el producto.
+
+#### `vw_sucursales` → `dim_sucursales`:
+Ubicación o punto de origen de la venta.
+- PK_SUCURSAL (int8): ID de la sucursal donde ocurrió la venta.
+- SUCURSAL (texto): Nombre a modo de Razón Social del lugar donde se originpo la venta.
+- PLANTA (texto): Nombre corto para identificar el lugar donde se originó la venta.
+
+---
+
+### 🔗 **Relaciones esperadas**:
+Estás son las relaciones que existen entre cada tabla o vista.
+vw_ventas_cartera_vendedores.PK_CFD = vw_ventas_clientes.PK_CFD
+vw_ventas_cartera_vendedores.PK_CLIENTE = vw_ventas_clientes.PK_CLIENTE
+vw_ventas_cartera_vendedores.PK_PRODUCTO = vw_productos.PK_PRODUCTO
+vw_ventas_cartera_vendedores.PK_SUCURSAL = vw_sucursales.PK_SUCURSAL
+
+## 🚫 **Regla de uso selectivo de JOINs**:
+
+- **Solo haz JOIN con vistas que sean necesarias para responder a la pregunta del usuario.**
+   - No incluyas un JOIN si no se utiliza ningún campo de esa vista en el SELECT, WHERE, GROUP BY o HAVING.
+   - Evita usar todas las relaciones disponibles si no son relevantes para la lógica de la consulta.
+   - Prioriza la vista `vw_ventas_cartera_vendedores` como base para métricas de venta (kilos, total, concepto, etc.).
+   - Usa `vw_productos`, `vw_sucursales` o `vw_ventas_clientes` solo si se requieren campos como `CATEGORIA`, `PLANTA`, `TIPO_VENTA`, etc.
+
+🛑 Ejemplo de mal uso:
+JOIN `vw_ventas_clientes` cuando no se usa ni `SUCURSAL` ni `PLANTA`.
+
+✅ Ejemplo correcto:
+JOIN `vw_productos` solo si se necesita `CATEGORIA`, `CLASE`, etc.
+
+---
+
+## 📏 **Reglas importantes**:
+- Usa solo las columnas listadas. No inventes nombres.
+-- Todas las columnas del esquema usan nombres sensibles a mayúsculas. Asegúrate de usar **comillas dobles** en cada nombre de campo o vista utilizado.
+- **Todos los nombres de columnas y alias deben ir entre comillas dobles** para evitar errores de reconocimiento en PostgreSQL.
+   - Ejemplo correcto: `"PK_PRODUCTO"` en lugar de `PK_PRODUCTO`
+   - Esto también aplica para nombres de tablas si tienen mayúsculas o caracteres especiales.
+- No uses comillas simples ni acentos para columnas o alias.
+- Compara texto con `ILIKE '%valor%'` en lugar de `=`.
+- No uses funciones no compatibles con PostgreSQL como `YEAR(...)`, `MONTH(...)`, `DATEDIFF`, ni operadores regex (`~`).
+    - Si deseas extraer una parte de la fecha utiliza funciones como EXTRACT(YEAR FROM "FECHA") o EXTRACT(MONTH FROM "FECHA").
+    - Si te entregan una fecha especifica utilizala en el campo correspondiente, no trates utilizar funciones extras como EXTRACT.
+   - Si necesitas hacer operaciones con fechas como sumas o restas utiliza expresiones como (CURRENT_DATE - "FECHA") y evita en estos casos el uso del EXTRACT
+      - Ejemplo: "... dias transcurridos" has uso de (CURRENT_DATE - "FECHA") as dias_transcurridos
+- Para valores faltantes, usa `IS NULL`.
+- Devuelve únicamente la consulta SQL, sin explicaciones, encabezados ni comentarios.
+- En consultas con GROUP BY:
+   - Incluir TODAS las columnas no-agregadas en el GROUP BY
+   - Para funciones de ventana: mantener columnas no-agregadas en PARTITION BY
+   - Ejemplo válido:
+      SELECT departamento, COUNT(*), AVG(tiempo) FROM tickets GROUP BY departamento
+- Usa funciones de ventana en la estructura correcta, si necesitas generar un paso adicional, hazlo.
+   - Generar secciones distintas para cada función de ventana para evitar ambigüedades o errores en el SQL.
+- Convierte expresiones temporales ambiguas como “este año”, “primer trimestre”, “último mes” en periodos explícitos (ej. “entre enero y marzo del 2025”).
+- Cuando el usuario menciona expresiones como “este mes” o “mes actual” considera siempre complementarlo con el “año actual” para evitar confusiones temporales.
+- Para determinar búsquedas relacionadas a fines de semana: utiliza EXTRACT(DOW FROM "FECHA") para obtener el día de la semana.
+   - Los fines de semana corresponden a: 0: Domingo, 6: Sábado
+- Traduce automáticamente los siguientes términos del usuario:
+   - "tipo fiscal" → `"TIPO_VENTA" ILIKE '%FISCAL%'`
+   - "tipo consigna" → `"TIPO_VENTA" ILIKE '%CONSIGNA%'`
+   - "ventas en cajas" → `"CLASE" ILIKE '%CAJAS%'`
+   - "ventas en kilos" → `"CLASE" ILIKE '%KILOS%'`
+   - "productos más vendidos" → ordena por `SUM("CANTIDAD_KILOS")` o `SUM("TOTAL")`
+   - "venta total" → `"CONCEPTO" IN ('VENTA', 'DEVOLUCION')`
+    
+---
+
+## 📏 **Reglas de Cálculo Seguro**:
+
+1. Para cálculos de porcentaje:
+   - Usar estructura: 
+     (COUNT(*) FILTER (WHERE <condición>)::numeric / NULLIF(COUNT(*), 0)::numeric * 100)
+   - Nunca usar subconsultas innecesarias para conteos totales
+   - Ejemplo correcto:
+     SELECT (COUNT(*) FILTER (WHERE "CLASE" ILIKE '%CAJAS%')::numeric / 
+             NULLIF(COUNT(*), 0)::numeric) * 100 AS porcentaje
+     FROM ft_tickets_ia
+
+2. Optimización de consultas:
+   - Evitar múltiples recorridos de la misma tabla
+   - Preferir FILTER sobre subconsultas para agregaciones condicionales
+
+3. Agregaciones:
+   - Todas las columnas no-agregadas deben estar en GROUP BY
+   - Funciones de ventana: incluir columnas no-agregadas en PARTITION BY
+
+---
+
+## 🚀 **Optimización**:
+   - **Primero considera soluciones simples**:
+      * Usa campos precalculados en lugar de funciones sobre fechas cuando sea posible
+      * Para "top N": prueba primero con GROUP BY + ORDER BY + LIMIT
+
+   - **Funciones de ventana (avanzado)**:
+      * Usa RANK, ROW_NUMBER solo cuando necesites:
+         - Rankings dentro de grupos (ej: top 3 productos por planta)
+         - Comparación entre filas adyacentes
+         - Cálculos acumulativos o móviles
+
+   - **CTEs (WITH) - Usar con criterio**:
+      * Beneficios: mejoran legibilidad para consultas complejas
+      * Casos de uso típicos:
+         - Múltiples pasos de transformación
+         - Reutilización de subconsultas
+         - Jerarquías de datos complejas
+      * Precauciones:
+         - Verifica que cada CTE sea válido independientemente
+         - Asegura coherencia en granularidad entre CTEs
+         - Evalúa impacto en performance (pueden materializarse)   
+
+
+---
+
+## **Formato de salida:**
+- Devuelve únicamente la consulta SQL final, sin explicaciones, encabezados ni comentarios.
+
+##🧾 Pregunta del usuario:
+
+{question}
+

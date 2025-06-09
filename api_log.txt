@@ -1,0 +1,171 @@
+[2025-06-02 15:16:13] API Request 3c0504d2-9cf7-4f7a-a6bc-0859a303728a desde 127.0.0.1 | Pregunta: Cuantos tickets se han generado en los ultimos 30 días? | Dominio: tickets
+[2025-06-02 15:26:31] API Request 49642644-2e23-464f-8944-2a76bdca7aa5 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el ultimo mes? | Dominio: tickets
+[2025-06-02 15:27:52] API Request b8368536-88dd-4e8e-95ad-6631d0f8df09 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el ultimo año? | Dominio: tickets
+[2025-06-02 15:37:13] API Request 4630c869-8ebe-4270-92a1-016f265390bb desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el ultimo año? | Dominio: tickets
+[2025-06-02 15:37:57] API Request 17520e2f-6661-486d-9a45-0d0e5648e077 desde 127.0.0.1 | Pregunta: Cual es el estatus de ticket 10009? | Dominio: tickets
+[2025-06-02 15:40:33] API Request 8c31633d-bcbd-4e64-8b3c-675fb34b19ea desde 127.0.0.1 | Pregunta: ¿Qué porcentaje de tickets atendidos este año fueron resueltos fuera del SLA, por cada ciudad? | Dominio: tickets
+[2025-06-03 10:40:23] API Request e455ad0e-1797-44a9-ac93-64abcc181200 desde 127.0.0.1 | Pregunta: Podrías decirme cuantos tickets se han generado en el ultimo mes del 2025? | Dominio: tickets
+[2025-06-03 10:40:39] API Request 283e6571-ae2e-4932-8396-3733b092bd0f desde 127.0.0.1 | Pregunta: Podrías decirme cuantos tickets se han generado en el ultimo mes del 2025? | Dominio: tickets
+[2025-06-03 10:44:08] API Request 9998b910-1944-4d9b-847c-40eefff33e1c desde 127.0.0.1 | Pregunta: Podrías decirme cuantos tickets se han generado en el ultimo mes del 2025? | Dominio: tickets
+[2025-06-03 10:44:23] API Request f579d6e9-97a3-48b8-ad67-43887dd056dd desde 127.0.0.1 | Pregunta: Podrías decirme cuantos tickets se han generado en el ultimo mes del 2025? | Dominio: tickets
+[2025-06-03 11:06:33] API Request 607b501b-bd6a-4232-8950-0a4f483707db desde 127.0.0.1 | Pregunta: ¿Podrías decirme cuantos tickets se han generado en el ultimo mes del 2025? | Dominio: tickets
+[2025-06-03 11:15:33] API Request cf3b6d36-b76a-439b-94cf-49c2022f8ced desde 127.0.0.1 | Pregunta: ¿Podrías decirme cuantos tickets se han generado en el ultimo mes del 2025? | Dominio: tickets
+[2025-06-03 11:25:03] API Request b4aeb6c4-bac0-4321-b55f-3f9fb68be1f1 desde 127.0.0.1 | Pregunta: ¿Podrías decirme cuantos tickets se han generado en el ultimo mes del 2025? | Dominio: tickets
+[2025-06-03 11:38:53] API Request 35828a27-2453-435a-bfd8-75daec496421 desde 127.0.0.1 | Pregunta: ¿Podrías decirme cuantos tickets se han generado en el ultimo mes del 2025? | Dominio: tickets
+[2025-06-03 12:42:29] API Request 10e41906-3983-4b5e-9ed0-d8dd318dfab8 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han ATENDIDO en el 2025? | Dominio: tickets
+[2025-06-03 15:24:55] API Request f491fb94-10da-49e8-b0de-9073cdf87f08 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el 2025? | Dominio: tickets
+[2025-06-03 15:40:27] API Request 8a4dd4aa-c563-40de-a8bb-21d210e90675 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el 2025? | Dominio: tickets
+[2025-06-03 15:43:04] API Request f0000772-c1ad-4105-a282-9020909eb3ff desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el 2025? | Dominio: tickets
+[2025-06-03 15:46:56] API Request 215e29d0-3d65-45a0-9de3-6b9ed3bd7274 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el 2025? | Dominio: tickets
+[2025-06-03 15:55:21] API Request 20707f7d-6d41-4d50-9632-8c07085172d2 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el 2025? | Dominio: tickets
+[2025-06-03 16:04:58] API Request 4b32235e-c3ca-48eb-9df5-1cd044158d78 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el 2025? | Dominio: tickets
+[2025-06-03 16:18:34] API Request cbce5ca3-c374-4503-9a62-72743b322e6b desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el 2025? | Dominio: tickets
+[2025-06-03 16:21:37] API Request 488b6f4d-f62b-4e95-bc41-f166b859930d desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el 2025? | Dominio: tickets
+[2025-06-03 16:24:00] API Request 40330d92-4e3e-433e-90da-56df437ace4f desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el 2025? | Dominio: tickets
+[2025-06-03 17:22:29] API Request de70b7cd-9515-4094-b7b5-fca4ad239341 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han generado en el 2025? | Dominio: tickets
+[2025-06-03 17:36:26] API Request 315ec1ef-b8b4-424b-8bfc-143ea0df9c63 desde 127.0.0.1 | Pregunta: ¿Cuál es el promedio de tiempo de solución de tickets por departamento en 2024? | Dominio: tickets
+[2025-06-03 17:41:21] API Request 7e04cc6b-492e-4b5b-bb3d-cc09ea6e617f desde 127.0.0.1 | Pregunta: ¿Cuál es el promedio de tiempo de solución de tickets por departamento en 2024? | Dominio: tickets
+[2025-06-03 17:42:33] API Request f7f35b15-dffe-4a12-bd88-ecd90fd2d3b1 desde 127.0.0.1 | Pregunta: ¿Cuál es el promedio de tiempo de solución de tickets por departamento en 2024? | Dominio: tickets
+[2025-06-03 17:46:19] API Request 3ca353ca-ff75-462c-b6c1-53aa8f901c91 desde 127.0.0.1 | Pregunta: ¿Cual es el promedio de tiempo de atención de los tickets en el 2025 por cada area y departamento? | Dominio: tickets
+[2025-06-03 17:49:38] API Request 096988a2-2890-4803-99b7-6f15e64efdfc desde 127.0.0.1 | Pregunta: ¿Cual es el promedio de tiempo de atención de los tickets en el 2025 por cada área y departamento? | Dominio: tickets
+[2025-06-03 17:50:33] API Request f86158e9-9447-4929-ba3c-bb18ba947383 desde 127.0.0.1 | Pregunta: ¿Cual es el promedio de tiempo de atención de los tickets en el 2025 por cada área y departamento? | Dominio: tickets
+[2025-06-03 17:51:50] API Request 5bf7439c-03b2-4cc5-9831-e3d0ab3886f9 desde 127.0.0.1 | Pregunta: ¿Cual es el promedio de tiempo de atención de los tickets en el 2025 por cada área y departamento? | Dominio: tickets
+[2025-06-03 17:53:02] API Request 7665f610-b642-47f4-a9e9-b04391ad79d6 desde 127.0.0.1 | Pregunta: ¿Cual es el promedio de tiempo de atención de los tickets en el 2025 por cada área y departamento? | Dominio: tickets
+[2025-06-04 10:51:41] API Request f2dea150-a8ae-4b1d-8b25-968e9c205d37 desde 127.0.0.1 | Pregunta: Cuantos tickets se han atendidos en el 2025? | Dominio: tickets
+[2025-06-04 10:52:52] API Request d2dc259d-54d2-4c3b-aadf-2ce8f3c634b0 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han atendido en el 2025? | Dominio: tickets
+[2025-06-04 11:51:14] API Request a527b76f-9868-4419-b670-943dce37d526 desde 127.0.0.1 | Pregunta: Que porcentaje representa la atención de tickets en el 2025 por cada departamento? | Dominio: tickets
+[2025-06-04 11:53:56] API Request 0c1debf8-e346-4482-986a-20377a015763 desde 127.0.0.1 | Pregunta: ¿Que porcentaje representa para cada departamento los tickets atendidos en el 2025? | Dominio: tickets
+[2025-06-04 11:58:21] API Request 370f9878-c11e-4d26-a27d-3870698da7ec desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre?  | Dominio: tickets
+[2025-06-04 12:33:36] API Request f9544738-8745-4951-892a-2641be765b9c desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre?  | Dominio: tickets
+[2025-06-04 13:02:28] API Request 06cc16fe-1cd8-4a76-a9dc-556b36c47b39 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 13:04:03] API Request 9ab3f033-b766-4036-a959-4395c4f5abe2 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 13:38:50] API Request 9b75f260-00a7-4c61-afc7-b2d54aa7dcb7 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 13:45:19] API Request 50275a5e-05c6-4c7a-9f24-f6f06323c4da desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 13:46:11] API Request 0e83a7e8-06db-4318-b9f8-5662fb4e6c1c desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:16:24] API Request e565e4b5-3781-47cc-ae71-2a6f71c845ce desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:21:58] API Request 1be14aa6-07fb-44c6-80f7-6365bc46caa3 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:25:20] API Request e88b548f-1a65-463b-8e00-25bd7ff1163f desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:26:10] API Request e3dc37a9-6914-47ae-8773-00e523e965b5 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:27:46] API Request 698507bb-981c-4fbf-a5ab-316a6787d789 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:29:05] API Request 746ef05b-818e-4455-bc80-903d1b163be3 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:29:42] API Request 9975acec-0ead-43b8-8f1c-a0a6a764b89b desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:34:07] API Request 933c044d-c504-4d1d-99a4-0efddb3a0cb2 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:35:29] API Request 58ab7dd1-e9d3-4676-a424-dd27a01dd2b3 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:36:21] API Request 8f50e75e-10a8-4519-ad1e-0a077a59c1c2 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:56:09] API Request faf2fc66-aa85-4f87-beb5-cd0865348bb0 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:57:14] API Request 259bde1d-e74b-42eb-851d-82a5a75a6627 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 15:59:42] API Request 04a39540-79f8-40ab-b918-2fcc6d5293c5 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 16:00:47] API Request 9f95b389-7ad8-426d-8bb4-f0747e1716ec desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 16:05:17] API Request b8ab57b9-27fd-4643-b6e8-db7f3a56eb93 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 16:06:45] API Request 8aed292d-ea33-4cf7-9b83-e1279486c34a desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 16:08:36] API Request e858614f-6462-4bb5-b39e-add39cdf487c desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 16:12:05] API Request c149d616-8727-4a30-9fbe-54c2dfeaf4a3 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 16:13:34] API Request 6badf5c4-ccdf-48fb-a5bd-66482ad0f30d desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 16:22:04] API Request 489f0eaa-e5d2-412e-9e77-a00a2f3591e1 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 16:26:11] API Request 8c047ebb-fe9f-47a4-80ea-abc1caf8758b desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 16:28:55] API Request 5ec9810a-8c8f-438c-a429-8bcc876b1f96 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 16:38:59] API Request b2e3042e-37e7-410d-abca-9733ed427c62 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 17:53:46] API Request 71d3a87d-e828-4845-8a55-f4c06e8ee627 desde 127.0.0.1 | Pregunta: ¿Qué servicios superaron el tiempo de SLA en más de 5 ocasiones en el último trimestre? | Dominio: tickets
+[2025-06-04 17:54:47] API Request 7b5cbf8e-8952-4b0d-9d95-16082da2a1ab desde 127.0.0.1 | Pregunta: ¿Cuantos tickets se han atendido en el 2025? | Dominio: tickets
+[2025-06-04 17:57:01] API Request d424e776-23ae-40bb-a768-e106325f3ca3 desde 127.0.0.1 | Pregunta: ¿Podrías decirme cuantos tickets tiene asignados el colaborador DANIEL IBARRA? | Dominio: tickets
+[2025-06-04 17:58:25] API Request 5fc77090-ebe6-4fea-8f13-41812bc71cca desde 127.0.0.1 | Pregunta: ¿Podrías decirme cuantos tickets tiene asignados el colaborador DANIEL IBARRA? | Dominio: tickets
+[2025-06-04 17:58:50] API Request e31e13ce-f152-4355-bf97-96b4c0a77ddb desde 127.0.0.1 | Pregunta: ¿Podrías decirme cuantos tickets tiene asignados el colaborador ELIZABETH REYES? | Dominio: tickets
+[2025-06-04 18:00:29] API Request 45cd9926-d86c-4841-b63d-c2cb7269eb37 desde 127.0.0.1 | Pregunta: ¿Podrías decirme cuantos tickets tiene asignados el colaborador ELIZABETH REYES? | Dominio: tickets
+[2025-06-04 18:01:17] API Request f0f1cc76-c516-4827-86ab-4d5255efcbcb desde 127.0.0.1 | Pregunta: ¿Podrías decirme cuantos tickets tiene asignados el colaborador ELIZABETH REYES? | Dominio: tickets
+[2025-06-04 18:02:10] API Request fb881295-89ec-4dfc-85e3-77630a9b69c2 desde 127.0.0.1 | Pregunta: ¿Podrías decirme cuantos tickets tiene asignados el colaborador ELIZABETH REYES? | Dominio: tickets
+[2025-06-04 18:02:54] API Request 615b7cfe-e57d-44d2-a4b2-b7571c401832 desde 127.0.0.1 | Pregunta: ¿Podrías decirme cuantos tickets tiene asignados el colaborador ELIZABETH REYES? | Dominio: tickets
+[2025-06-04 18:03:43] API Request 6a95c8e3-d06c-4c94-8962-e562d9745987 desde 127.0.0.1 | Pregunta: Dime cuales servicios se han atendido con mayor recurrencia en el año 2025 | Dominio: tickets
+[2025-06-05 09:12:55] API Request 081999fe-3d5f-4454-8ccf-9edcbf6cee53 desde 127.0.0.1 | Pregunta: Dime cuales servicios se han atendido con menor recurrencia en el año 2025 | Dominio: tickets
+[2025-06-05 09:13:42] API Request 98f51dc4-bfcb-49b0-b157-768a66042cd6 desde 127.0.0.1 | Pregunta: Dime cuales servicios se han atendido con mayor recurrencia en el año 2025 | Dominio: tickets
+[2025-06-05 09:14:23] API Request c623e164-b272-43f6-aff5-a5116e13662c desde 127.0.0.1 | Pregunta: Dime cuales servicios se han atendido con menor recurrencia en el año 2025 | Dominio: tickets
+[2025-06-05 09:18:37] API Request 340a9374-fdf8-4706-a55d-d7de350906a7 desde 127.0.0.1 | Pregunta: ¿Cuales servicios se han atendido con menor frecuencia en el 2025? | Dominio: tickets
+[2025-06-05 09:20:07] API Request 0ae8eb29-622a-4cc1-80cf-796430c16387 desde 127.0.0.1 | Pregunta: ¿Cuales servicios se han atendido con menor frecuencia en el 2025? | Dominio: tickets
+[2025-06-05 09:20:45] API Request 3f9b54d4-6065-455d-aa2b-e69bf8917d47 desde 127.0.0.1 | Pregunta: ¿Cuales servicios se han atendido con menor frecuencia en el 2025? | Dominio: tickets
+[2025-06-05 09:21:23] API Request ff5620af-c831-485e-900b-cc6f1dd523b0 desde 127.0.0.1 | Pregunta: ¿Cuales servicios se han atendido con menor frecuencia en el 2025? | Dominio: tickets
+[2025-06-05 09:24:12] API Request 4a19f1b8-3831-4873-b32e-d134f1d61162 desde 127.0.0.1 | Pregunta: ¿Cuál es el sistema con mayor porcentaje de tickets atendiuos en menos de 24 horas?  | Dominio: tickets
+[2025-06-05 09:27:13] API Request 7d3a8ce5-2633-47aa-8e07-3f73c3c93d1a desde 127.0.0.1 | Pregunta: ¿Cuál es el sistema con mayor porcentaje de tickets atendidos en menos de 24 horas?  | Dominio: tickets
+[2025-06-05 09:27:42] API Request f44e0351-c32f-41e8-bfce-aa7b61ce0f23 desde 127.0.0.1 | Pregunta: ¿Cuál es el sistema con mayor porcentaje de tickets atendidos en menos de 24 horas?  | Dominio: tickets
+[2025-06-05 09:29:12] API Request a162e1cd-5e84-4f66-81ed-430504a6db2a desde 127.0.0.1 | Pregunta: ¿Cuál es el sistema con mayor porcentaje de tickets atendidos en menos de 24 horas?  | Dominio: tickets
+[2025-06-05 09:33:37] API Request 92098133-ab1d-4a2b-aaac-707ceacd3595 desde 127.0.0.1 | Pregunta: ¿Cuál es el sistema con mayor porcentaje de tickets atendidos en menos de 24 horas?  | Dominio: tickets
+[2025-06-05 09:51:41] API Request 02019ae1-40cf-4772-9688-778ca0ba3c4e desde 127.0.0.1 | Pregunta: ¿Cuál es el sistema con mayor porcentaje de tickets atendios en menos de 24 horas?  | Dominio: tickets
+[2025-06-05 10:00:12] API Request 38cc32e6-1209-485d-be2c-0c8606c65cfc desde 127.0.0.1 | Pregunta: ¿Cual es el porcentaje de tickets que se han atendido en menos de 3 días? | Dominio: tickets
+[2025-06-05 10:01:04] API Request c192fda4-45d0-4c4c-b102-8bc0f0e70062 desde 127.0.0.1 | Pregunta: ¿Cual es el porcentaje de tickets que se han atendido en mas de 3 días? | Dominio: tickets
+[2025-06-05 10:02:33] API Request 2e691c03-964a-47af-8dd8-bf1045233dff desde 127.0.0.1 | Pregunta: ¿Cual es el porcentaje de tickets que se han atendido en menos de 3 días? | Dominio: tickets
+[2025-06-05 10:08:06] API Request be8f15c6-a8de-442d-8d2d-8bb6e22ad1fa desde 127.0.0.1 | Pregunta: ¿Cual es el porcentaje de tickets que se han atendido en menos de 3 días? | Dominio: tickets
+[2025-06-05 10:09:11] API Request 56fb379b-f46d-4d0e-860e-4bd190626fe1 desde 127.0.0.1 | Pregunta: ¿Cual es el porcentaje de tickets que se han atendido en menos de 3 días? | Dominio: tickets
+[2025-06-05 10:11:26] API Request aef6c79b-1b84-4e56-b394-41c925f14db4 desde 127.0.0.1 | Pregunta: ¿Que departamentos tienen menos del 80% de sus tickets cerrados en lo que va del 2025? | Dominio: tickets
+[2025-06-05 10:24:51] API Request ed7f6ab1-983f-4b26-9a1a-77f8d640d892 desde 127.0.0.1 | Pregunta: ¿Cuál es el top 3 de servicios más reportados en diciembre de cada año?  | Dominio: tickets
+[2025-06-05 10:26:31] API Request dafcbcc6-952e-457d-8e25-7725e4e02b79 desde 127.0.0.1 | Pregunta: Dame toda la información del ticket abierto que lleve más tiempo en proceso | Dominio: tickets
+[2025-06-05 10:27:48] API Request 30008edb-37fb-491d-8f04-ea29cb7d775d desde 127.0.0.1 | Pregunta: Dime cuantos tickets ha reportado el usuario ALEJANDRA BECERRA a través del tiempo | Dominio: tickets
+[2025-06-05 10:28:38] API Request 907e1e94-f325-41cb-8de6-a86abd77a6ea desde 127.0.0.1 | Pregunta: Dime cuantos tickets ha reportado el usuario ALEJANDRA BECERRA a través del tiempo | Dominio: tickets
+[2025-06-05 10:32:24] API Request 41473001-63a4-4b67-985c-9ed9e10d6f83 desde 127.0.0.1 | Pregunta: ¿cuantos tickets ha reportado el usuario ALEJANDRA BECERRA a través del tiempo? | Dominio: tickets
+[2025-06-05 11:41:09] API Request fbbd2b07-bd0c-4e0e-aa68-7248d324d05d desde 127.0.0.1 | Pregunta: ¿cuantos tickets cerrados hubo en este mes? | Dominio: tickets
+[2025-06-05 11:42:46] API Request 09f253a9-9164-4418-97de-9398d52ce6fd desde 127.0.0.1 | Pregunta: Cuantos tickets por mes y año siguen abiertos? | Dominio: tickets
+[2025-06-05 11:45:53] API Request ecaf67f5-610f-4974-90f2-09e2693d5f87 desde 127.0.0.1 | Pregunta: Cuantos tickets por mes y año están en proceso? | Dominio: tickets
+[2025-06-05 11:47:07] API Request 190607c5-f4d9-4ed9-8492-96b06bb5e436 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets por departamento y área están en proceso? | Dominio: tickets
+[2025-06-05 11:47:50] API Request 4e773f4c-5ef8-4433-8e1a-b8464abc7f50 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets por departamento y área están en proceso y que porcentaje representa del total de tickets en proceso? | Dominio: tickets
+[2025-06-05 11:53:18] API Request 20eeab53-e911-487f-80db-f85ad51081b6 desde 127.0.0.1 | Pregunta: ¿Me puedes indicar cuantos tickets abiertos por departamento existen y de estos cuál tiene la fecha más antigua? | Dominio: tickets
+[2025-06-05 12:49:32] API Request 4826e668-9d95-465e-bc65-3910be6c39db desde 127.0.0.1 | Pregunta: Dime cual es el departamento y área con el peor tiempo de atención de tickets en el 2025? | Dominio: tickets
+[2025-06-05 12:50:17] API Request f4471aa2-0027-474f-932b-2da0838170d5 desde 127.0.0.1 | Pregunta: Dime cual es el departamento y área con el peor tiempo de atención de tickets en el 2025? | Dominio: tickets
+[2025-06-05 12:50:56] API Request 82d402ea-985c-46e5-a648-2981eab6af55 desde 127.0.0.1 | Pregunta: Dime cual es el departamento y área con el peor tiempo de atención de tickets en el 2025? | Dominio: tickets
+[2025-06-05 12:52:26] API Request 3e9f81c1-e6fc-4c78-9ab3-6dcd2fa8e71c desde 127.0.0.1 | Pregunta: Dime cual es el departamento y área con el peor tiempo de atención de tickets en el 2025? | Dominio: tickets
+[2025-06-05 12:53:13] API Request ecb27fa2-a2ac-4cd2-a4dc-8e497af4d2c2 desde 127.0.0.1 | Pregunta: Dime cual es el departamento y área con el peor tiempo de atención de tickets en el 2025? | Dominio: tickets
+[2025-06-05 12:56:12] API Request ee829a57-b123-4839-b2a3-9fc2a0a47be5 desde 127.0.0.1 | Pregunta: Dime cual es el departamento y área con el peor tiempo de atención de tickets en el 2025? | Dominio: tickets
+[2025-06-05 12:56:34] API Request f5b0343c-aebe-4420-8acb-606858146d0a desde 127.0.0.1 | Pregunta: Dime cual es el departamento y área con el peor tiempo de atención de tickets en el 2025? | Dominio: tickets
+[2025-06-05 12:57:55] API Request 9701b0e6-56ac-4472-af3d-854e4b207c15 desde 127.0.0.1 | Pregunta: Dime cual es el departamento y área con el peor tiempo de atención de tickets en el 2025? | Dominio: tickets
+[2025-06-05 13:48:37] API Request e8b41a95-7b87-4334-82ed-87909aa181b7 desde 127.0.0.1 | Pregunta: Entrégame el ranking de tickets atendidos, en proceso tanto en tiempo y fuera de tiempo de los colaboradores del departamento de GESTIÓN DE SERVICIOS e integra su área | Dominio: tickets
+[2025-06-05 13:53:27] API Request c0d28bb2-1df8-4c22-8393-e7af2e354a88 desde 127.0.0.1 | Pregunta: entregame un ranking por colaborador donde se presenten los tickets atendidos en el 2025, los tickets en proceso tanto en tiempo como fuera de tiempo y agrega el área de cada colaborador. | Dominio: tickets
+[2025-06-05 15:09:23] API Request ee7d7139-7385-408d-b2f5-6e46a58fb416 desde 127.0.0.1 | Pregunta: De los tickets en proceso, dime ¿qué porcentaje está fuera de tiempo de atención? | Dominio: tickets
+[2025-06-05 15:15:20] API Request cb87f5be-3d24-46b0-95d4-263fbc2f9b96 desde 127.0.0.1 | Pregunta: De los tickets en proceso, dime ¿qué porcentaje está fuera de tiempo de atención? | Dominio: tickets
+[2025-06-05 15:16:28] API Request 76c61391-5a9b-4574-a4e7-d9e895b13737 desde 127.0.0.1 | Pregunta: De los tickets en proceso, dime ¿qué porcentaje está fuera de tiempo de atención? | Dominio: tickets
+[2025-06-05 15:16:50] API Request 455315fd-a37b-4088-b4c4-66a8f75814de desde 127.0.0.1 | Pregunta: De los tickets en proceso, dime ¿qué porcentaje está fuera de tiempo de atención? | Dominio: tickets
+[2025-06-05 15:17:42] API Request 977db909-8f8f-43cd-9253-2e0aebc87e66 desde 127.0.0.1 | Pregunta: De los tickets en proceso, dime ¿qué porcentaje está fuera de tiempo de atención? | Dominio: tickets
+[2025-06-05 15:29:31] API Request 8970f295-76eb-4ee7-9bfe-33ee23aacfd7 desde 127.0.0.1 | Pregunta: De los tickets en proceso, dime ¿qué porcentaje está fuera de tiempo de atención? | Dominio: tickets
+[2025-06-05 15:30:19] API Request bbf77c78-887e-4887-b5c6-8a55cc4aca5d desde 127.0.0.1 | Pregunta: De los tickets en proceso, dime ¿qué porcentaje está fuera de tiempo de atención? | Dominio: tickets
+[2025-06-05 15:31:05] API Request 7c9f5d70-8783-4604-9088-f6acca5b6c39 desde 127.0.0.1 | Pregunta: De los tickets en proceso, dime ¿qué porcentaje está fuera de tiempo de atención? | Dominio: tickets
+[2025-06-05 15:32:37] API Request e85654d2-a563-43de-ae5d-ecebfabe0a49 desde 127.0.0.1 | Pregunta: De los tickets en proceso, dime ¿qué porcentaje está fuera de tiempo de atención? | Dominio: tickets
+[2025-06-05 15:35:15] API Request 34ee704b-3ab4-4888-9f0b-4456af88eebc desde 127.0.0.1 | Pregunta: ¿Me puedes dar una estadística de los tickets según el motivo que haya reportado el usuario? | Dominio: tickets
+[2025-06-05 15:37:25] API Request d277a609-5f53-4e95-814a-070589ea84a0 desde 127.0.0.1 | Pregunta: Cual es el promedio de tickets atendidos por día vs los registrados, todo esto con la información del 2025 | Dominio: tickets
+[2025-06-05 15:57:32] API Request da022a5b-eee7-4737-a482-a5e70016cc0d desde 127.0.0.1 | Pregunta: ¿Cuantos tickets en proceso hay fuera de tiempo? | Dominio: tickets
+[2025-06-05 15:58:10] API Request ea4c904f-f481-48c2-875e-7f99776929b8 desde 127.0.0.1 | Pregunta: ¿Cuantos tickets en proceso hay fuera de tiempo y que porcentaje representa de total de tickets con el mismo estatus? | Dominio: tickets
+[2025-06-05 15:59:09] API Request 0ab8ab54-6bce-4536-92e2-0dd8fe537faa desde 127.0.0.1 | Pregunta: ¿Cuantos tickets en proceso por departamento hay fuera de tiempo y que porcentaje representa de total de tickets con el mismo estatus? | Dominio: tickets
+[2025-06-05 15:59:45] API Request 930f8b23-af35-48cb-b9a5-f5d7692f292a desde 127.0.0.1 | Pregunta: ¿Cuantos tickets en proceso hay fuera de tiempo y que porcentaje representa de total de tickets con el mismo estatus? | Dominio: tickets
+[2025-06-05 16:00:14] API Request 7ff738d9-1fa9-4a80-97fc-cee347ca670e desde 127.0.0.1 | Pregunta: ¿Cuantos tickets en proceso por departamento hay fuera de tiempo y que porcentaje representa de total de tickets con el mismo estatus? | Dominio: tickets
+[2025-06-06 10:10:11] API Request dbe473e8-46ec-4142-9c27-7f6f372dc294 desde 127.0.0.1 | Pregunta: Podrías decirme cuantos tickets abiertos hay actualmente por cada departamento y que % representa del total de tickets abiertos para cada uno? | Dominio: tickets
+[2025-06-06 10:10:50] API Request c2c549d8-77f3-4777-85dc-7ae6aba42750 desde 127.0.0.1 | Pregunta: Podrías decirme cuantos tickets en proceso hay actualmente por cada departamento y que % representa del total de tickets en proceso para cada uno? | Dominio: tickets
+[2025-06-06 10:19:08] API Request e480205a-bd3e-4de4-9b18-6ff819a62d2e desde 127.0.0.1 | Pregunta: Podrías decirme cuantos tickets en proceso hay actualmente por cada departamento y que % representa del total de tickets en proceso para cada uno? | Dominio: tickets
+[2025-06-06 11:32:56] API Request a21dcac5-fc74-453e-96e2-6c92b9353265 desde 127.0.0.1 | Pregunta: ¿Que porcentaje representan los tickets en proceso que están fuera de tiempo respecto a al total de tickets en proceso? | Dominio: tickets
+[2025-06-06 12:32:03] API Request 49931de2-5c75-4000-85ea-c8986020508a desde 127.0.0.1 | Pregunta: ¿Que porcentaje representan los tickets en proceso que están fuera de tiempo respecto a al total de tickets en proceso? | Dominio: tickets
+[2025-06-06 13:28:29] API Request ae662dbf-1ee5-4bd5-a0fa-22ccafb86254 desde 127.0.0.1 | Pregunta: ¿Puedes decirme cuantos tickets fuera de tiempo hay en proceso por departamento? | Dominio: tickets
+[2025-06-06 16:04:27] API Request 06423b71-688d-46d5-9a58-9b89de77e2e0 desde 127.0.0.1 | Pregunta: De los tickets atendidos en el 2025, ¿cual es el porcentaje de aquellos que se han atendido en tiempo? | Dominio: tickets
+[2025-06-06 16:12:39] API Request a8b4d487-481e-4013-8d15-a702673e3660 desde 127.0.0.1 | Pregunta: De los tickets atendidos en el 2025, ¿cual es el porcentaje de aquellos que se han atendido en tiempo? | Dominio: tickets
+[2025-06-06 16:43:59] API Request dc05337f-de81-4dca-9b85-af9e8bb979f4 desde 127.0.0.1 | Pregunta: ¿Dime cual es el porcentaje de tickets atendidos por cada unidad de negocio en el 2025? | Dominio: tickets
+[2025-06-06 16:46:22] API Request ca14de03-c754-4b39-97b6-112cb0fa7388 desde 127.0.0.1 | Pregunta: ¿Que porcentaje representa para cada unidad de negocios los tickets atendidos en el 2025? | Dominio: tickets
+[2025-06-06 16:48:59] API Request 145e13c4-47c8-48db-b5a5-18a4308d2478 desde 127.0.0.1 | Pregunta: ¿Que porcentaje representa para cada unidad de negocios los tickets atendidos en el 2025? | Dominio: tickets
+[2025-06-06 17:15:58] API Request 98be540e-ee3b-42bb-a0ce-1a9dba94b55b desde 127.0.0.1 | Pregunta: ¿Estadística de tickets del 2025? | Dominio: tickets
+[2025-06-06 17:30:57] API Request 696c01bf-7ccf-4707-90e6-93e1befb8669 desde 127.0.0.1 | Pregunta: Dime la cantidad de tickets abiertos en el 2025? | Dominio: tickets
+[2025-06-06 17:44:15] API Request e736fb98-cfd9-407f-bc89-ab7e10cc5dca desde 127.0.0.1 | Pregunta: ¿Dime cuantos tickets en proceso hay en el 2025? | Dominio: tickets
+[2025-06-06 18:02:46] API Request ebfa7bd5-ad21-412b-88a1-15917838a0a5 desde 127.0.0.1 | Pregunta: Cuantos tickets en proceso? | Dominio: tickets
+[2025-06-06 18:04:31] API Request ceb487ed-da3e-4817-a133-84e7b93daf4b desde 127.0.0.1 | Pregunta: cantidad de tickets en proceso? | Dominio: tickets
+[2025-06-06 18:05:56] API Request 82dec243-6a12-4f93-931a-912ca71d48d6 desde 127.0.0.1 | Pregunta: Tickets en proceso | Dominio: tickets
+[2025-06-07 09:14:13] API Request 4831e09a-6676-428c-86aa-f3eac425ed34 desde 127.0.0.1 | Pregunta: Tickets abiertos | Dominio: tickets
+[2025-06-07 11:32:34] API Request ec156ae5-b77d-446c-9117-a9d7824c9535 desde 127.0.0.1 | Pregunta: Tickets abiertos | Dominio: tickets
+[2025-06-07 11:41:01] API Request 1d510895-2ebf-4606-95d5-ada74a40c75d desde 127.0.0.1 | Pregunta: Tickets abietrtos | Dominio: tickets
+[2025-06-07 11:48:37] API Request acc755ea-ff6f-40e7-bc66-6912ba3ef0c6 desde 127.0.0.1 | Pregunta: Tickets abietrtos | Dominio: tickets
+[2025-06-07 11:49:17] API Request c56e65b3-ef46-4644-a835-02912150b72e desde 127.0.0.1 | Pregunta: Tickets abietrtos | Dominio: tickets
+[2025-06-07 11:50:02] API Request 5247270c-c1e9-4606-a7d3-1cb7ceff0c89 desde 127.0.0.1 | Pregunta: Tickets abietrtos | Dominio: tickets
+[2025-06-07 11:51:17] API Request 9e116e6c-0de0-40be-9aa6-e35a1b4c26ea desde 127.0.0.1 | Pregunta: Tickets abietrtos | Dominio: tickets
+[2025-06-07 11:54:10] API Request 774ee846-1aa1-4253-9214-c0da50f95d48 desde 127.0.0.1 | Pregunta: Tickets abietrtos | Dominio: tickets
+[2025-06-07 12:00:51] API Request edf95c51-8bac-4db3-a922-4c5b0b3523ca desde 127.0.0.1 | Pregunta: Tickets abiertos | Dominio: tickets
+[2025-06-07 12:05:08] API Request eaaf230f-9d1e-4add-ad10-57eb672077d2 desde 127.0.0.1 | Pregunta: Tickets abiertos | Dominio: tickets
+[2025-06-07 12:31:37] API Request 2ef50041-fdd8-430b-9de8-e4c02c6e5444 desde 127.0.0.1 | Pregunta: Tickets abiertos | Dominio: tickets
+[2025-06-07 13:51:50] API Request b0a41dd9-2eb5-4ee5-a391-58a4beea3925 desde 127.0.0.1 | Pregunta: ¿Tickets abiertos? | Dominio: tickets
+[2025-06-07 13:52:21] API Request 0a5c9f17-b53d-4200-8759-b98372a80d0d desde 127.0.0.1 | Pregunta: ¿Tickets fuera de tiempo? | Dominio: tickets
+[2025-06-07 13:53:07] API Request 9bb44a98-3b23-48a3-bd5a-b5f58b23d805 desde 127.0.0.1 | Pregunta: ¿Tickets en tiempo? | Dominio: tickets
+[2025-06-07 14:03:48] API Request ca53ac8b-da3b-439c-884d-c21aa394a58d desde 127.0.0.1 | Pregunta: Tickets en proceso? | Dominio: tickets
+[2025-06-07 14:04:28] API Request d6243cd4-46eb-4fcb-b7a0-3a1574b73c95 desde 127.0.0.1 | Pregunta: Cuantos tickets por Baja de colaborador siguen en proceso? | Dominio: tickets
+[2025-06-07 14:05:22] API Request ea77ca04-f1ae-40f6-bf33-5623e0b64ee2 desde 127.0.0.1 | Pregunta: Cuantos tickets por motivo de 'Baja de colaborador' siguen en proceso? | Dominio: tickets
+[2025-06-09 09:15:42] API Request 63642b6a-7a00-4f4d-898d-7a9044f1cab8 desde 127.0.0.1 | Pregunta: Tickets en proceso | Dominio: tickets
+[2025-06-09 09:16:04] API Request 3af949f8-3ceb-4292-8e1b-d965972b1298 desde 127.0.0.1 | Pregunta: Tickets en proceso por departamento | Dominio: tickets
+[2025-06-09 09:16:47] API Request 3e79c1a3-3a13-4e03-993b-5f2724a983e0 desde 127.0.0.1 | Pregunta: Tickets abiertos | Dominio: tickets
+[2025-06-09 10:03:18] API Request 801cf0d6-34ad-4221-ab6e-61a2608aaf43 desde 127.0.0.1 | Pregunta: ¿Qué servicios presentan un SLA incumplido en más del 10%?  | Dominio: tickets

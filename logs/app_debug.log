@@ -1,0 +1,836 @@
+2025-05-27 22:43:46,854 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/usr/local/lib/python3.10/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connectionpool.py", line 493, in _make_request
+    conn.request(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connection.py", line 445, in request
+    self.endheaders()
+  File "/usr/local/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/local/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/local/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connection.py", line 276, in connect
+    self.sock = self._new_conn()
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connection.py", line 213, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x7033de523460>: Failed to establish a new connection: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /generate_sql (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7033de523460>: Failed to establish a new connection: [Errno 111] Connection refused'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 55, in <module>
+    sql_response = requests.post(API_SQL,json={"question": pregunta_usuario, "domain": dominio})
+  File "/usr/local/lib/python3.10/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/local/lib/python3.10/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /generate_sql (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7033de523460>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-05-28 00:00:13,079 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/usr/local/lib/python3.10/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connectionpool.py", line 493, in _make_request
+    conn.request(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connection.py", line 445, in request
+    self.endheaders()
+  File "/usr/local/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/local/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/local/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connection.py", line 276, in connect
+    self.sock = self._new_conn()
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connection.py", line 213, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x7c29bcb53e80>: Failed to establish a new connection: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /generate_sql (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7c29bcb53e80>: Failed to establish a new connection: [Errno 111] Connection refused'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 55, in <module>
+    sql_response = requests.post(API_SQL,json={"question": pregunta_usuario, "domain": dominio})
+  File "/usr/local/lib/python3.10/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/local/lib/python3.10/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /generate_sql (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7c29bcb53e80>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-05-28 00:00:23,031 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/usr/local/lib/python3.10/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connectionpool.py", line 493, in _make_request
+    conn.request(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connection.py", line 445, in request
+    self.endheaders()
+  File "/usr/local/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/local/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/local/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connection.py", line 276, in connect
+    self.sock = self._new_conn()
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connection.py", line 213, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x7c29bcb53f40>: Failed to establish a new connection: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+  File "/usr/local/lib/python3.10/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /generate_sql (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7c29bcb53f40>: Failed to establish a new connection: [Errno 111] Connection refused'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 55, in <module>
+    sql_response = requests.post(API_SQL,json={"question": pregunta_usuario, "domain": dominio})
+  File "/usr/local/lib/python3.10/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/local/lib/python3.10/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /generate_sql (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7c29bcb53f40>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-05-28 00:03:31,117 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "/usr/local/lib/python3.10/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://agente_sql_backend:8000/generate_sql
+2025-05-28 00:04:16,995 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "/usr/local/lib/python3.10/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://agente_sql_backend:8000/generate_sql
+2025-05-28 15:30:14,377 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "/usr/local/lib/python3.10/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://agente_sql_backend:8000/generate_sql
+2025-05-28 15:33:52,809 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "/usr/local/lib/python3.10/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://agente_sql_backend:8000/generate_sql
+2025-05-28 15:34:55,935 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "/usr/local/lib/python3.10/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://agente_sql_backend:8000/generate_sql
+2025-05-28 15:34:58,735 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "/usr/local/lib/python3.10/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://agente_sql_backend:8000/generate_sql
+2025-05-28 15:38:22,457 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "/usr/local/lib/python3.10/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://agente_sql_backend:8000/generate_sql
+2025-05-28 15:49:56,578 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'could not translate host name "pybddwh" to address: Temporary failure in name resolution\n'}
+NoneType: None
+2025-05-29 22:00:22,480 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la función current_year()\nLINE 7:   EXTRACT(YEAR FROM fecha_registro) = CURRENT_YEAR()\n                                              ^\nHINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.\n'}
+NoneType: None
+2025-05-29 22:05:54,610 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'la columna «ft_tickets_ia.fecha_registro» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación\nLINE 2:   EXTRACT(YEAR FROM fecha_registro) AS anio,\n                            ^\n'}
+NoneType: None
+2025-05-29 22:07:23,340 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "/usr/local/lib/python3.10/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://agente_sql_backend:8000/generate_sql
+2025-05-29 22:08:53,986 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "/usr/local/lib/python3.10/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://agente_sql_backend:8000/generate_sql
+2025-05-29 22:13:52,875 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no se pueden anidar llamadas a funciones de agregación\nLINE 3:     AVG(COUNT(*)) FILTER(WHERE\n                ^\n'}
+NoneType: None
+2025-05-29 22:15:48,940 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'la columna «ft_tickets_ia.anio_registro» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación\nLINE 5:     *\n            ^\n'}
+NoneType: None
+2025-05-29 22:48:05,156 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no se pueden anidar llamadas a funciones de agregación\nLINE 3:     AVG(COUNT(*)) FILTER(WHERE\n                ^\n'}
+NoneType: None
+2025-05-29 23:06:39,034 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no se pueden anidar llamadas a funciones de agregación\nLINE 2:   AVG(COUNT(*)) AS promedio_tickets_por_dia\n              ^\n'}
+NoneType: None
+2025-05-29 23:07:43,739 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no se pueden anidar llamadas a funciones de agregación\nLINE 2:   AVG(COUNT(*)) AS promedio_tickets_por_dia\n              ^\n'}
+NoneType: None
+2025-05-29 23:08:15,961 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no se pueden anidar llamadas a funciones de agregación\nLINE 2:   AVG(COUNT(*)) AS promedio_tickets_por_dia\n              ^\n'}
+NoneType: None
+2025-05-29 23:12:13,722 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no se pueden anidar llamadas a funciones de agregación\nLINE 2:   AVG(COUNT(*)) AS promedio_tickets_por_dia\n              ^\n'}
+NoneType: None
+2025-05-29 23:42:12,343 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la columna «ranking»\nLINE 15:   ranking = 1\n           ^\n'}
+NoneType: None
+2025-05-30 19:30:31,175 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "/app/frontend/views/agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "/usr/local/lib/python3.10/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://agente_sql_backend:8000/generate_sql
+2025-05-30 19:35:47,395 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no se pueden anidar llamadas a funciones de agregación\nLINE 2:   AVG(COUNT(*))\n              ^\n'}
+NoneType: None
+2025-06-02 15:16:30,057 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «DAYS»\nLINE 6:     CURRENT_DATE - INTERVAL '30' DAYS\n                                         ^\n"}
+NoneType: None
+2025-06-02 15:37:22,600 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "no existe la columna «generated_date»\nLINE 5:   generated_date >= DATE_TRUNC('YEAR', CURRENT_DATE) - INTER...\n          ^\n"}
+NoneType: None
+2025-06-02 15:38:07,361 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la columna «estado»\nLINE 2:   estado\n          ^\n'}
+NoneType: None
+2025-06-02 15:40:55,977 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la columna «city»\nLINE 2:   city,\n          ^\n'}
+NoneType: None
+2025-06-03 10:16:52,720 - INFO - Payload: {'type': 'sql', 'question': '¿Cuántos tickets se han resuelto fuera del SLA este mes?', 'content': "SELECT COUNT(*) FROM ft_tickets_ia WHERE tiempo_solucion_total > tiempo_sla_servicio AND fecha_resolucion >= date_trunc('month', CURRENT_DATE);"}
+2025-06-03 10:18:58,245 - INFO - Payload: {'type': 'sql', 'question': '¿Cuántos tickets se han resuelto fuera del SLA este mes?', 'content': "SELECT COUNT(*) FROM ft_tickets_ia WHERE tiempo_solucion_total > tiempo_sla_servicio AND fecha_resolucion >= date_trunc('month', CURRENT_DATE);"}
+2025-06-03 10:23:02,954 - INFO - Payload: {'type': 'sql', 'question': '¿Cuántos tickets se han resuelto fuera del SLA este mes?', 'content': "SELECT COUNT(*) FROM ft_tickets_ia WHERE tiempo_solucion_total > tiempo_sla_servicio AND fecha_resolucion >= date_trunc('month', CURRENT_DATE);"}
+2025-06-03 10:27:32,940 - INFO - Payload: {'type': 'ddl', 'question': '¿Qué estructura tiene la tabla de tickets?', 'content': '-- Estructura simplificada de la vista materializada ft_tickets_ia\n-- Esta vista consolida datos de tickets, personal, centros y servicios\nCREATE MATERIALIZED VIEW ft_tickets_ia (\n    fecha_registro DATE,\n    anio_registro INTEGER,\n    mes_registro INTEGER,\n    fecha_cierre DATE,\n    estatus_ticket TEXT,\n    folio_ticket TEXT,\n    sistema TEXT,\n    motivo_ticket TEXT,\n    motivo_cierre_ticket TEXT,\n    servicio_cierre_ticket TEXT,\n    centro_trabajo TEXT,\n    ciudad TEXT,\n    empresa TEXT,\n    unidad_negocio TEXT,\n    personal_reporta TEXT,\n    colaborador_asignado TEXT,\n    departamento_colaborador_asignado TEXT,\n    area_colaborador_asignado TEXT,\n    servicio TEXT,\n    tiempo_solucion_total INTERVAL,\n    tiempo_sla_servicio INTERVAL\n);'}
+2025-06-03 10:28:05,690 - INFO - Payload: {'type': 'docs', 'question': '¿Qué significa que un ticket esté fuera del SLA?', 'content': 'Un ticket se considera fuera del SLA cuando el tiempo total de solución supera el tiempo asignado por el SLA del servicio. Esta métrica se calcula como: tiempo_solucion_total > tiempo_sla_servicio.'}
+2025-06-03 10:40:26,458 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-03 10:40:42,923 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-03 10:44:11,741 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-03 10:44:35,362 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la columna «created_at»\nLINE 5:   EXTRACT(MONTH FROM created_at) = 12 AND EXTRACT(YEAR FROM ...\n                             ^\n'}
+NoneType: None
+2025-06-03 11:02:03,807 - INFO - Payload: {'type': 'sql', 'question': '¿Cuántos tickets se han generado en el último mes del año 2025?', 'content': 'SELECT COUNT(*) FROM ft_tickets_ia WHERE EXTRACT(MONTH FROM fecha_registro) = 12 AND EXTRACT(YEAR FROM fecha_registro) = 2025;'}
+2025-06-03 11:02:27,556 - INFO - Payload: {'type': 'sql', 'question': '¿Cuántos tickets se generaron en el último mes registrado?', 'content': "SELECT COUNT(*) FROM ft_tickets_ia WHERE fecha_registro >= date_trunc('month', CURRENT_DATE - interval '1 month') AND fecha_registro < date_trunc('month', CURRENT_DATE);"}
+2025-06-03 11:06:44,633 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la columna «created_at»\nLINE 5:   EXTRACT(MONTH FROM created_at) = 12 AND EXTRACT(YEAR FROM ...\n                             ^\n'}
+NoneType: None
+2025-06-03 11:15:44,902 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la columna «created_at»\nLINE 5:   EXTRACT(MONTH FROM created_at) = 12 AND EXTRACT(YEAR FROM ...\n                             ^\n'}
+NoneType: None
+2025-06-03 11:25:15,549 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la columna «created_at»\nLINE 5:   EXTRACT(MONTH FROM created_at) = 12 AND EXTRACT(YEAR FROM ...\n                             ^\n'}
+NoneType: None
+2025-06-03 11:39:04,838 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la columna «created_at»\nLINE 5:   EXTRACT(MONTH FROM created_at) = 12 AND EXTRACT(YEAR FROM ...\n                             ^\n'}
+NoneType: None
+2025-06-03 12:41:56,171 - INFO - Payload: {'type': 'ddl', 'question': 'DDL de la tabla tickets(ft_tickets_ia)', 'content': '-- DDL de tabla tickets ( ft_tickets_ia )\nCREATE MATERIALIZED VIEW ft_tickets_ia (\n    fecha_registro DATE,\n    anio_registro INTEGER,\n    mes_registro INTEGER,\n    fecha_cierre DATE,\n    estatus_ticket TEXT,\n    folio_ticket TEXT,\n    sistema TEXT,\n    motivo_ticket TEXT,\n    motivo_cierre_ticket TEXT,\n    servicio_cierre_ticket TEXT,\n    centro_trabajo TEXT,\n    ciudad TEXT,\n    empresa TEXT,\n    unidad_negocio TEXT,\n    personal_reporta TEXT,\n    colaborador_asignado TEXT,\n    departamento_colaborador_asignado TEXT,\n    area_colaborador_asignado TEXT,\n    servicio TEXT,\n    tiempo_solucion_total INTERVAL,\n    tiempo_sla_servicio INTERVAL\n);\n'}
+2025-06-03 12:42:50,826 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la columna «created_at»\nLINE 5:   EXTRACT(YEAR FROM created_at) = 2025\n                            ^\n'}
+NoneType: None
+2025-06-03 15:40:33,116 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-03 15:43:09,884 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-03 15:47:02,111 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-03 15:55:26,234 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-03 16:05:03,350 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-03 16:18:44,349 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-03 16:21:42,834 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 56, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-03 17:22:42,597 - ERROR - Error en procesamiento principal
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 73, in <module>
+    st.text_area(data['sql'], language="sql")
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\streamlit\runtime\metrics_util.py", line 410, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: TextWidgetsMixin.text_area() got an unexpected keyword argument 'language'
+2025-06-03 17:33:53,186 - ERROR - ❌ Error al consultar agente SQL: 404 Client Error: Not Found for url: http://localhost:8000/generate_sql/generate_sql
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\chat.py", line 37, in <module>
+    response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 404 Client Error: Not Found for url: http://localhost:8000/generate_sql/generate_sql
+2025-06-03 17:35:14,029 - ERROR - ❌ Error al consultar agente SQL: 404 Client Error: Not Found for url: http://localhost:8000/generate_sql/generate_sql
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\chat.py", line 37, in <module>
+    response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 404 Client Error: Not Found for url: http://localhost:8000/generate_sql/generate_sql
+2025-06-04 11:52:53,927 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-04 11:54:57,720 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-04 11:57:21,725 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-04 12:13:17,603 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-04 12:19:12,567 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 12:20:09,824 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 12:20:43,508 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 12:20:47,141 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 12:20:52,897 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 12:22:02,544 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 12:25:21,785 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 12:25:49,418 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 12:26:27,607 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 12:26:40,288 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 12:27:22,760 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 12:32:52,891 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 12:34:01,431 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 13:03:03,761 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 13:03:24,959 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 13:03:34,837 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-04 13:03:34,889 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 13:04:29,094 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 13:39:18,771 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 13:45:44,431 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 13:45:58,610 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 13:46:05,546 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-04 13:46:05,600 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 13:46:36,583 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 15:16:55,552 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 15:22:27,095 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 15:25:49,089 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 15:26:39,560 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 15:28:11,343 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 15:29:30,096 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 15:30:07,830 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 15:34:32,294 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 15:35:54,837 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 15:36:50,549 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 15:56:34,523 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 15:57:39,304 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 16:00:07,604 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 16:01:12,620 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 16:05:42,722 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 16:07:10,508 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 16:09:01,326 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 16:12:14,760 - ERROR - Error al consultar el backend: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 59, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-04 16:13:43,936 - ERROR - Error al consultar el backend: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 59, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-04 16:22:13,920 - ERROR - Error al consultar el backend: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 59, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-04 16:26:40,214 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 16:28:07,709 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 16:28:17,467 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-04 16:28:17,520 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «MONTHS»\nLINE 7: ...>= DATE_TRUNC('QUARTER', CURRENT_DATE) - INTERVAL '3' MONTHS\n                                                                 ^\n"}
+NoneType: None
+2025-06-04 16:29:04,639 - ERROR - Error al consultar el backend: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 59, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-04 16:39:29,244 - ERROR - Error al consultar el backend: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 59, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-04 17:55:22,428 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-04 17:58:22,241 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-04 17:59:11,553 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-04 18:04:06,314 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 09:13:25,312 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la columna «cantidad_atenciones»\nLINE 7:     ROW_NUMBER() OVER (ORDER BY cantidad_atenciones DESC) AS...\n                                        ^\n'}
+NoneType: None
+2025-06-05 09:14:52,657 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la columna «cantidad_atenciones»\nLINE 7:     ROW_NUMBER() OVER (ORDER BY cantidad_atenciones DESC) AS...\n                                        ^\n'}
+NoneType: None
+2025-06-05 09:19:07,849 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'la columna «subquery.servicio» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación\nLINE 5:     servicio,\n            ^\n'}
+NoneType: None
+2025-06-05 09:20:38,592 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'la columna «subquery.servicio» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación\nLINE 5:     servicio,\n            ^\n'}
+NoneType: None
+2025-06-05 09:21:15,598 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'la columna «subquery.servicio» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación\nLINE 5:     servicio,\n            ^\n'}
+NoneType: None
+2025-06-05 09:22:25,562 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 09:24:36,426 - ERROR - Error al consultar el backend: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 59, in <module>
+    sql_response.raise_for_status()
+  File "C:\Users\drodriguez\nim-env\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/generate_sql
+2025-06-05 09:27:33,276 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «HOURS»\nLINE 9: ...erre IS NULL AND tiempo_solucion_total < INTERVAL '24' HOURS\n                                                                  ^\n"}
+NoneType: None
+2025-06-05 09:28:03,182 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «HOURS»\nLINE 9: ...erre IS NULL AND tiempo_solucion_total < INTERVAL '24' HOURS\n                                                                  ^\n"}
+NoneType: None
+2025-06-05 09:29:32,634 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «HOURS»\nLINE 9: ...erre IS NULL AND tiempo_solucion_total < INTERVAL '24' HOURS\n                                                                  ^\n"}
+NoneType: None
+2025-06-05 09:33:57,575 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «HOURS»\nLINE 9: ...erre IS NULL AND tiempo_solucion_total < INTERVAL '24' HOURS\n                                                                  ^\n"}
+NoneType: None
+2025-06-05 09:59:52,754 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 10:00:31,856 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «DAYS»\nLINE 10:     ) < INTERVAL '3' DAYS\n                              ^\n"}
+NoneType: None
+2025-06-05 10:01:26,543 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "no existe la función datediff(unknown, date, date)\nLINE 3:     CAST(SUM(CASE WHEN DATEDIFF('day', fecha_registro, FECHA...\n                               ^\nHINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.\n"}
+NoneType: None
+2025-06-05 10:02:18,993 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "no existe la función datediff(unknown, date, date)\nLINE 3:     CAST(SUM(CASE WHEN DATEDIFF('day', fecha_registro, FECHA...\n                               ^\nHINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.\n"}
+NoneType: None
+2025-06-05 10:02:26,022 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 10:02:26,074 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "no existe la función datediff(unknown, date, date)\nLINE 3:     CAST(SUM(CASE WHEN DATEDIFF('day', fecha_registro, FECHA...\n                               ^\nHINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.\n"}
+NoneType: None
+2025-06-05 10:02:52,097 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «DAYS»\nLINE 10:     ) < INTERVAL '3' DAYS\n                              ^\n"}
+NoneType: None
+2025-06-05 10:08:25,378 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «DAYS»\nLINE 10:     ) < INTERVAL '3' DAYS\n                              ^\n"}
+NoneType: None
+2025-06-05 10:09:34,943 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 10:24:05,921 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 10:25:30,169 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 10:27:06,802 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 10:28:34,385 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 10:33:24,616 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 11:10:36,090 - WARNING - ⚠️  La colección 'sql_agent_questions' ya existe. Omitiendo...
+2025-06-05 11:10:36,221 - WARNING - ⚠️  La colección 'sql_ddl' ya existe. Omitiendo...
+2025-06-05 11:10:36,308 - WARNING - ⚠️  La colección 'sql_docs' ya existe. Omitiendo...
+2025-06-05 11:11:16,228 - WARNING - ⚠️  La colección 'sql_agent_questions' ya existe. Omitiendo...
+2025-06-05 11:11:16,291 - WARNING - ⚠️  La colección 'sql_ddl' ya existe. Omitiendo...
+2025-06-05 11:11:16,476 - WARNING - ⚠️  La colección 'sql_docs' ya existe. Omitiendo...
+2025-06-05 11:11:48,600 - WARNING - ⚠️  La colección 'sql_agent_questions' ya existe. Omitiendo...
+2025-06-05 11:11:48,608 - WARNING - ⚠️  La colección 'sql_ddl' ya existe. Omitiendo...
+2025-06-05 11:11:48,661 - WARNING - ⚠️  La colección 'sql_docs' ya existe. Omitiendo...
+2025-06-05 11:21:33,874 - WARNING - ⚠️  La colección 'sql_agent_questions' ya existe. Omitiendo...
+2025-06-05 11:21:33,954 - WARNING - ⚠️  La colección 'sql_ddl' ya existe. Omitiendo...
+2025-06-05 11:21:34,013 - WARNING - ⚠️  La colección 'sql_docs' ya existe. Omitiendo...
+2025-06-05 11:24:10,842 - WARNING - ⚠️  La colección 'sql_agent_questions' ya existe. Omitiendo...
+2025-06-05 11:24:10,949 - WARNING - ⚠️  La colección 'sql_ddl' ya existe. Omitiendo...
+2025-06-05 11:24:11,540 - WARNING - ⚠️  La colección 'sql_docs' ya existe. Omitiendo...
+2025-06-05 11:36:30,026 - INFO - Payload: {'type': 'docs', 'question': 'Tiempo total de solución vs SLA', 'content': 'Un ticket se considera fuera del SLA cuando tiempo_solucion_total > tiempo_sla_servicio. Ambos campos están en segundos.'}
+2025-06-05 11:37:17,627 - INFO - Payload: {'type': 'docs', 'question': 'Estatus de tickets', 'content': "El campo estatus_ticket puede tomar valores como 'ATENDIDO', 'EN PROCESO', etc. Filtra por 'ATENDIDO' para tickets cerrados."}
+2025-06-05 11:39:25,508 - INFO - Payload: {'type': 'docs', 'question': 'Búsquedas o filtros relacionados a fines de semana', 'content': 'Utiliza EXTRACT(DOW FROM <CAMPO_FECHA>) para obtener el día de la semana. Los fines de semana corresponden a: 0: Domingo, 6: Sábado'}
+2025-06-05 11:41:49,412 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 11:45:45,644 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 11:48:48,976 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 12:39:38,030 - INFO - Payload: {'type': 'sql', 'question': '¿Podrías decirme cuántos tickets abiertos hay en cada departamento y para cada uno de ellos obtener la fecha más antigua?', 'content': "select\n departamento_colaborador_asignado as departamento,\nCOUNT(*) as tickets_abiertos,\nMIN(fecha_registro) as fecha_antigua\nfrom ft_tickets_ia\nwhere fecha_cierre is null and estatus_ticket <> 'CANCELADO'\ngroup by departamento_colaborador_asignado;"}
+2025-06-05 12:50:44,229 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no se permiten funciones de ventana deslizante en WHERE\nLINE 27:   ROW_NUMBER() OVER (ORDER BY promedio_tiempo_atencion ASC) ...\n           ^\n'}
+NoneType: None
+2025-06-05 12:51:22,787 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no se permiten funciones de ventana deslizante en WHERE\nLINE 27:   ROW_NUMBER() OVER (ORDER BY promedio_tiempo_atencion ASC) ...\n           ^\n'}
+NoneType: None
+2025-06-05 12:52:52,594 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no se permiten funciones de ventana deslizante en WHERE\nLINE 27:   ROW_NUMBER() OVER (ORDER BY promedio_tiempo_atencion ASC) ...\n           ^\n'}
+NoneType: None
+2025-06-05 15:07:04,364 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 15:08:46,996 - INFO - Payload: {'type': 'docs', 'question': 'Tickets fuera de tiempo', 'content': 'Se consideran tickets fuera de tiempo aquellos donde el tiempo de SLA es menor al tiempo de solución total sin importar el estatus del ticket. ```where tiempo_solucion_total > tiempo_sla_servicio```'}
+2025-06-05 15:09:37,271 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «DAYS»\nLINE 15:     tiempo_atencion > INTERVAL '3' DAYS\n                                            ^\n"}
+NoneType: None
+2025-06-05 15:15:35,174 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «DAYS»\nLINE 15:     tiempo_atencion > INTERVAL '3' DAYS\n                                            ^\n"}
+NoneType: None
+2025-06-05 15:16:42,639 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «DAYS»\nLINE 15:     tiempo_atencion > INTERVAL '3' DAYS\n                                            ^\n"}
+NoneType: None
+2025-06-05 15:17:04,393 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «DAYS»\nLINE 15:     tiempo_atencion > INTERVAL '3' DAYS\n                                            ^\n"}
+NoneType: None
+2025-06-05 15:17:56,009 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «DAYS»\nLINE 15:     tiempo_atencion > INTERVAL '3' DAYS\n                                            ^\n"}
+NoneType: None
+2025-06-05 15:29:25,551 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 15:29:25,605 - ERROR - ❌ Error al ejecutar el SQL
+{'error': "error de sintaxis en o cerca de «DAYS»\nLINE 15:     tiempo_atencion > INTERVAL '3' DAYS\n                                            ^\n"}
+NoneType: None
+2025-06-05 15:29:55,245 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la función pg_catalog.extract(unknown, integer)\nLINE 4:     EXTRACT(EPOCH FROM (\n            ^\nHINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.\n'}
+NoneType: None
+2025-06-05 15:30:43,331 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la función pg_catalog.extract(unknown, integer)\nLINE 4:     EXTRACT(EPOCH FROM (\n            ^\nHINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.\n'}
+NoneType: None
+2025-06-05 15:31:29,530 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la función pg_catalog.extract(unknown, integer)\nLINE 4:     EXTRACT(EPOCH FROM (\n            ^\nHINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.\n'}
+NoneType: None
+2025-06-05 15:36:37,236 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 15:38:40,624 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-05 15:59:29,253 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'la referencia a la columna «departamento» es ambigua\nLINE 21:   departamento,\n           ^\n'}
+NoneType: None
+2025-06-05 16:00:39,842 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'la referencia a la columna «departamento» es ambigua\nLINE 21:   departamento,\n           ^\n'}
+NoneType: None
+2025-06-06 13:27:12,349 - INFO - Payload: {'type': 'docs', 'question': 'Tickets fuera de tiempo o estatus de atención del SLA', 'content': "Para identificar que un ticket está fuera de tiempo se hace uso del campo `estatus_atencion` el cual puede tener los valores 'FUERA DE TIEMPO', 'POR VENCER' y 'TIEMPO'.\n\n'FUERA DE TIEMPO': es cuando el SLA actual ya se ha vencido por completo.\n'POR VENCER': refiere a que se ha consumido un 65% del tiempo del SLA.\n'TIEMPO': hace referencia a que el SLA aún está por debajo del 65% del tiempo del SLA."}
+2025-06-06 16:03:02,937 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-06 16:12:01,777 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-06 16:44:26,504 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'la referencia a la columna «unidad_negocio» es ambigua\nLINE 23:   unidad_negocio,\n           ^\n'}
+NoneType: None
+2025-06-06 16:46:45,748 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'falta una entrada para la tabla «tickets_atendidos» en la cláusula FROM\nLINE 20:     tickets_atendidos.tickets_atendidos / tickets_atendidos_...\n             ^\n'}
+NoneType: None
+2025-06-06 16:48:24,878 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'falta una entrada para la tabla «tickets_atendidos» en la cláusula FROM\nLINE 20:     tickets_atendidos.tickets_atendidos / tickets_atendidos_...\n             ^\n'}
+NoneType: None
+2025-06-06 16:48:53,155 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-06 16:48:53,208 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'falta una entrada para la tabla «tickets_atendidos» en la cláusula FROM\nLINE 20:     tickets_atendidos.tickets_atendidos / tickets_atendidos_...\n             ^\n'}
+NoneType: None
+2025-06-06 16:51:51,220 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-06 17:20:55,120 - ERROR - ❌ Fallo al ejecutar el SQL.
+'sql'
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 115, in <module>
+    data['sql'] = response.json()["sql"]
+                  ~~~~~~~~~~~~~~~^^^^^^^
+KeyError: 'sql'
+2025-06-06 17:22:16,541 - ERROR - ❌ Fallo al ejecutar el SQL.
+'sql'
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 114, in <module>
+    data['sql'] = response.json()["sql"]
+                  ~~~~~~~~~~~~~~~^^^^^^^
+KeyError: 'sql'
+2025-06-06 17:23:36,636 - ERROR - ❌ Fallo al ejecutar el SQL.
+'sql'
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 100, in <module>
+    data['sql'] = response.json()["sql"]
+                  ~~~~~~~~~~~~~~~^^^^^^^
+KeyError: 'sql'
+2025-06-06 17:23:49,266 - ERROR - ❌ Fallo al ejecutar el SQL.
+'sql'
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 100, in <module>
+    data['sql'] = response.json()["sql"]
+                  ~~~~~~~~~~~~~~~^^^^^^^
+KeyError: 'sql'
+2025-06-06 17:27:27,308 - ERROR - ❌ Fallo al ejecutar el SQL.
+'sql'
+Traceback (most recent call last):
+  File "C:\Users\drodriguez\Documents\03_IA\agentes_sql_ia\frontend\views\agente_sql.py", line 102, in <module>
+    data['sql'] = response.json()["sql"]
+                  ~~~~~~~~~~~~~~~^^^^^^^
+KeyError: 'sql'
+2025-06-06 17:37:09,339 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la relación «ft_tickets_ias»\nLINE 3: FROM ft_tickets_ias\n             ^\n'}
+NoneType: None
+2025-06-06 17:37:30,750 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la relación «ft_tickets_ias»\nLINE 3: FROM ft_tickets_ias\n             ^\n'}
+NoneType: None
+2025-06-06 17:38:55,963 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la relación «ft_tickets_ias»\nLINE 3: FROM ft_tickets_ias\n             ^\n'}
+NoneType: None
+2025-06-06 17:39:48,430 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la relación «ft_tickets_ias»\nLINE 3: FROM ft_tickets_ias\n             ^\n'}
+NoneType: None
+2025-06-06 17:41:01,098 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la relación «ft_tickets_ias»\nLINE 3: FROM ft_tickets_ias\n             ^\n'}
+NoneType: None
+2025-06-06 17:41:21,270 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la relación «ft_tickets_ias»\nLINE 3: FROM ft_tickets_ias\n             ^\n'}
+NoneType: None
+2025-06-06 17:43:37,379 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la relación «ft_tickets_ias»\nLINE 3: FROM ft_tickets_ias\n             ^\n'}
+NoneType: None
+2025-06-06 17:43:39,903 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'no existe la relación «ft_tickets_ias»\nLINE 3: FROM ft_tickets_ias\n             ^\n'}
+NoneType: None
+2025-06-07 11:32:29,561 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-07 11:38:43,634 - INFO - Payload: {'type': 'docs', 'question': 'Estatus de tickets o estados de tickets', 'content': "El campo `estatus_ticket` puede tomar valores como 'ATENDIDO', 'EN PROCESO', 'CANCELADO', etc.\n - Filtra por 'ATENDIDO' para tickets cerrados o atendidos.\n - Filtra por 'EN PROCESO' para tickets que siguen abiertos o en proceso."}
+2025-06-07 11:40:44,704 - INFO - Payload: {'type': 'docs', 'question': 'Tickets fuera de tiempo o estatus de atención del SLA', 'content': "Para identificar que un ticket está fuera de tiempo se hace uso del campo `estatus_atencion` el cual puede tener los valores 'FUERA DE TIEMPO', 'POR VENCER' y 'TIEMPO'. Este campo debe omitirse en la combinación con el campo `estatus_ticket`='ATENDIDO'\n\n - 'FUERA DE TIEMPO': es cuando el SLA actual ya se ha vencido por completo.\n - 'POR VENCER': refiere a que se ha consumido un 65% del tiempo del SLA.\n - 'TIEMPO': hace referencia a que el SLA aún está por debajo del 65% del tiempo del SLA."}
+2025-06-07 12:00:19,662 - INFO - Payload: {'type': 'docs', 'question': 'Tickets fuera de tiempo o estatus de atención del SLA', 'content': "Para identificar que un ticket está fuera de tiempo se hace uso del campo `estatus_atencion` el cual puede tener los valores 'FUERA DE TIEMPO', 'POR VENCER' y 'TIEMPO'. \n\n**Este campo se combina estrictamente con el valor del campo`estatus_ticket = 'EN PROCESO'`**\n\n - **'FUERA DE TIEMPO'**: es cuando el SLA actual ya se ha vencido por completo.\n - **'POR VENCER'**: refiere a que se ha consumido un 65% del tiempo del SLA.\n - **'TIEMPO'**: hace referencia a que el SLA aún está por debajo del 65% del tiempo del SLA."}
+2025-06-07 12:04:00,675 - INFO - Payload: {'type': 'sql', 'question': 'Tickets abiertos', 'content': "Considera como tickets abiertos aquellos `estatus_ticket <> 'CANCELADO' and fecha_cierre IS NULL` para este caso **omite** un filtrado por el campo `estatus_atencion` ya que este campo solo aplica para tciekts **en proceso** (`estatus_ticket = 'EN PROCESO'`)"}
+2025-06-07 12:04:54,601 - INFO - Payload: {'type': 'docs', 'question': 'Tickets abiertos', 'content': "Considera como tickets abiertos aquellos `estatus_ticket <> 'CANCELADO' and fecha_cierre IS NULL` para este caso **omite** un filtrado por el campo `estatus_atencion` ya que este campo solo aplica para tciekts **en proceso** (`estatus_ticket = 'EN PROCESO'`)"}
+2025-06-07 13:51:13,631 - INFO - Payload: {'type': 'docs', 'question': '¿Cómo identificar si un ticket en proceso está fuera del SLA usando el campo estatus_atencion?', 'content': "Para identificar que un ticket está fuera de tiempo se hace uso del campo `estatus_atencion` el cual puede tener los valores 'FUERA DE TIEMPO', 'POR VENCER' y 'TIEMPO'.\n\n**Este campo se combina estrictamente con el valor del campo`estatus_ticket = 'EN PROCESO'`**\n\n - **'FUERA DE TIEMPO'**: es cuando el SLA actual ya se ha vencido por completo.\n - **'POR VENCER'**: refiere a que se ha consumido un 65% del tiempo del SLA.\n - **'TIEMPO'**: hace referencia a que el SLA aún está por debajo del 65% del tiempo del SLA."}
+2025-06-07 13:53:48,187 - ERROR - ✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.
+NoneType: None
+2025-06-07 13:58:43,494 - INFO - Payload: {'type': 'docs', 'question': '¿Cómo saber si un ticket está abierto actualmente?', 'content': "Se consideran como tickets abiertos aquellos que cumplen con la condición: `estatus_ticket <> 'CANCELADO' and fecha_cierre IS NULL`, para este caso se **omite** el filtrado por el campo `estatus_atencion` ya que este campo solo aplica para tickets **en proceso** (`estatus_ticket = 'EN PROCESO'`)"}
+2025-06-09 10:03:42,785 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'el operador no existe: text / double precision\nLINE 6:     AVG(tiempo_atencion / tiempo_sla_servicio * 100) AS porc...\n                                ^\nHINT:  Ningún operador coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.\n'}
+NoneType: None
+2025-06-09 11:20:17,824 - ERROR - ❌ Error al ejecutar el SQL
+{'error': 'el operador no existe: text / double precision\nLINE 6:     AVG(tiempo_atencion / tiempo_sla_servicio * 100) AS porc...\n                                ^\nHINT:  Ningún operador coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.\n'}
+NoneType: None

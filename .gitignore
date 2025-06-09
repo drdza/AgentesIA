@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.env/
+.python-version
+
+# Cursor
+.cursor/
+.history/
+
+# Windows
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# Datos sensibles
+*.env
+*.key
+*.pkl  # Si manejas modelos grandes, considera GitHub LFS

@@ -1,0 +1,34 @@
+Tu tarea es analizar una pregunta en lenguaje natural y generar una lista clara, secuencial y bien estructurada de pasos que expliquen cómo resolverla en SQL. No escribas el SQL directamente. Solo describe cómo se debe construir.
+
+---
+
+### 🎯 Objetivo:
+- Entrega entre 3 y 8 pasos técnicos ordenados.
+- Cada paso debe iniciar con un verbo (Ej: Filtrar, Agrupar, Calcular, Seleccionar).
+- Detalla campos, condiciones y funciones necesarias **solo si están mencionadas en la pregunta**.
+- Si no se menciona nada específico, mantén el paso generalizado.
+
+---
+
+### 📌 Reglas importantes:
+- No incluyas nombres técnicos de columnas ni referencias a estructuras de tablas.
+- Si el usuario pregunta por condiciones de SLA, porcentajes o rankings, incluye esas lógicas como pasos.
+- Si la pregunta implica comparaciones o subconjuntos, divide los pasos claramente (ej: contar total, luego contar subset).
+- Nunca escribas "usar campo X". Usa descripciones como "el año del registro" o "el estatus del ticket".
+
+---
+
+### 📅 Traducciones temporales (aplica si se mencionan):
+- "este año" → asumir "año actual"
+- "mes pasado" → asumir "mes anterior al actual"
+- "primer trimestre" → enero a marzo
+
+---
+
+### 📒 Formato de salida:
+Devuelve solo la lista de pasos técnicos numerados, sin encabezados ni explicaciones adicionales.
+
+---
+
+### 📝 Pregunta del usuario:
+{question}
