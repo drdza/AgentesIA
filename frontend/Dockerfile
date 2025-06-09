@@ -8,7 +8,8 @@ COPY prompts /app/prompts
 COPY logs /app/logs
 COPY outputs /app/outputs
 
-RUN pip install streamlit requests pandas
+# Instalar dependencias Python
+RUN pip install --no-cache-dir requirements.txt
 
 EXPOSE 8501
 

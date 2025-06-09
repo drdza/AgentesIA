@@ -1,0 +1,10 @@
+    fastapi
+    uvicorn
+    pydantic
+    sqlglot
+    openai
+    psycopg2-binary
+    speechrecognition
+    pydub
+    requests 
+    python-multipart

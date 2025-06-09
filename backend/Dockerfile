@@ -2,13 +2,13 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Instalar ffmpeg + librer�as necesarias
+# Instalación de ibrerías necesarias. Se integra la librería ffmpeg para desarrollar una solución utilizando 'Voz'
 RUN apt-get update && apt-get install -y \
     ffmpeg \
     libsndfile1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar c�digo fuente
+# Copiar código fuente
 COPY backend /app/backend
 COPY shared /app/shared
 COPY prompts /app/prompts
@@ -19,17 +19,8 @@ COPY outputs /app/outputs
 ENV PYTHONPATH="/app/backend"
 
 # Instalar dependencias Python
-RUN pip install --no-cache-dir \
-    fastapi \
-    uvicorn \
-    pydantic \
-    sqlglot \
-    openai \
-    psycopg2-binary \
-    speechrecognition \
-    pydub \
-    requests \
-    python-multipart
+RUN pip install --no-cache-dir requirements.txt
 
+EXPOSE 8000
 
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
