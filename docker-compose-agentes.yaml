@@ -1,0 +1,37 @@
+#version: '3.8'
+
+services:
+
+  agente_sql_backend:
+    container_name: agente_sql_backend
+    build:
+      context: ./agentes_sql_ia
+      dockerfile: backend/Dockerfile
+    image: ia-bot_agentes_sql_backend:latest
+    ports:
+      - "8010:8000"
+    volumes:
+      - ./agentes_sql_ia/backend:/app/backend
+      - ./agentes_sql_ia/shared:/app/shared
+      - ./agentes_sql_ia/prompts:/app/prompts
+      - ./agentes_sql_ia/logs:/app/logs
+      - ./agentes_sql_ia/outputs:/app/outputs
+    depends_on:
+      - llm-context-inference
+
+  agente_sql_frontend:
+    container_name: agente_sql_frontend
+    build:
+      context: ./agentes_sql_ia
+      dockerfile: frontend/Dockerfile
+    image: ia-bot_agentes_sql_frontend:latest
+    ports:
+      - "8510:8501"
+    volumes:
+      - ./agentes_sql_ia/frontend:/app/frontend
+      - ./agentes_sql_ia/shared:/app/shared
+      - ./agentes_sql_ia/prompts:/app/prompts
+      - ./agentes_sql_ia/logs:/app/logs
+      - ./agentes_sql_ia/outputs:/app/outputs
+    depends_on:
+      - agente_sql_backend
