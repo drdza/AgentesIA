@@ -6,14 +6,21 @@ import os
 import requests
 from fastapi import FastAPI,  HTTPException, Request, UploadFile, File
 from pydantic import BaseModel
+from fastapi.responses import JSONResponse
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from agent.sql_agent import handle_user_question
-from agent.rag_agent import generate_embedding
+from agent.rag_agent import generate_embedding, save_collection
 from shared.utils import init_config, generate_request_id, log_to_file, log_event, load_config
 from core.query_validator import validate_sql_query
 from core.query_executor import execute_sql
 from core.init_collections import init_milvus_collections
+from core.exceptions import (
+    InvalidCollectionTypeError,
+    EmbeddingServiceError,
+    SQLExecutionError,
+    SQLValidationError
+)
 
 init_config()
 
@@ -104,26 +111,17 @@ async def generate_sql(request: SQLRequest, http_request: Request):
         )        
         raise HTTPException(status_code=500, detail=str(e))
 
-from fastapi.responses import JSONResponse
-
 @app.post("/execute_sql")
 async def try_execute_sql(payload: SQLExecute):
     try:
         is_valid, _, msg = validate_sql_query(payload.sql)
         if not is_valid:
-            return JSONResponse(
-                status_code=400,
-                content={"error": "SQL inválido", "details": msg}
-            )
+            raise SQLValidationError(msg)
         
         result, duration = execute_sql(payload.sql, domain="tickets")
+        
         if "error" in result:
-            return {
-                "success": False,
-                "result": result,
-                "duration": duration,
-                "message": msg
-            }
+            raise SQLExecutionError(result["error"])
                 
         return {
             "success": True,
@@ -132,46 +130,61 @@ async def try_execute_sql(payload: SQLExecute):
             "message": msg
         }
 
+    except SQLValidationError as e:
+        return JSONResponse(
+            status_code=400,
+            content={
+                "success": False,
+                "error": str(e),
+                "message": "Error de validación en la consulta SQL"
+            }
+        )
+    
+    except SQLExecutionError as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "error": str(e),
+                "message": "Fallo en la ejecución de la consulta SQL"
+            }
+    )
+
     except Exception as e:
         return JSONResponse(
             status_code=500,
             content={
                 "success": False,
                 "error": str(e),
-                "message": "Ocurrió un error durante la ejecución"
+                "message": "Ocurrió un error inesperado durante la ejecución"
             }
-        )
+        )    
+    
 
 
-@app.post("/train")
-async def train(payload: TrainingInput):
-    try:
+@app.post("/training")
+async def training(payload: TrainingInput):
+        try:
+            embedding = generate_embedding(payload.question)
+            collections = CONFIG_JSON["milvus_endpoint"]["collections"]
 
-        # Generador de embeddings
-        embedding = generate_embedding(payload.question)        
-        print(f"🔎 Embedding Training (primeras 5 dimensiones): {embedding[:5]}")
-
-        # Conectar a Milvus
-        connections.connect(alias="default", host=MILVUS_HOST, port=MILVUS_PORT)
-        collections = CONFIG_JSON["milvus_endpoint"]["collections"]
-
-        if payload.type == "sql":
-            collection = Collection(collections["questions"])
+            match payload.type:
+                case "sql":
+                    collection_name = collections["questions"]
+                case "ddl":
+                    collection_name = collections["ddl"]
+                case "docs":
+                    collection_name = collections["docs"]
+                case _:
+                    raise HTTPException(status_code=400, detail="Tipo de colección no válido")
+    
             fields = [[payload.question], [payload.content], [embedding]]
-        elif payload.type == "ddl":
-            collection = Collection(collections["ddl"])
-            fields = [[payload.question], [payload.content], [embedding]]
-        elif payload.type == "docs":
-            collection = Collection(collections["docs"])
-            fields = [[payload.question], [payload.content], [embedding]]
-        else:
-            raise HTTPException(status_code=400, detail="Tipo inválido. Usa 'sql', 'ddl' o 'docs'.")
-
-        collection.load()
-        collection.insert(fields)
-        collection.flush()
-
-        return {"status": "ok", "message": "Ejemplo entrenado correctamente."}
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+            result = save_collection(collection_name=collection_name, fields=fields)
+            return result
+        
+        except EmbeddingServiceError as e:
+            raise HTTPException(status_code=502, detail=str(e))
+        except InvalidCollectionTypeError as e:
+            raise HTTPException(status_code=400, detail=str(e))
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")

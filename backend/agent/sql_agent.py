@@ -7,6 +7,7 @@ from shared.utils import load_prompt_template, safe_extract_sql, log_event
 from core.llm import call_model
 from core.query_validator import validate_sql_query
 from core.query_executor import execute_sql
+from core.exceptions import ReformulationError, RagContextError, SQLAgentPipelineError, FlowGenerationError
 from agent.rag_agent import get_context_by_type 
 
 
@@ -40,28 +41,30 @@ def handle_user_question(question: str, domain: str):
         raise ValueError(f"❌ No se encontró prompt para el dominio: {domain}")
 
     # Paso 1: Reformulación (opcionalmente usar otro modelo por dominio)
-    logger.info("💭 Generando reformulación")
-    enhancer_prompt = load_prompt_template(domain, "question_enhancer.txt")
-    formatted_enhancer_prompt = enhancer_prompt.format(question=question.strip())
-    enhanced_question, duration, _ = call_model("gemma", formatted_enhancer_prompt)
-    total_time += duration
-    logger.info(f"💭 Reformulación completa ( {duration:.2f} seg. )")
-
-    # Paso 2: Búsqueda de contexto relacionada a la pregunta reformulada del usuario
-    logger.info("📚 Buscando contexto en Milvus...")
     try:
-        rag_data = get_context_by_type(enhanced_question, top_k=3)
-        # logger.info(f"RAG Data:\n{rag_data}")
+        logger.info("💭 Generando reformulación")
+        enhancer_prompt = load_prompt_template(domain, "question_enhancer.txt")
+        formatted_enhancer_prompt = enhancer_prompt.format(question=question.strip())
+        enhanced_question, duration, _ = call_model("gemma", formatted_enhancer_prompt)
+        total_time += duration
+        logger.info(f"💭 Reformulación completa ( {duration:.2f} seg. )")
     except Exception as e:
+        logger.error(f"❌ Error al reformular la pregunta. Detalle: {str(e)}")
+        raise ReformulationError (f"Error al reformular la pregunta: {str(e)}")
+    
+    # Paso 2: Búsqueda de contexto relacionada a la pregunta reformulada del usuario
+    try:
+        logger.info("📚 Buscando contexto en Milvus...")
+        rag_data = get_context_by_type(enhanced_question, top_k=3)        
+    except Exception as e:        
         rag_data = {"sql": [], "ddl": [], "docs": []}
-        logger.error(f"⚠️ Fallo en búsqueda en Milvus: {e}")
+        logger.error(f"⚠️ Fallo en búsqueda en Milvus: {str(e)}")
+        raise RagContextError(f"Fallo al recuperar contexto: {str(e)}")
 
-    if not rag_data['sql']:
-        # Paso 2.1: Generación del flujo técnico (si aplica al dominio)
-        logger.warning("⚠️ No se encontró contexto útil, se incluirá un flujo técnico.")  
-        logger.info("🔀 Generando flujo técnico...")
-
+    if not rag_data['sql']:        
+        logger.warning("⚠️ No se encontró contexto útil, se incluirá un flujo técnico.")          
         try:
+            logger.info("🔀 Generando flujo técnico...")
             flow_prompt_template = load_prompt_template(domain, "flow_generator_rag.txt")
             formatted_flow_prompt = flow_prompt_template.format(question=enhanced_question.strip())
             flow_text, duration, _ = call_model("mistral", formatted_flow_prompt)
@@ -69,6 +72,8 @@ def handle_user_question(question: str, domain: str):
             logger.info(f"🔀 Flujo técnico completo ( {duration:.2f} seg. )")
         except FileNotFoundError:
             logger.warning("🔀 No se encontró prompt para flujo técnico.")
+        except Exception as e:
+            raise FlowGenerationError(f"Fallo al generar flujo técnico: {str(e)}")
     
     logger.info("📝 Generando prompt para SQL")
     rag_parts = []    
@@ -90,25 +95,26 @@ def handle_user_question(question: str, domain: str):
         flow=flow_text.strip(),
         context=rag_context.strip(),
     )
-
-    # logger.info(f"📑 Prompt Final:\n{formatted_sql_prompt}")
-
-    logger.info("💡 Generando SQL con IA...")
-    raw_sql, duration, _ = call_model("mistral", formatted_sql_prompt)
-    total_time += duration
-    logger.info(f"💡 SQL generado ( {duration:.2f} seg. )")
-
-    cleaned_sql = safe_extract_sql(raw_sql)    
-    is_valid, sql, msg = validate_sql_query(cleaned_sql)
-    if is_valid:        
-        # Paso 4: Ejecutar
-        logger.info("⚡ Ejecutando SQL...")
-        result, duration = execute_sql(sql, domain=domain)     
-        return_type = "success" if "error" not in result  else "fails"
+    
+    try:
+        logger.info("💡 Generando SQL con IA...")
+        raw_sql, duration, _ = call_model("mistral", formatted_sql_prompt)
         total_time += duration
-        logger.info(f"⚡ SQL ejecutado ( {duration:.2f} seg. )")
-    else:
-        logger.error(f"⚡ SQL inválido: {msg}")
+        logger.info(f"💡 SQL generado ( {duration:.2f} seg. )")
+
+        cleaned_sql = safe_extract_sql(raw_sql)    
+        is_valid, sql, msg = validate_sql_query(cleaned_sql)
+        if is_valid:        
+            # Paso 4: Ejecutar
+            logger.info("⚡ Ejecutando SQL...")
+            result, duration = execute_sql(sql, domain=domain)     
+            return_type = "success" if "error" not in result  else "fails"
+            total_time += duration
+            logger.info(f"⚡ SQL ejecutado ( {duration:.2f} seg. )")
+        else:
+            logger.error(f"⚡ SQL inválido: {msg}")
+    except Exception as e:
+        raise SQLAgentPipelineError(f"Fallo al generar SQL: {str(e)}")
 
     logger.info(f"🧠 Tiempo total IA: {total_time:.2f} seg.")    
     return sql, result, flow_text, enhanced_question, total_time, return_type, rag_context

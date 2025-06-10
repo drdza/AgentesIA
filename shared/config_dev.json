@@ -14,7 +14,7 @@
     "api_endpoints": {
       "generate_sql": "/generate_sql",
       "execute_sql": "/execute_sql",
-      "training": "/train"
+      "training": "/training"
     },
     "milvus_endpoint": {
       "host": "appiaagent",

@@ -95,21 +95,37 @@ if "last_response" in st.session_state:
                 if st.button("🐘", help="Ejecutar SQL", use_container_width=True):
                     payload ={"sql":edited_sql}
                     try:
-                        response = requests.post(API_SQL_EXECUTION, json=payload)
-                        response.raise_for_status()                        
-                        new_data = response.json()
-                        lock_to_save = not new_data['success']
-                        if new_data["success"]:                            
-                            data['result'] = new_data["result"]
-                            data['sql'] = edited_sql
-                            st.session_state["last_response"] = data
+                        response = requests.post(API_SQL_EXECUTION, json=payload)        
+                        
+                        if response.status_code == 400:
+                            st.warning("⚠️ Consulta SQL inválida. Revisa la sintaxis o los campos.")
+                            lock_to_save = True
+
+                        elif response.status_code == 500:
+                            st.error("❌ Error interno del agente al ejecutar la consulta.")
+                            lock_to_save = True
+                        
                         else:
-                            sql_text = st.toast("No pudimos procesar tu SQL.", icon='⚠️')
-                            time.sleep(3)
-                            sql_text.toast(f"{new_data['result']}")
+                            response.raise_for_status()
+                            new_data = response.json()
+                            lock_to_save = not new_data['success']
+                        
+                            if new_data["success"]:                            
+                                data['result'] = new_data["result"]
+                                data['sql'] = edited_sql
+                                st.session_state["last_response"] = data
+                                st.toast("✅ Consulta ejecutada correctamente.")
+                            
+                            else:
+                                msg = new_data.get("message", "No se pudo procesar la consulta.")
+                                err = new_data.get("result", "")
+                                st.toast(f"⚠️ {msg}")
+                                st.toast(f"{err}")
+                                logger.warning(f"SQL no ejecutado correctamente: {err}")
                     except Exception as e:
                         lock_to_save = True
-                        logger.error(f"❌ Fallo al ejecutar el SQL.\n{e}", exc_info=True)                    
+                        logger.error(f"❌ Fallo al ejecutar el SQL.\n{e}", exc_info=True)
+                        st.error("❌ Error inesperado al contactar al servidor.")                    
             with cols[1]:
                 if st.button("💪", help='Entrenar el modelo', use_container_width=True, disabled=lock_to_save):
                     payload = {
