@@ -1,39 +1,52 @@
 # backend/core/exceptions.py
 
-# backend/core/exceptions.py
+class AgentException(Exception):
+    def __init__(self, message: str, status_code: int = 500):
+        self.message = message
+        self.status_code = status_code
+        super().__init__(message)
 
-class EmbeddingServiceError(Exception):
-    """Error al obtener embeddings desde el microservicio."""
-    pass
 
-class MilvusConnectionError(Exception):
-    """Error al conectar o consultar en Milvus."""
-    pass
+class InferenceServiceError(AgentException):
+    def __init__(self, message="Error en el servicio de inferencia"):
+        super().__init__(message, status_code=502)
 
-class InvalidCollectionTypeError(Exception):
-    """El tipo de colección recibido no está soportado."""
-    pass
 
-class SQLValidationError(Exception):
-    """Error de validación en la consulta SQL."""
-    pass
+class EmbeddingGenerationError(AgentException):
+    def __init__(self, message="Fallo al generar embeddings"):
+        super().__init__(message, status_code=500)
 
-class SQLExecutionError(Exception):
-    """Fallo durante la ejecución de SQL."""
-    pass
 
-class SQLAgentPipelineError(Exception):
-    """Fallo en alguna etapa del flujo del agente SQL."""
-    pass
+class SQLGenerationError(AgentException):
+    def __init__(self, message="Error al generar la consulta SQL"):
+        super().__init__(message, status_code=422)
 
-class ReformulationError(Exception):
-    """Fallo al reformular la pregunta del usuario."""
-    pass
 
-class RagContextError(Exception):
-    """Fallo al recuperar el contexto con RAG."""
-    pass
+class QueryValidationError(AgentException):
+    def __init__(self, message="Error de validación en la consulta SQL"):
+        super().__init__(message, status_code=400)
 
-class FlowGenerationError(Exception):
-    """Fallo al generar flujo técnico"""
-    pass
+
+class QueryExecutionError(AgentException):
+    def __init__(self, message="Error al ejecutar la consulta SQL en la base de datos"):
+        super().__init__(message, status_code=500)
+
+
+class CollectionNotFoundError(AgentException):
+    def __init__(self, message="Colección no encontrada en la base vectorial"):
+        super().__init__(message, status_code=404)
+
+
+class InvalidCollectionNameError(AgentException):
+    def __init__(self, message="Nombre de colección inválido"):
+        super().__init__(message, status_code=400)
+
+
+class InvalidAgentTypeError(AgentException):
+    def __init__(self, message="Tipo de agente inválido"):
+        super().__init__(message, status_code=400)
+
+
+class AgentProcessingError(AgentException):
+    def __init__(self, message="Error general al procesar el agente"):
+        super().__init__(message, status_code=500)
