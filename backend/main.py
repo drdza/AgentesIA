@@ -1,4 +1,4 @@
-# backend/agent/main.py
+# backend/main.py
 
 from pymilvus import connections, Collection
 import sys
