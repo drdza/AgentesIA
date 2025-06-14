@@ -7,8 +7,14 @@
     "api_log_file": "api_log.txt",
     "log_file": "execution_log.txt",
     "model_endpoints": {
-      "mistral": "http://appiaagent:8000/v1/sql/generate",
-      "gemma": "http://appiaagent:8001/v1/chat/completions"
+      "api_endpoints":{
+        "mistral": "http://appiaagent:8000/generate",
+        "gemma": "http://appiaagent:8001/v1/chat/completions"
+      },
+      "server_type":{
+        "mistral": "TGI",
+        "gemma": "NIMs"
+      }
     },
     "api_endpoints_base": "http://localhost:8000",
     "api_endpoints": {

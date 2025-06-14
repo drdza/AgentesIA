@@ -2,6 +2,7 @@
 
 from core.config import DB_CONNECTIONS
 from shared.utils import log_to_file, load_config
+from core.exceptions import QueryExecutionError
 import psycopg2
 import time
 
@@ -11,14 +12,7 @@ DOMAIN_TO_DB = CONFIG_JSON['domain_to_db']
 
 def execute_sql(sql: str, domain: str):
     """
-    Ejecuta una consulta SQL dependiendo del dominio de datos.
-
-    Args:
-        sql (str): Consulta SQL a ejecutar.
-        domain (str): Dominio de datos (ej. tickets, ventas, etc.)
-
-    Returns:
-        dict: Resultado de la consulta o error.
+    Ejecuta una consulta SQL y devuelve los resultados como lista de registros.
     """
     start_time = time.time()    
     if SQL_EXECUTION_MODE == "dummy":
@@ -30,9 +24,9 @@ def execute_sql(sql: str, domain: str):
         db_domain = DOMAIN_TO_DB.get(domain)
         db_conf = DB_CONNECTIONS.get(db_domain)
         if not db_conf:
-            msg = f"No hay configuración de base de datos para el dominio '{domain}'"
+            msg = f"[SQL EXECUTION ERROR] No hay configuración de base de datos para el dominio '{domain}'"
             log_to_file(msg)
-            raise ValueError(msg)
+            raise QueryExecutionError(msg)
 
         connection = psycopg2.connect(**db_conf)
         cursor = connection.cursor()
@@ -47,10 +41,14 @@ def execute_sql(sql: str, domain: str):
         cursor.close()
         connection.close()
         duration = round(time.time() - start_time, 2)
-        
+
+        log_to_file(f"[SQL EXECUTION OK] Tiempo: {duration:.2f}s\nSQL:\n{sql}")
         return result, duration
 
     except Exception as e:
-        log_to_file(f"Error al ejecutar SQL para el dominio '{domain}': {str(e)}")
         duration = round(time.time() - start_time, 2)
-        return {"error": str(e)}, duration
+        log_to_file(f"[SQL EXECUTION ERROR] Tiempo: {duration:.2f}s\nSQL:\n{sql}\nError: {str(e)}")
+        raise QueryExecutionError("Error al ejecutar la consulta SQL en la base de datos") from e
+    finally:        
+        if cursor:
+            cursor.close()

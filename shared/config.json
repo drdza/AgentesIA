@@ -7,8 +7,14 @@
     "api_log_file": "api_log.txt",
     "log_file": "execution_log.txt",
     "model_endpoints": {
-      "mistral": "http://llm-sql-inference:8000/v1/sql/generate",
-      "gemma": "http://llm-context-inference:8000/v1/chat/completions"
+      "endpoints": {
+        "mistral": "http://llm-sql-inference:8000/v1/sql/generate",
+        "gemma": "http://llm-context-inference:8000/v1/chat/completions"
+      },
+      "server_type":{
+        "mistral": "TGI",
+        "gemma": "NIMs"
+      }
     },
     "api_endpoints_base": "http://agente_sql_backend:8000",
     "api_endpoints": {

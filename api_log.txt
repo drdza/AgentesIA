@@ -169,3 +169,9 @@
 [2025-06-09 09:16:04] API Request 3af949f8-3ceb-4292-8e1b-d965972b1298 desde 127.0.0.1 | Pregunta: Tickets en proceso por departamento | Dominio: tickets
 [2025-06-09 09:16:47] API Request 3e79c1a3-3a13-4e03-993b-5f2724a983e0 desde 127.0.0.1 | Pregunta: Tickets abiertos | Dominio: tickets
 [2025-06-09 10:03:18] API Request 801cf0d6-34ad-4221-ab6e-61a2608aaf43 desde 127.0.0.1 | Pregunta: ¿Qué servicios presentan un SLA incumplido en más del 10%?  | Dominio: tickets
+[2025-06-12 18:21:12] API Request f1bbca50-8f97-4dfd-a9e8-5d4221ddf089 desde 127.0.0.1 | Pregunta: cuantos tickets abiertos hay actualmente? | Dominio: tickets
+[2025-06-12 18:22:27] API Request dd8ea3c5-969c-4eab-a5d7-e9d8ce57f4ca desde 127.0.0.1 | Pregunta: cuantos tickets abiertos hay actualmente? | Dominio: tickets
+[2025-06-12 18:24:08] API Request 8c3bb6f0-84c8-4cbd-b7fa-c72e8fa91141 desde 127.0.0.1 | Pregunta: cuantos tickets abiertos hay actualmente? | Dominio: tickets
+[2025-06-12 18:24:25] API Request 82f487ec-02b1-41bf-ae6f-2910c8a558ee desde 127.0.0.1 | Pregunta: cuantos tickets EN PROCESO hay actualmente? | Dominio: tickets
+[2025-06-12 18:24:45] API Request 64c94c11-c5a4-4e3c-9252-a8d27d268b8b desde 127.0.0.1 | Pregunta: cuantos tickets EN PROCESO por departamento hay actualmente? | Dominio: tickets
+[2025-06-13 11:22:36] API Request b2140fd5-9ec7-4c7c-8dc6-75aa5837740f desde 127.0.0.1 | Pregunta: ¿Podrías decirme cuantos tickets abiertos hay actualmente? | Dominio: tickets

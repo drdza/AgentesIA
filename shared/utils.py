@@ -88,8 +88,6 @@ def load_prompt_template( domain: str, template_name: str) -> str:
     base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'prompts'))
     template_path = os.path.join(base_path, domain, template_name)
 
-    # print(f"\nBase Path: {base_path}")
-    # print(f"Template Path: {template_path}\n")
 
     try:
         with open(template_path, "r", encoding="utf-8") as file:
@@ -97,33 +95,6 @@ def load_prompt_template( domain: str, template_name: str) -> str:
     except FileNotFoundError:
         raise FileNotFoundError(f"⚠️ No se encontró la plantilla de prompt: {template_path}")
     
-
-def clean_sql_output(raw_sql: str) -> str:
-    # Limpieza básica: remueve comentarios, espacios extras, etc.
-    sql = raw_sql.strip()
-    if sql.lower().startswith("sql:"):
-        sql = sql[4:].strip()
-    return sql    
-
-def clean_sql_final_output(output: str) -> str:
-    cleaned = re.sub(r"^```sql\s*|```$", "", output.strip(), flags=re.IGNORECASE)
-    return cleaned.strip()
-
-def extract_last_sql_block(text):
-    matches = re.findall(r"```sql\s+(.*?)```", text, flags=re.DOTALL | re.IGNORECASE)
-    return matches[-1].strip() if matches else None
-
-
-def safe_extract_sql(text: str) -> str:
-    from shared.utils import extract_last_sql_block
-
-    # Primero intenta extraer un bloque ```sql
-    extracted = extract_last_sql_block(text)
-    
-    if extracted:
-        return extracted.strip()
-    
-    return text
 
 def log_event(
     request_id: str,

@@ -305,3 +305,50 @@ LINE 6:     AVG(tiempo_atencion / tiempo_sla_servicio * 100) AS porc...
                                 ^
 HINT:  Ningún operador coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
 
+[2025-06-12 18:22:42] [SQL EXECUTION OK] Tiempo: 0.17s
+SQL:
+SELECT
+  COUNT(*)
+FROM ft_tickets_ia
+WHERE
+  estatus_ticket = 'ABIERTO'
+[2025-06-12 18:23:50] [SQL EXECUTION OK] Tiempo: 0.06s
+SQL:
+SELECT
+  COUNT(*)
+FROM ft_tickets_ia
+WHERE
+  estatus_ticket = 'EN PROCESO'
+[2025-06-12 18:24:12] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  COUNT(*)
+FROM ft_tickets_ia
+WHERE
+  estatus_ticket = 'EN PROCESO'
+[2025-06-12 18:24:28] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  COUNT(*)
+FROM ft_tickets_ia
+WHERE
+  estatus_ticket = 'EN PROCESO'
+[2025-06-12 18:24:50] [SQL EXECUTION OK] Tiempo: 0.06s
+SQL:
+SELECT
+  departamento_colaborador_asignado,
+  COUNT(*)
+FROM ft_tickets_ia
+WHERE
+  estatus_ticket = 'EN PROCESO'
+GROUP BY
+  departamento_colaborador_asignado
+[2025-06-13 11:22:44] [SQL EXECUTION OK] Tiempo: 0.19s
+SQL:
+SELECT
+  COUNT(*)
+FROM ft_tickets_ia
+WHERE
+  estatus_ticket = 'EN PROCESO'
+  OR estatus_ticket = 'AUTORIZACIÓN'
+  OR estatus_ticket = 'MESA DE AYUDA'

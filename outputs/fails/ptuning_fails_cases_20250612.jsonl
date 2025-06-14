@@ -1,0 +1,1 @@
+{"request_id": "f1bbca50-8f97-4dfd-a9e8-5d4221ddf089", "client_ip": "127.0.0.1", "timestamp": "2025-06-12T18:21:14.559075", "status": "fails", "original_question": "cuantos tickets abiertos hay actualmente?", "enhanced_question": "", "flow": "", "generated_sql": "", "result": "", "model": "", "domain": "tickets", "duration": 0, "tags": []}
