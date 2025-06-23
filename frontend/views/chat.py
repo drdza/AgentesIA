@@ -3,7 +3,6 @@ import sys
 import os
 import requests
 import logging
-import time
 import streamlit as st
 import pandas as pd
 from traceback import format_exc
@@ -20,13 +19,76 @@ API_SQL_EXECUTION = API_ENDPOINTS_BASE + CONFIG_JSON['api_endpoints']['execute_s
 
 st.set_page_config(page_title="Agente SQL")
 
+def fetch_sql(question: str, domain: str) -> dict:
+    """Solicita al backend la generación y ejecución del SQL."""
+    try:
+        response = requests.post(
+            API_SQL_GENERATION,
+            json={"question": question, "domain": domain},
+            timeout=60,
+        )
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as exc:
+        logging.error("Error al consultar API: %s", exc)
+        return {"error": str(exc)}
+
+
+def render_message(message: dict, index: int) -> None:
+    """Muestra un mensaje almacenado en la sesión."""
+    with st.chat_message(message["role"], avatar=message.get("avatar", "🤖")):
+        if isinstance(message["content"], dict) and message["role"] == "assistant":
+            data = message["content"]
+            df = pd.DataFrame(data["result"]["rows"], columns=data["result"]["columns"])
+
+            with st.expander("🧠 Detalles del agente", expanded=False):
+                tabs = st.tabs(["🧠 Reformulación", "📘 Contexto", "💻 SQL Generado"])
+                with tabs[0]:
+                    st.markdown(data["reformulation"])
+                with tabs[1]:
+                    if data["flow"]:
+                        st.markdown(data["flow"])
+                    else:
+                        st.markdown(data["context"])
+                with tabs[2]:
+                    st.code(data["sql"], language="sql", line_numbers=True)
+
+            viz_options = ["DataFrame", "Barras", "Lineas", "KPIs"]
+            default_viz = data.get("viz_type") or "DataFrame"
+            selected_viz = st.radio(
+                "🔍 Cómo deseas visualizar los datos:",
+                viz_options,
+                index=viz_options.index(default_viz),
+                key=f"viz_selector_{index}",
+                horizontal=True,
+            )
+            data["viz_type"] = selected_viz
+
+            st.markdown("### 📊 Resultados")
+            chart_placeholder = st.empty()
+            if selected_viz == "DataFrame":
+                chart_placeholder.dataframe(df, use_container_width=True)
+            elif selected_viz == "Barras":
+                chart_placeholder.bar_chart(df.set_index(df.columns[0]))
+            elif selected_viz == "Lineas":
+                chart_placeholder.line_chart(df.set_index(df.columns[0]))
+            elif selected_viz == "KPIs":
+                numeric_cols = df.select_dtypes(include=["number"]).columns
+                kpi_values = df.iloc[0][numeric_cols].round(2) if len(df) > 0 else []
+                cols = st.columns(len(kpi_values)) if len(kpi_values) > 0 else []
+                for i, col in enumerate(numeric_cols):
+                    with cols[i]:
+                        st.metric(label=col, value=kpi_values[col])
+        else:
+            st.write(message["content"])
+
 def main():    
 
     st.title("🤖 Chatbot")
 
-    st.session_state.user_avatar = "🧑🏻"
-    st.session_state.user_name = "Humano"
-    st.session_state.dominio = "tickets"
+    st.session_state.setdefault("user_avatar", "🧑🏻")
+    st.session_state.setdefault("user_name", "Humano")
+    st.session_state.setdefault("dominio", "tickets")
     
     handle_chat()
 
@@ -103,43 +165,8 @@ def handle_chat():
                         else:
                             st.markdown(message['content']['context'])
 
-                    with tabs[2]:
-                        st.code(message['content']['sql'], language="sql", line_numbers=True)   
-
-                viz_options = ["DataFrame", "Barras", "Lineas", "KPIs"]
-                selected_viz = st.radio(
-                    "🔍 Cómo deseas visualizar los datos:",
-                    viz_options,
-                    index=viz_options.index(message["content"].get("viz_type", "dataframe")),
-                    key=f"viz_selector_{i}",
-                    horizontal=True
-                )
-
-                # Actualiza el tipo de visualización guardado
-                st.session_state.messages[i]["content"]["viz_type"] = selected_viz                
-                # Render según el tipo seleccionado
-                st.markdown("### 📊 Resultados")
-                chart_placeholder = st.empty()
-
-
-                if selected_viz == "DataFrame":
-                    chart_placeholder.dataframe(df, use_container_width=True)
-                elif selected_viz == "Barras":
-                    numeric_cols = df.select_dtypes(include=["number"]).columns
-                    chart_placeholder.bar_chart(df.set_index(df.columns[0]))
-                elif selected_viz == "Lineas":
-                    chart_placeholder.line_chart(df.set_index(df.columns[0]))
-                elif selected_viz == "KPIs":
-                    numeric_cols = df.select_dtypes(include=["number"]).columns                    
-                    kpi_values = df.iloc[0][numeric_cols].round(2) if len(df) > 0 else []
-                    cols = st.columns(len(kpi_values)) if len(kpi_values) > 0 else []                    
-                    for i, col in enumerate(numeric_cols):
-                        with cols[i]:
-                            st.metric(label=col, value=kpi_values[col])
-
-            else:
-                st.write(message["content"])
-
+    for i, message in enumerate(st.session_state.messages):
+        render_message(message, i)
 
 
     if st.session_state.messages[-1]["role"] != "assistant":
@@ -240,6 +267,7 @@ def handle_chat():
                 }
 
         st.session_state.messages.append(message)
+        render_message(message, len(st.session_state.messages) - 1)
 
 
     if st.session_state.explanation_status:
