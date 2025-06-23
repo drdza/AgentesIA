@@ -6,9 +6,13 @@ class AgentException(Exception):
         self.status_code = status_code
         super().__init__(message)
 
+class PromptTemplateLoadError(AgentException):
+    def __init__(self, message="Error al cargar el prompt template"):
+        super().__init__(message, status_code=422)
+
 class InferenceServiceError(AgentException):
     def __init__(self, message="Error en el servicio de inferencia"):
-        super().__init__(message, status_code=502)
+        super().__init__(message, status_code=500)
 
 class EmbeddingGenerationError(AgentException):
     def __init__(self, message="Fallo al generar embeddings"):

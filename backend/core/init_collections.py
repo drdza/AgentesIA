@@ -46,7 +46,7 @@ def init_milvus_collections(host, port, refresh=False):
         raise CollectionInitError(f"No se pudo conectar a Milvus en {host}:{port}") from e
     
     if refresh:
-        drop_milvus_collections()        
+        drop_milvus_collections()
 
     collections = {
         "sql_agent_questions": [

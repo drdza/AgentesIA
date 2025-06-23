@@ -80,13 +80,15 @@ def search_collection(collection_name: str, query_embedding: list, fields: list,
         )
 
         if not results or not results[0]:
-            return []
+            return []        
 
         hit_data = [
             {**hit.to_dict()['entity'], "score": hit.distance, "id": hit.id} 
             for hit in results[0]
-            if hit.distance >= SIMILARITY_THRESHOLD[collection_name]
-            ]
+            if round(hit.distance,2) >= SIMILARITY_THRESHOLD[collection_name]
+            ]        
+
+        # logger.info(f"Hit Data.\n{hit_data}")
 
         if hit_data:
             logger.info(f"🕵🏻 Resultados encontrados en la colección '{collection_name}': {len(hit_data)} coincidencias.")

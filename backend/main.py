@@ -13,7 +13,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from agent.sql_agent import handle_user_question
 from agent.rag_agent import generate_embedding, save_collection
 from shared.utils import init_config, generate_request_id, log_to_file, log_event, load_config
-from core.query_validator import validate_sql
+from core.query_validator import validate_sql, preprocess_sql
 from core.query_executor import execute_sql
 from core.init_collections import init_milvus_collections
 from core.exceptions import (
@@ -62,7 +62,7 @@ async def handle_agent_exception(request: Request, exc: AgentException):
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok", "message": "Agente SQL IA funcionando correctamente"}
+    return {"status": "OK", "message": "Hi! I'm a SQL Agent and i'm live!"}
 
 @app.post("/generate_sql")
 async def generate_sql(request: SQLRequest, http_request: Request):
@@ -78,7 +78,7 @@ async def generate_sql(request: SQLRequest, http_request: Request):
     try:
         log_to_file(f"API Request {request_id} desde {client_ip} | Pregunta: {request.question} | Dominio: {request.domain}", api=True)
 
-        sql, result_exec, flow, reformulation, total_time, return_type, rag_context = handle_user_question(
+        sql, result_exec, flow, reformulation, total_time, rag_context = handle_user_question(
             request.question, 
             domain=request.domain
             )
@@ -95,10 +95,11 @@ async def generate_sql(request: SQLRequest, http_request: Request):
             "rag_context": rag_context
         }
     except AgentException as e:
+        result_exec = {f"error:{str(e)}"}        
         raise HTTPException(status_code=e.status_code, detail=e.message)
-
+    
     except Exception as e:
-        result_exec = {f"error: {str(e)}"}       
+        result_exec = {f"error:{str(e)}"}       
         raise HTTPException(status_code=500, detail=str(e))
     
     finally:
@@ -116,50 +117,29 @@ async def generate_sql(request: SQLRequest, http_request: Request):
         )
 
 @app.post("/execute_sql")
-async def try_execute_sql(payload: SQLExecute):
+async def try_execute_sql(payload: SQLExecute) -> dict:
     try:
-        validate_sql(payload.sql)
-        result, duration = execute_sql(payload.sql, domain="tickets")
         
-        if "error" in result:
-            raise QueryExecutionError(result["error"])
+        formatted_sql = preprocess_sql(payload.sql) 
+        validate_sql(formatted_sql)
+
+        result, duration = execute_sql(formatted_sql, domain="tickets")
                 
         return {
-            "success": True,
             "result": result,
+            "sql": formatted_sql,
             "duration": duration,
             "message": "Consulta válida y ejecutada correctamente"
         }
 
-    except QueryValidationError as e:
-        return JSONResponse(
-            status_code=400,
-            content={
-                "success": False,
-                "error": str(e),
-                "message": "Error de validación en la consulta SQL"
-            }
-    )
+    except AgentException as e:
+        print(f"AgentException: {e.status_code}\t{e.message}")
+        raise HTTPException(status_code=e.status_code, detail=e.message)
     
-    except QueryExecutionError as e:
-        return JSONResponse(
-            status_code=500,
-            content={
-                "success": False,
-                "error": str(e),
-                "message": "Fallo en la ejecución de la consulta SQL"
-            }
-    )
+    except Exception as e:            
+        print(f"Exception: {e}") 
+        raise HTTPException(status_code=500, detail=str(e))
 
-    except Exception as e:
-        return JSONResponse(
-            status_code=500,
-            content={
-                "success": False,
-                "error": str(e),
-                "message": "Ocurrió un error inesperado durante la ejecución"
-            }
-        )
     
 
 

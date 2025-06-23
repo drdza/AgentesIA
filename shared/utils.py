@@ -93,7 +93,7 @@ def load_prompt_template( domain: str, template_name: str) -> str:
         with open(template_path, "r", encoding="utf-8") as file:
             return file.read()
     except FileNotFoundError:
-        raise FileNotFoundError(f"⚠️ No se encontró la plantilla de prompt: {template_path}")
+        raise FileNotFoundError(f"⚠️ No se encontró la plantilla de prompt: {domain}")
     
 
 def log_event(

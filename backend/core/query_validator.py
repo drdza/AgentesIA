@@ -22,17 +22,14 @@ def _fallback_extract_sql(text: str) -> str:
     match = pattern.search(text)
     return match.group(1).strip() if match else None
 
-
 def preprocess_sql(sql: str) -> str:
     """
     Formatea el SQL usando sqlglot para normalizarlo.
     """
     try:
-        parsed = sqlglot.parse_one(sql)
-        return parsed.sql(pretty=True)
+        return sqlglot.transpile(sql, write='postgres', pretty=True, identify=True)[0]    
     except Exception as e:
         raise QueryValidationError("El SQL no pudo ser procesado correctamente.") from e
-
 
 def validate_sql(sql: str) -> None:
     """

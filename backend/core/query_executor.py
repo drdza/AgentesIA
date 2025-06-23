@@ -48,7 +48,7 @@ def execute_sql(sql: str, domain: str):
     except Exception as e:
         duration = round(time.time() - start_time, 2)
         log_to_file(f"[SQL EXECUTION ERROR] Tiempo: {duration:.2f}s\nSQL:\n{sql}\nError: {str(e)}")
-        raise QueryExecutionError("Error al ejecutar la consulta SQL en la base de datos") from e
+        raise QueryExecutionError("Error al ejecutar la consulta SQL en la base de datos.") from e
     finally:        
         if cursor:
             cursor.close()
