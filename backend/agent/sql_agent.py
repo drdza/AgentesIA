@@ -153,10 +153,13 @@ def handle_user_question(question: str, domain: str):
     try:
         logger.info("⚡ Validando SQL...")
         safe_sql = safe_extract_sql(raw_sql)
-        formatted_sql = preprocess_sql(safe_sql) 
-        validate_sql(formatted_sql)    
 
-        logger.info("⚡ Ejecutando SQL...")    
+        formatted_sql = safe_sql  # fallback seguro por si el siguiente paso falla
+
+        formatted_sql = preprocess_sql(formatted_sql)
+        validate_sql(formatted_sql)
+
+        logger.info("⚡ Ejecutando SQL...")
         result, duration = execute_sql(formatted_sql, domain=domain)
 
         total_time += duration
@@ -164,7 +167,7 @@ def handle_user_question(question: str, domain: str):
 
     except Exception as e:
         logger.error(f"🛑 {str(e)}")
-        result['error'] =  SQLAgentPipelineError(f"{str(e)}")
+        result['error'] = str(e)
 
     logger.info(f"🧠 Tiempo total IA: {total_time:.2f} seg.")    
     return formatted_sql, result, flow_text, enhanced_question, total_time, rag_context

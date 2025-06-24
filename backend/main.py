@@ -83,6 +83,8 @@ async def generate_sql(request: SQLRequest, http_request: Request):
             domain=request.domain
             )
         
+        return_type = 'success'
+        
         return {
             "sql": sql,
             "flow": flow,
