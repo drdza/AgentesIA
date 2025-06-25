@@ -1,39 +1,67 @@
 # backend/core/query_validator.py
 
 import sqlglot
-from sqlglot.errors import ParseError
+import re
+from core.exceptions import QueryValidationError
 
-def validate_sql_query(sql: str) -> bool:
+PROHIBITED_KEYWORDS = ["DROP", "DELETE", "UPDATE", "INSERT", "ALTER", "TRUNCATE"]
+
+def _extract_last_sql_block(text: str) -> str:
     """
-    Valida la estructura del SQL generado usando sqlglot.
-    Verifica sintaxis básica y posibles problemas estructurales.
+    Intenta extraer un bloque SQ a través de los delimitadores Markdown.
     """
-    msg = 'OK'
+    matches = re.findall(r"```sql\s+(.*?)```", text, flags=re.DOTALL | re.IGNORECASE)
+    return matches[-1].strip() if matches else None
+
+
+def _fallback_extract_sql(text: str) -> str:
+    """
+    Intenta extraer un bloque SQL sin depender de delimitadores Markdown.
+    """
+    pattern = re.compile(r"(WITH\s+.*?SELECT|SELECT\s+.*?);", re.IGNORECASE | re.DOTALL)
+    match = pattern.search(text)
+    return match.group(1).strip() if match else None
+
+def preprocess_sql(sql: str) -> str:
+    """
+    Formatea el SQL usando sqlglot para normalizarlo.
+    """
     try:
-        # Intenta parsear el SQL
-        expression = sqlglot.parse_one(sql)
+        return sqlglot.transpile(sql, write='postgres', pretty=True, identify=True)[0]    
+    except Exception as e:
+        raise QueryValidationError("El SQL no pudo ser procesado correctamente.") from e
 
-        # Validaciones adicionales: aseguramos que al menos haya SELECT y FROM
-        sql_lower = sql.lower()
+def validate_sql(sql: str) -> None:
+    """
+    Valida que el SQL sea seguro y comience con SELECT o WITH.
+    """
+    if not sql or not sql.strip():
+        raise QueryValidationError("La consulta SQL está vacía o es inválida.")
 
-        if "select" not in sql_lower or "from" not in sql_lower:
-            print("❌ Error: La consulta no contiene SELECT o FROM.")
-            return False
+    sql_upper = sql.upper().lstrip()
 
-        # Validación básica anti-inyecciones (puedes ampliar este check)
-        blacklist = [";--", "drop", "truncate", "delete from", "insert into"]
-        if any(black in sql_lower for black in blacklist):
-            print("🚨 Error: La consulta contiene palabras clave potencialmente peligrosas.")
-            return False
+    if not (sql_upper.startswith("SELECT") or sql_upper.startswith("WITH")):
+        raise QueryValidationError("La consulta debe iniciar con SELECT o WITH (CTE).")
 
-        # (Opcional) Puedes imprimir el SQL formateado para tu log
-        formatted_sql = expression.sql(pretty=True)
-        # print("✅ SQL validado y formateado:\n", formatted_sql)
+    for keyword in PROHIBITED_KEYWORDS:
+        if keyword in sql_upper:
+            raise QueryValidationError(f"La consulta contiene una palabra prohibida: {keyword}")
 
-        return True, formatted_sql, msg
 
-    except ParseError as e:
-        return False, sql, e
+def safe_extract_sql(text: str) -> str:
+    """
+    Orquesta la extracción robusta de SQL.
+    Prioriza bloques Markdown y usa heurística como fallback.
+    """
+    extracted = _extract_last_sql_block(text)
+    if extracted:
+        return extracted
+
+    fallback = _fallback_extract_sql(text)
+    if fallback:
+        return fallback
+
+    return text.strip()
 
 
 

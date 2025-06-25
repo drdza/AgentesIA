@@ -1,0 +1,204 @@
+#version: "3.8"
+
+services:
+
+  llm-sql-inference:
+    container_name: llm-sql-inference
+    image: ghcr.io/huggingface/text-generation-inference:latest
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['1']
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "8000:80"
+    volumes:
+       - ./inference_sql_service/Mistral-7B-Instruct-v0.3:/model
+    command:
+      --model-id /model
+      --max-input-length 1024
+      --max-total-tokens 2048
+    restart: unless-stopped
+
+  llm-context-inference:
+    container_name: llm-context-inference-microservice
+    image: nvcr.io/nim/google/gemma-2-9b-it:1.4.0
+    runtime: nvidia
+    environment:
+      - NGC_API_KEY=${NGC_API_KEY}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import requests; requests.get('http://localhost:8000/v1/health/ready')"]
+      interval: 30s
+      timeout: 20s
+      retries: 100
+      start_period: 300s
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./model_cache:/opt/nim/.cache
+    shm_size: 32gb
+    mem_limit: 64g
+    memswap_limit: 64g
+    user: "${USERID}"
+
+  auto-genia-app:
+    container_name: app-chat-sql-microservice
+    image: app_chat_sql:latest
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./chat_sql:/app
+
+  llm-embeddings:
+    container_name: embedding-microservice
+    image: nvcr.io/nim/nvidia/nv-embedqa-e5-v5-pb24h2:1.2.0
+    environment:
+      - NGC_API_KEY=${NGC_API_KEY}
+    depends_on:
+      llm-context-inference:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8000/v1/health/ready"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+      start_period: 300s
+    ports:
+      - "9080:8000"
+    volumes:
+      - ./model_cache:/opt/nim/.cache
+    shm_size: 16gb
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+    user: "${USERID}"
+
+  agente_sql_backend:
+    container_name: agente_sql_backend
+    build:
+      context: ./agentes_sql_ia
+      dockerfile: backend/Dockerfile
+    image: ia-bot_agentes_sql_backend:latest
+    ports:
+      - "8010:8000"
+    volumes:
+      - ./agentes_sql_ia/backend:/app/backend
+      - ./agentes_sql_ia/shared:/app/shared
+      - ./agentes_sql_ia/prompts:/app/prompts
+      - ./agentes_sql_ia/logs:/app/logs
+      - ./agentes_sql_ia/outputs:/app/outputs
+    depends_on:
+      - llm-context-inference
+
+  agente_sql_frontend:
+    container_name: agente_sql_frontend
+    build:
+      context: ./agentes_sql_ia
+      dockerfile: frontend/Dockerfile
+    image: ia-bot_agentes_sql_frontend:latest
+    ports:
+      - "8510:8501"
+    volumes:
+      - ./agentes_sql_ia/frontend:/app/frontend
+      - ./agentes_sql_ia/shared:/app/shared
+      - ./agentes_sql_ia/prompts:/app/prompts
+      - ./agentes_sql_ia/logs:/app/logs
+      - ./agentes_sql_ia/outputs:/app/outputs
+    depends_on:
+      - agente_sql_backend
+
+  milvus:
+    container_name: milvus
+    image: milvusdb/milvus:v2.4.23
+    command: ["milvus", "run", "standalone"]
+    ports:
+      - "19530:19530"   # Puerto gRPC
+      - "9091:9091"     # Puerto HTTP REST
+    depends_on:
+      - etcd
+      - minio
+      - pulsar
+    environment:
+      ETCD_ENDPOINTS: etcd:2379
+      MINIO_ADDRESS: minio:9000
+      KNOWHERE_GPU_MEM_POOL_SIZE: 2048;4096
+      PULSAR_ADDRESS: pulsar://pulsar:6650
+    volumes:
+      - milvus_data:/var/lib/milvus
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  etcd:
+    container_name: etcd
+    image: quay.io/coreos/etcd:v3.6.0
+    environment:
+      - ETCD_AUTO_COMPACTION_RETENTION=1000
+      - ETCD_QUOTA_BACKEND_BYTES=8589934592
+      - ETCD_HEARTBEAT_INTERVAL=500
+      - ETCD_ELECTION_TIMEOUT=2500
+    volumes:
+      - etcd_data:/etcd
+    command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    ports:
+      - "2379:2379"
+
+  minio:
+    container_name: minio
+    image: minio/minio:RELEASE.2025-05-24T17-08-30Z
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    ports:
+      - "9011:9011"
+      - "9010:9010"
+    volumes:
+      - minio_data:/minio_data
+    command: minio server /minio_data --console-address ":9011" --address ":9010"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9010/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  pulsar:
+    container_name: pulsar
+    image: apachepulsar/pulsar:3.3.7
+    command: bin/pulsar standalone
+    ports:
+      - "6650:6650"
+      - "8080:8080"
+    volumes:
+      - pulsar_data:/pulsar/data
+      - pulsar_data:/pulsar/logs
+
+volumes:
+  milvus_data:
+  minio_data:
+  etcd_data:
+  pulsar_data:

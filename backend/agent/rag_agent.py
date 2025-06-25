@@ -1,17 +1,17 @@
-from pymilvus import connections, Collection
 import requests
 import os
 import sys
 import logging
+from typing import List, Dict, Any
+from pymilvus import connections, Collection
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from shared.utils import  load_config
-from core.exceptions import EmbeddingServiceError, MilvusConnectionError
+from core.exceptions import EmbeddingGenerationError, MilvusConnectionError
 
 logger = logging.getLogger("sql_agent")
 logger.setLevel(logging.INFO)
 
-# Evita agregar múltiples handlers si se llama varias veces
 if not logger.hasHandlers():
     console_handler = logging.StreamHandler()
     formatter = logging.Formatter("%(levelname)s: %(message)s")
@@ -27,8 +27,7 @@ EMBEDDING_ENDPOINT = CONFIG_JSON["embedding_endpoint"]
 COLLECTIONS_NAME = MILVUS_ENDPOINT["collections"]
 SIMILARITY_THRESHOLD = MILVUS_ENDPOINT["similarity_thresholds"]
 
-def generate_embedding(text: str) -> list:
-    
+def generate_embedding(text: str) -> list:    
     payload = {
         "input": [text],
         "model": "nvidia/nv-embedqa-e5-v5",
@@ -43,20 +42,17 @@ def generate_embedding(text: str) -> list:
 
     except requests.exceptions.RequestException as req_error:
         logger.error(f"❌ Error de conexión con el servicio de embeddings: {req_error}")
-        raise EmbeddingServiceError("Falló al conectar con el servicio de embeddings.")
+        raise EmbeddingGenerationError(f"Falló al conectar con el servicio de embeddings. Detalle: {req_error}")
     
     except (KeyError, IndexError) as parse_error:
-        logger.error(f"❌ Respuesta mal formulada del servicio de embeddings: {req_error}")
-        raise EmbeddingServiceError("Respuesta inválida del servicio de embedings.")
+        logger.error(f"❌ Respuesta mal formulada del servicio de embeddings: {parse_error}")
+        raise EmbeddingGenerationError(f"Respuesta inválida del servicio de embeddings. Detalle: {parse_error}")
     
 
-
 def save_collection(collection_name: str, fields: list) -> dict:
-
     try:
         connections.connect(alias="default", host=MILVUS_HOST, port=MILVUS_PORT)
         collection = Collection(collection_name)
-
         collection.load()
         insert_result = collection.insert(fields)
         collection.flush()
@@ -70,8 +66,7 @@ def save_collection(collection_name: str, fields: list) -> dict:
         raise MilvusConnectionError(f"No se pudo insertar en la colección: {collection_name}. Detalle: {e}")
 
 
-def search_collection(collection_name: str, query_embedding: list, fields: list, top_k: int, full_search: bool=False):
-    from rich import print 
+def search_collection(collection_name: str, query_embedding: list, fields: list, top_k: int) -> List[Dict[str, Any]]:
     try:
         collection = Collection(collection_name)
         collection.load()
@@ -85,20 +80,18 @@ def search_collection(collection_name: str, query_embedding: list, fields: list,
         )
 
         if not results or not results[0]:
-            return []
+            return []        
 
         hit_data = [
             {**hit.to_dict()['entity'], "score": hit.distance, "id": hit.id} 
             for hit in results[0]
-            if hit.distance >= SIMILARITY_THRESHOLD[collection_name]
-            ]
+            if round(hit.distance,2) >= SIMILARITY_THRESHOLD[collection_name]
+            ]        
+
+        # logger.info(f"Hit Data.\n{hit_data}")
 
         if hit_data:
-            logger.info(f"🕵🏻 Resultados de la búsqueda en la colección: '{collection_name}'")
-            for i, hit in enumerate(hit_data):        
-                print(f"\t🔹 {i+1} - Distancia: {float(hit['score']):.2f} | Pregunta: {hit['question'][:80]}")
-        else:
-            return []
+            logger.info(f"🕵🏻 Resultados encontrados en la colección '{collection_name}': {len(hit_data)} coincidencias.")
         
         return hit_data
 

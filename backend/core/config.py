@@ -37,3 +37,17 @@ DB_CONNECTIONS = {
         "password": os.getenv('DB_PASSWORD') 
     }
 }
+
+
+def model_mapper(model: str):
+    mapping = {
+        "gemma": "google/gemma-2-9b-it",
+        "llama": "meta/llama-3.1-8b-instruct",
+        "mistral": "mistral/mistral-7b-instruct-v0.3",        
+        "hermes": "teknium/openhermes-2.5-mistral-7b",
+        "deepseek": "deepseek-ai/deepseek-coder-6.7b-instruct",
+        "mixtral": "mistralai/mixtral-8x7b-instruct-v0.1",
+        "starcoder": "bigcode/starcoder2-15b",
+        "codellama": "codellama/codellama-13b-instruct-hf",
+    }
+    return mapping.get(model.lower(), model)

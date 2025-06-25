@@ -14,7 +14,7 @@ MILVUS_PORT = MILVUS_ENDPOINT["port"]
 COLLECTIONS_NAME = MILVUS_ENDPOINT["collections"]
 collection_name = 'sql_agent_questions'
 fields = ["question", "sql"]
-distance = 0.65
+distance = 0.75
 
 def conectar_vectorstore(collection_name: str):
     connections.connect(alias="default", host=MILVUS_HOST, port=MILVUS_PORT)
@@ -35,10 +35,12 @@ def eliminar():
             print(f"Error: {e}")
 
 def buscar(distance: float, output_fields: list= fields):
+    from rich import print
     text = f"""
     ¿Qué deseas buscar en ({collection_name})?: """
     question_text = input(text)
     embedding = generate_embedding(question_text)
+    
     results = collection.search(
         data=[embedding],
         anns_field="embedding",
@@ -46,17 +48,32 @@ def buscar(distance: float, output_fields: list= fields):
         limit=10,
         output_fields=output_fields
     )
+    
+    #print(results)
 
     hit_data = [
         {**hit.to_dict()['entity'], "score": hit.distance, "id": hit.id} 
         for hit in results[0]
-        if hit.distance >= distance
+        if round(hit.distance,2) >= distance
         ]
-    
-    from rich import print
+        
     print(f"📌 Resultados ({len(hit_data)} registros)")
     for i, hit in enumerate(hit_data):        
-        print(f"🔹 {i+1} - ID: {hit['id']}\nDistancia: {float(hit['score']):.2f}\nPregunta: {hit[fields[0]].strip()}\nContenido:\n{hit[fields[1]]}")
+        print(f"🔹 {i+1} - ID: {hit['id']}\nDistancia: {round(hit['score'], 2)}\nPregunta: {hit[fields[0]].strip()}\nContenido:\n{hit[fields[1]]}")
+
+
+def consultar(output_fields: list= fields):
+    from rich import print
+    num_entities = collection.num_entities
+    
+    results = collection.query(
+        expr="",  # Expresión vacía para obtener todo
+        output_fields=output_fields,  # Todos los campos
+        limit=num_entities  # Límite igual al número total
+    )
+    print(f"📌 Resultados ({len(results)} registros)")
+    for doc in results:
+        print(doc)  # Aquí tendrías el contenido de cada documento
 
 is_live = True
 while is_live:
@@ -66,8 +83,9 @@ while is_live:
     1   - Preguntar
     2   - Eliminar
     3   - Cambiar Colección
+    4   - Consultar Todo
     0   - Salir
-    Se está consultado la colección `{collection_name}`
+    Se está consultado la colección `{collection_name}` con un umbral de almenos {distance} unidades
     
     Selecciona una opción: """
     option = input(menu)
@@ -80,6 +98,9 @@ while is_live:
         case "2":
             collection = conectar_vectorstore(collection_name=collection_name)
             eliminar()
+        case "4":
+            collection = conectar_vectorstore(collection_name=collection_name)
+            consultar(output_fields=fields)
         case "3":
             info_collection = """
     ¿Qué colección desea consultar?
@@ -93,15 +114,15 @@ while is_live:
             match option_collection:
                 case "1":
                     collection_name = 'sql_agent_questions'
-                    distance = 0.65
+                    distance = 0.75
                     fields = ["question", "sql"]
                 case "2":
                     collection_name = 'sql_ddl'
-                    distance = 0.50
+                    distance = 0.1
                     fields = ["question", "ddl"]
                 case "3":
                     collection_name = 'sql_docs'
-                    distance = 0.55
+                    distance = 0.65
                     fields = ["question", "texto"]
 
     

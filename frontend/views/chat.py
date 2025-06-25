@@ -1,77 +1,173 @@
 
 import sys
 import os
-import streamlit as st
 import requests
-import pandas as pd
 import logging
+import streamlit as st
+import pandas as pd
+from traceback import format_exc
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from shared.utils import load_config
+from core.visualizations import render_visual_response, render_error_with_agent_context
+from core.footer_component import footer
 
 CONFIG_JSON = load_config()
 API_ENDPOINTS_BASE = CONFIG_JSON['api_endpoints_base']
+API_SQL_GENERATION = API_ENDPOINTS_BASE + CONFIG_JSON['api_endpoints']['generate_sql']
 
-st.set_page_config(page_title="Agente SQL", layout="wide")
 
-logger = logging.getLogger("streamlit_agent_sql")
-if not logger.hasHandlers():
-    handler = logging.StreamHandler()
-    handler.setFormatter(logging.Formatter("[%(levelname)s] %(message)s"))
-    logger.addHandler(handler)
-logger.setLevel(logging.INFO)
+def fetch_sql_response(question: str, domain: str) -> dict:
+    """
+    Consulta el backend para generar SQL a partir de una pregunta.
+    Devuelve un diccionario estandarizado, ya sea exitoso o con error.
+    """
+    try:
+        response = requests.post(
+            API_SQL_GENERATION,
+            json={"question": question, "domain": domain},
+            timeout=60,
+        )
+        response.raise_for_status()
+        return response.json()
 
-st.title("🧠 Agente SQL - Consultas automáticas")
-
-pregunta = st.text_input("📥 Escribe tu pregunta:", placeholder="¿Cuántos tickets se resolvieron fuera del SLA este mes?")
-dominio = "tickets"  # Por ahora fijo, podrías hacerlo dinámico
-
-if st.button("🔍 Consultar"):
-    if not pregunta.strip():
-        st.warning("Debes ingresar una pregunta.")
-        st.stop()
-
-    with st.spinner("Generando consulta..."):
+    except requests.exceptions.HTTPError as e:
         try:
-            response = requests.post(f"{API_ENDPOINTS_BASE}/generate_sql", json={"question": pregunta, "domain": dominio})
-            response.raise_for_status()
-            data = response.json()
-        except Exception as e:
-            st.error("❌ Ocurrió un error al procesar tu solicitud.")
-            logger.error(f"❌ Error al consultar agente SQL: {e}", exc_info=True)
-            st.stop()
+            error_msg = response.json().get("detail", str(e))
+        except Exception:
+            error_msg = str(e)
+        return {
+            "error": f"❌ Error HTTP {response.status_code}: {error_msg}"
+        }
 
-    st.markdown("### 🧪 Flujo técnico propuesto:")
-    st.code(data['flow'], language="markdown")
+    except requests.exceptions.RequestException as e:
+        return {
+            "error": f"❌ Error de conexión: {str(e)}"
+        }
 
-    st.markdown("### 📜 SQL generado:")
-    st.code(data['sql'], language="sql")
+    except Exception as e:
+        return {
+            "error": f"❌ Error inesperado: {str(e)}"
+        }
 
-    st.markdown("### 📊 Resultado de la consulta:")
-    if data["result"]:        
-        df = pd.DataFrame(data['result']["rows"], columns=data['result']["columns"])
-        st.dataframe(df, use_container_width=True)
+def process_backend_response(response: dict) -> dict:    
+    if "sql" in response and "result" in response:
+        return {
+            "role": "assistant",
+            "content": {
+                "sql": response.get("sql"),
+                "reformulation": response.get("reformulation"),
+                "flow": response.get("flow"),
+                "context": response.get("rag_context", ""),
+                "result": response.get("result"),
+                "viz_type": "DataFrame"
+            },
+            "avatar": st.session_state.assistant_avatar
+        }
     else:
-        st.warning("No se obtuvo ningún resultado desde la base de datos.")
+        return {
+            "role": "assistant",
+            "content": {
+                "sql": None,
+                "reformulation": None,
+                "flow": None,
+                "context": None,
+                "result": None,
+                "viz_type": None,
+                "error": response.get("error", "⚠️ Error desconocido. Intenta nuevamente.")
+            },
+            "avatar": st.session_state.assistant_avatar
+        }
 
-    st.markdown("### 🧠 ¿Es correcta esta respuesta del agente?")
-    edited_sql = st.text_area("📝 Puedes editar el SQL si es necesario:", value=data['sql'], height=150)
+def _render_agent_details(data: dict):
+    """Renderiza la respuesta: SQL, contexto, resultado y visualización."""    
+    with st.expander("🧠 Detalles del agente", expanded=False):
+        tabs = st.tabs(["🧠 Reformulación", "📘 Contexto", "💻 SQL Generado"])
+        with tabs[0]:
+            st.markdown(data.get("reformulation", ""))
+        with tabs[1]:
+            st.markdown(data.get("flow") or data.get("context", ""))
+        with tabs[2]:
+            st.code(data.get("sql", ""), language="sql", line_numbers=True)
 
-    cols = st.columns([1, 1])
-    with cols[0]:
-        if st.button("👍 Aprobar y entrenar al agente", use_container_width=True):
-            payload = {
-                "type": "sql",
-                "question": data['reformulation'],
-                "content": edited_sql,
-                "tag": dominio
-            }
-            try:
-                response = requests.post(f"{API_ENDPOINTS_BASE}/train", json=payload)
-                response.raise_for_status()
-                st.success("✅ Entrenamiento exitoso. El agente ha aprendido esta respuesta.")
-            except Exception as e:
-                st.error("❌ Error al guardar la respuesta.")
-                logger.error(f"❌ Fallo al entrenar con SQL aprobado\n{e}", exc_info=True)
+def render_message_history():    
+    for i, message in enumerate(st.session_state.messages):
+        with st.chat_message(message["role"], avatar=message.get("avatar", "assistant_avatar")):
 
-    with cols[1]:
-        st.button("👎 Rechazar respuesta", use_container_width=True)
+            content = message.get("content")
+
+            # 🔴 Caso 1: Error global (el endpoint ni respondió)
+            if isinstance(content, dict) and content.get("error"):
+                st.error(content["error"])
+                continue
+
+            # 🟢 Caso 2: Respuesta válida del agente
+            if isinstance(content, dict) and message["role"] == "assistant":
+                # Evaluar si hubo error en la ejecución del SQL
+                result = content.get("result", {})
+                if isinstance(result, dict) and "error" in result:
+                    render_error_with_agent_context(content, i)
+                else:
+                    render_visual_response(content, i)
+                
+                # Mostrar detalles si existen
+                _render_agent_details(content)
+            # 🟡 Otros tipos de mensajes (usuario u otros)
+            else:
+                st.write(content)
+
+def handle_chat():
+    caption_placeholder = st.empty()
+    caption_placeholder.caption(
+        f"¡Hola 🙋🏻‍♂️ {st.session_state.user_name}!, bienvenid@ al Agente SQL"
+    )
+    with st.expander("ℹ️ Disclaimer", expanded=False):    
+        st.markdown(
+            """
+            <div style="font-size: 0.8rem; color: #6c757d; opacity: 0.6; text-align: justify">
+                El <strong>Agente SQL</strong> puede cometer errores. El modelo utiliza datos de tu <strong>sistema de tickets corporativo</strong> para responder tus preguntas.<br>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+    # Inicializar variables de sesión si no existen
+    st.session_state.setdefault("messages", [
+        {
+            "role": "assistant",
+            "content": "Pregúntame y responderé con un query en SQL, te presentaré los resultados y algo de contexto.",
+            "avatar": st.session_state.assistant_avatar
+        }
+    ])
+    st.session_state.setdefault("explanation_status", False)
+
+    # Capturar nueva pregunta del usuario
+    if prompt := st.chat_input("¿Cuál es tu pregunta?"):
+        st.session_state.messages.append({
+            "role": "user",
+            "content": prompt,
+            "avatar": st.session_state.user_avatar
+        })
+
+        # Llamar backend
+        with st.spinner("Analizando..."):
+            raw_response = fetch_sql_response(prompt, st.session_state.dominio)
+            message = process_backend_response(raw_response)
+            st.session_state.messages.append(message)
+
+    # Renderizar historial completo
+    render_message_history()   
+
+def main():
+    st.set_page_config(page_title="Agente SQL")    
+    st.title("🤖 Agente SQL")
+    st.session_state.setdefault("assistant_avatar", "https://raw.githubusercontent.com/drdza/st-images/refs/heads/main/avatar/artificial-intelligence.png")
+    st.session_state.setdefault("user_avatar", "https://raw.githubusercontent.com/drdza/st-images/refs/heads/main/avatar/user.png")
+    st.session_state.setdefault("user_name", "InnovAmigo")
+    st.session_state.setdefault("dominio", "tickets")    
+    handle_chat()
+
+
+## Arranque de la app
+main()
