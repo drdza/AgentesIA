@@ -1,10 +1,22 @@
 from typing import List
+from math import ceil
 
 import pandas as pd
 import streamlit as st
 import altair as alt
 
-def _suggest_chart_type(df: pd.DataFrame, dimensions: list[str], metrics: list[str]) -> str:
+
+def _convert_numeric_column(col: pd.Series) -> pd.Series:
+    """Convierte floats a enteros si no hay decimales. Redondea a 2 si los hay."""
+    if pd.api.types.is_float_dtype(col):
+        col_non_null = col.dropna()
+        if (col_non_null % 1 == 0).all():
+            return col.astype("Int64")  # permite NaNs como enteros
+        else:
+            return col.round(2)
+    return col
+
+def _suggest_chart_type(df: pd.DataFrame, dimensions: list[str], metrics: list[str]) -> str:       
     if len(df) == 1 and len(metrics) <= 4:
         return "KPIs"
     if dimensions and any("fecha" in d.lower() or "mes" in d.lower() or "año" in d.lower() for d in dimensions):
@@ -13,82 +25,107 @@ def _suggest_chart_type(df: pd.DataFrame, dimensions: list[str], metrics: list[s
         return "Barras"
     return "DataFrame"
 
-def _prepare_chart_data(raw_df: pd.DataFrame, config: dict = None) -> tuple[pd.DataFrame, list[str], list[str], str]:
-    """
-    Limpia y transforma el DataFrame para visualización.
+def _rename_columns_flexibly(df: pd.DataFrame) -> pd.DataFrame:
+    try:        
+        df.rename(columns=lambda c: c.replace("_", " ").title(), inplace=True)
+        rename_rules = {
+            "anio": "año",
+            "count": "conteo",
+            "mes numero": "mes",
+            "porcentaje": "(%)",
+            "estatus ticket": "estatus"
+        }
+
+        new_columns = []
+        for col in df.columns:
+            col_lower = col.lower()
+            new_col = col  # valor por defecto
+
+            for pattern, replacement in rename_rules.items():
+                if pattern in col_lower:
+                    new_col = col_lower.replace(pattern, replacement).title()
+                    break
+
+            new_columns.append(new_col)
+
+        df.columns = new_columns
+        
+        return df
+    except Exception as e:
+        return df
     
-    Args:
-        raw_df (pd.DataFrame): Data cruda devuelta por el modelo.
-        config (dict, optional): Parámetros opcionales para forzar formato, filtros, etc.
-    
-    Returns:
-        df_limpio (pd.DataFrame): DataFrame limpio y listo para graficar.
-        dimension_cols (list): Columnas categóricas.
-        metric_cols (list): Columnas numéricas.
-        chart_type (str): Tipo sugerido de visualización.
-    """
+def _prepare_chart_data(raw_df: pd.DataFrame, config: dict = None) -> tuple[pd.DataFrame, list[str], list[str], str]:    
     df = raw_df.copy()
+    df = _rename_columns_flexibly(df)
 
-    # --- Paso 1: Eliminar filas donde todas las métricas sean cero o NaN
-    numeric_cols = df.select_dtypes(include=["number"]).columns.tolist()
-    df = df.loc[~(df[numeric_cols].fillna(0) == 0).all(axis=1)]
+    try:
+        # Identificar métricas y dimensiones
+        metric_cols = df.select_dtypes(include=["number"]).columns.tolist()
+        dimension_cols = df.select_dtypes(exclude=["number"]).columns.tolist()
 
-    # --- Paso 2: Rellenar vacíos en dimensiones
-    text_cols = df.select_dtypes(include=["object", "string", "category"]).columns.tolist()
-    for col in text_cols:
-        df[col] = df[col].fillna("NO DEFINIDO").replace("", "NO DEFINIDO")
+        # Forzar dimensiones si aplica
+        forced_dimensions = ["año", "mes", "anio", "month", "year", "folio"]
+        for col in metric_cols[:]:
+            if any(kw in col.lower() for kw in forced_dimensions):
+                metric_cols.remove(col)
+                dimension_cols.append(col)
 
-    # --- Paso 3: Detectar columnas tipo fecha y truncar si es necesario
-    for col in df.columns:
-        if pd.api.types.is_datetime64_any_dtype(df[col]):
-            df[col] = pd.to_datetime(df[col], errors="coerce").dt.date
-        elif any(kw in col.lower() for kw in ["fecha", "date", "mes", "año", "year", "periodo"]):
-            try:
+        # Paso 4: Limpiar valores vacíos
+        df = df.loc[~(df[metric_cols].fillna(0) == 0).all(axis=1)]
+        for col in dimension_cols:
+            df[col] = df[col].fillna("NO DEFINIDO").replace("", "NO DEFINIDO")
+
+        # Paso 5: Conversión inteligente de métricas
+        for col in metric_cols:
+            df[col] = _convert_numeric_column(df[col])
+
+        # Paso 6: Detección de fechas
+        for col in dimension_cols:
+            if pd.api.types.is_datetime64_any_dtype(df[col]):
                 df[col] = pd.to_datetime(df[col], errors="coerce").dt.date
-            except Exception:
-                pass
+            elif any(kw in col.lower() for kw in forced_dimensions):
+                df[col] = df[col].astype(int)
+            elif any(kw in col.lower() for kw in ["fecha", "periodo"]):
+                try:
+                    df[col] = pd.to_datetime(df[col], errors="coerce").dt.date
+                except Exception:
+                    pass
 
-    # --- Paso 4: Renombrar columnas a formato legible (title case)
-    df.rename(columns=lambda c: c.replace("_", " ").title(), inplace=True)
+        # Paso 7: Ordenar por la primera métrica
+        if metric_cols:
+            df.sort_values(by=metric_cols[0], ascending=False, inplace=True)
 
-    # --- Paso 5: Recalcular tipos luego del rename
-    metric_cols = df.select_dtypes(include=["number"]).columns.tolist()
-    dimension_cols = df.select_dtypes(exclude=["number"]).columns.tolist()
+        # Paso 8: Sugerir tipo de gráfico
+        chart_type = _suggest_chart_type(df, dimension_cols, metric_cols)
 
-    # --- Paso 6: Ordenar por primera métrica si aplica
-    if metric_cols:
-        df.sort_values(by=metric_cols[0], ascending=False, inplace=True)
+        return df, dimension_cols, metric_cols, chart_type
+    except Exception as e:                     
+        return raw_df.copy(), [], [], "DataFrame"
 
-    # --- Paso 7: Sugerir tipo de visualización
-    chart_type = _suggest_chart_type(df, dimension_cols, metric_cols)
-
-    return df, dimension_cols, metric_cols, chart_type
-
-def _render_dataframe(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGenerator) -> None:
-    """
-    Renderiza el DataFrame con estilos básicos para fechas, porcentajes y numéricos.
-    No modifica el DataFrame recibido.
-    """
+def _render_dataframe(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGenerator,
+                      dimensions: List[str], metrics: List[str]) -> None:
     styled = df.style
-
+    format_dict = {}    
+    
     for col in df.columns:
         col_lower = col.lower()
+        
+        if "%" in col_lower or "porcentaje" in col_lower:
+            format_dict[col] = lambda x: f"{int(x)/100:.2%}" 
 
-        if "fecha" in col_lower or "mes" in col_lower:
-            styled = styled.format({col: lambda x: x.strftime("%Y-%m-%d") if pd.notnull(x) else ""})
+        elif any(kw in col_lower for kw in ["folio", "ticket", "tiempo"]):
+            format_dict[col] = lambda x: f"{int(x):,}" if pd.notnull(x) else ""            
 
-        elif "%" in col_lower or "porcentaje" in col_lower:
-            styled = styled.format({col: "{:.2%}"})
-
-        elif any(kw in col_lower for kw in ["monto", "total", "importe", "precio"]):
-            styled = styled.format({col: "${:,.2f}"})
+        elif "fecha" in col_lower:
+            format_dict[col] = lambda x: x.strftime("%Y-%m-%d") if pd.notnull(x) else ""                       
 
         elif "count" in col_lower:
-            styled = styled.format({col: "{:,}"})
+            format_dict[col] = "{:,}"            
 
         if pd.api.types.is_numeric_dtype(df[col]):
             styled = styled.background_gradient(cmap="Blues", subset=[col])
 
+    styled = styled.format(format_dict)
     placeholder.dataframe(styled, hide_index=True, use_container_width=True)
 
 def _render_kpis(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGenerator, metrics: list[str]) -> None:
@@ -100,11 +137,19 @@ def _render_kpis(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGenerato
         placeholder.warning("Los KPIs solo se muestran cuando hay una única fila con métricas.")
         return
 
-    values = df.iloc[0][metrics].round(2)
-    cols = st.columns(len(metrics))
-
+    values = df.iloc[0][metrics].round(2)    
+    cols = st.columns(len(metrics))    
+    
     for i, col in enumerate(metrics):
-        val = values[col]
+        col_lower = col.lower()
+        val = None
+        if "%" in col_lower or "porcentaje" in col_lower:
+            val = f"{int(values[col])/100:.2%}"
+        elif any(kw in col_lower for kw in ["folio", "tiempo"]):
+            val = f"{int(values[col]):,}"
+        else:
+            val = f"{values[col]:,}"        
+
         delta = None
 
         # Buscar columnas tipo "col_anterior" para mostrar variación
@@ -117,46 +162,68 @@ def _render_kpis(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGenerato
         with cols[i]:
             st.metric(label=col, value=val, delta=delta)
 
+import streamlit as st
+import altair as alt
+import pandas as pd
+from typing import List
+
 def _render_bar_chart(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGenerator,
                       dimensions: List[str], metrics: List[str]) -> None:
     """
-    Renderiza un gráfico de barras usando Altair.
-    Soporta una dimensión y múltiples métricas agrupadas.
+    Renderiza gráficos de barras en varias columnas, según la cantidad de dimensiones.
     """
     if not dimensions or not metrics:
         placeholder.warning("Se requieren al menos una dimensión y una métrica para graficar barras.")
         return
 
-    dim = dimensions[0]
-    df_plot = df[[dim] + metrics].copy()
+    columns_per_row = 3
+    rows = [
+        dimensions[i:i + columns_per_row]
+        for i in range(0, len(dimensions), columns_per_row)
+    ]
 
-    # Altair requiere formato largo si hay más de una métrica
-    if len(metrics) == 1:
-        chart = (
-            alt.Chart(df_plot)
-            .mark_bar()
-            .encode(
-                x=alt.X(f"{dim}:N", sort=df_plot[dim].tolist(), title=dim),
-                y=alt.Y(f"{metrics[0]}:Q", title=metrics[0]),
-                tooltip=[dim] + metrics
-            )
-            .properties(height=400)
-        )
-    else:
-        df_melted = df_plot.melt(id_vars=[dim], value_vars=metrics, var_name="Métrica", value_name="Valor")
-        chart = (
-            alt.Chart(df_melted)
-            .mark_bar()
-            .encode(
-                x=alt.X(f"{dim}:N", sort=df_plot[dim].tolist(), title=dim),
-                y=alt.Y("Valor:Q", title="Valor"),
-                color="Métrica:N",
-                tooltip=[dim, "Métrica", "Valor"]
-            )
-            .properties(height=400)
-        )
+    for dim_group in rows:
+        cols = st.columns(len(dim_group))
 
-    placeholder.altair_chart(chart, use_container_width=True)
+        for dim, col in zip(dim_group, cols):
+            with col.container(height=380):  # Puedes ajustar altura
+                df_plot = df[[dim] + metrics].copy()
+
+                if len(metrics) == 1:
+                    chart = (
+                        alt.Chart(df_plot)
+                        .mark_bar()
+                        .encode(
+                            x=alt.X(f"{dim}:N", sort=df_plot[dim].tolist(), title=dim),
+                            y=alt.Y(f"{metrics[0]}:Q", title=metrics[0]),
+                            tooltip=[dim] + metrics
+                        )
+                        .properties(height=300)
+                    )
+                else:
+                    df_melted = df_plot.melt(
+                        id_vars=[dim],
+                        value_vars=metrics,
+                        var_name="Métrica",
+                        value_name="Valor"
+                    )
+
+                    chart = (
+                        alt.Chart(df_melted)
+                        .mark_bar()
+                        .encode(
+                            x=alt.X(f"{dim}:N", sort=df_plot[dim].tolist(), title=dim),
+                            y=alt.Y("Valor:Q", title="Valor"),
+                            color="Métrica:N",
+                            tooltip=[dim, "Métrica", "Valor"]
+                        )
+                        .properties(height=300)
+                    )
+
+                st.markdown(f"**📊 {dim}**")
+                st.altair_chart(chart, use_container_width=True)
+
+
 
 def _render_line_chart(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGenerator,
                        dimensions: List[str], metrics: List[str]) -> None:
@@ -206,22 +273,12 @@ def _render_chart(
     dimensions: List[str],
     metrics: List[str]
 ):
-    """
-    Función principal que enruta la visualización según el tipo de gráfico requerido.
-
-    Args:
-        df (pd.DataFrame): Datos ya transformados y listos para graficar.
-        placeholder: Elemento de Streamlit donde se renderiza el gráfico.
-        chart_type (str): Uno de ["DataFrame", "Barras", "Lineas", "KPIs"].
-        dimensions (List[str]): Columnas categóricas.
-        metrics (List[str]): Columnas numéricas.
-    """
     if df.empty:
         placeholder.warning("No hay datos disponibles para graficar.")
         return
 
     if chart_type == "DataFrame":
-        _render_dataframe(df, placeholder)
+        _render_dataframe(df, placeholder, metrics, dimensions)
     elif chart_type == "Barras":
         _render_bar_chart(df, placeholder, dimensions, metrics)
     elif chart_type == "Lineas":

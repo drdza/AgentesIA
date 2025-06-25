@@ -10,6 +10,7 @@ from traceback import format_exc
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from shared.utils import load_config
 from core.visualizations import render_visual_response, render_error_with_agent_context
+from core.footer_component import footer
 
 CONFIG_JSON = load_config()
 API_ENDPOINTS_BASE = CONFIG_JSON['api_endpoints_base']
@@ -49,8 +50,7 @@ def fetch_sql_response(question: str, domain: str) -> dict:
             "error": f"❌ Error inesperado: {str(e)}"
         }
 
-def process_backend_response(response: dict) -> dict:
-    print(f"Process Backend Response:\n{response}")
+def process_backend_response(response: dict) -> dict:    
     if "sql" in response and "result" in response:
         return {
             "role": "assistant",
@@ -62,7 +62,7 @@ def process_backend_response(response: dict) -> dict:
                 "result": response.get("result"),
                 "viz_type": "DataFrame"
             },
-            "avatar": "🤖"
+            "avatar": st.session_state.assistant_avatar
         }
     else:
         return {
@@ -76,7 +76,7 @@ def process_backend_response(response: dict) -> dict:
                 "viz_type": None,
                 "error": response.get("error", "⚠️ Error desconocido. Intenta nuevamente.")
             },
-            "avatar": "🤖"
+            "avatar": st.session_state.assistant_avatar
         }
 
 def _render_agent_details(data: dict):
@@ -92,7 +92,7 @@ def _render_agent_details(data: dict):
 
 def render_message_history():    
     for i, message in enumerate(st.session_state.messages):
-        with st.chat_message(message["role"], avatar=message.get("avatar", "🤖")):
+        with st.chat_message(message["role"], avatar=message.get("avatar", "assistant_avatar")):
 
             content = message.get("content")
 
@@ -119,15 +119,25 @@ def render_message_history():
 def handle_chat():
     caption_placeholder = st.empty()
     caption_placeholder.caption(
-        f"¡Hola {st.session_state.user_avatar} {st.session_state.user_name}!, bienvenid@ al Agente SQL"
+        f"¡Hola 🙋🏻‍♂️ {st.session_state.user_name}!, bienvenid@ al Agente SQL"
     )
+    with st.expander("ℹ️ Disclaimer", expanded=False):    
+        st.markdown(
+            """
+            <div style="font-size: 0.8rem; color: #6c757d; opacity: 0.6; text-align: justify">
+                El <strong>Agente SQL</strong> puede cometer errores. El modelo utiliza datos de tu <strong>sistema de tickets corporativo</strong> para responder tus preguntas.<br>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
 
     # Inicializar variables de sesión si no existen
     st.session_state.setdefault("messages", [
         {
             "role": "assistant",
             "content": "Pregúntame y responderé con un query en SQL, te presentaré los resultados y algo de contexto.",
-            "avatar": "🤖"
+            "avatar": st.session_state.assistant_avatar
         }
     ])
     st.session_state.setdefault("explanation_status", False)
@@ -144,17 +154,17 @@ def handle_chat():
         with st.spinner("Analizando..."):
             raw_response = fetch_sql_response(prompt, st.session_state.dominio)
             message = process_backend_response(raw_response)
-            #print(f"raw_response:\n{raw_response}")
             st.session_state.messages.append(message)
 
     # Renderizar historial completo
-    render_message_history()    
+    render_message_history()   
 
 def main():
     st.set_page_config(page_title="Agente SQL")    
     st.title("🤖 Agente SQL")
-    st.session_state.setdefault("user_avatar", "🧑🏻")
-    st.session_state.setdefault("user_name", "Humano")
+    st.session_state.setdefault("assistant_avatar", "https://raw.githubusercontent.com/drdza/st-images/refs/heads/main/avatar/artificial-intelligence.png")
+    st.session_state.setdefault("user_avatar", "https://raw.githubusercontent.com/drdza/st-images/refs/heads/main/avatar/user.png")
+    st.session_state.setdefault("user_name", "InnovAmigo")
     st.session_state.setdefault("dominio", "tickets")    
     handle_chat()
 

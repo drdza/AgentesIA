@@ -50,7 +50,30 @@ No inventes ni utilices tablas que no estén definidas en el DDL. Todos los camp
 - No inventes valores de comparación, estados o categorías que no estén explícitamente definidos o documentados en el DDL o contexto.
 - Si la pregunta es ambigua respecto a fechas, asume por defecto que se refiere al año o mes actual (usando `CURRENT_DATE`).
 - Todas las columnas **no-agregadas** deben estar en `GROUP BY`
-    -  Si generaste una columna no agregada a través de una función incluyela en el GROUP BY.
+    - Si generaste una columna no agregada a través de una función incluyela en el GROUP BY.
+
+---
+
+#### 📌 Reglas adicionales para búsquedas por personas, áreas y departamentos:
+
+- Si la pregunta menciona “quién reporta”, “usuario que reportó”, “personal que levantó el ticket” o similares, usa el campo `personal_reporta`.
+- No uses `colaborador_asignado` en ese contexto, ya que este campo representa al agente de soporte que atiende el ticket.
+
+- Cuando el usuario pida búsquedas o filtros por **nombres de personas**, utiliza `ILIKE` con comodines y el campo adecuado:
+    - Para colaboradores asignados: `colaborador_asignado ILIKE '%NOMBRE%APELLIDO%'`
+    - Para quien reporta el ticket: `personal_reporta ILIKE '%NOMBRE%APELLIDO%'`
+
+- Para **áreas o departamentos con nombres compuestos**:
+    - Utiliza `ILIKE` y coloca `%` entre palabras clave.
+    - Remueve acentos si es posible y convierte el texto a mayúsculas.
+    - Ejemplo: `area_colaborador_asignado ILIKE '%CENTRO%DE%ATENCION%A%USUARIOS%'`
+
+- Siempre que se refiera a:
+    - **Áreas**, utiliza el campo `area_colaborador_asignado`
+        - Ejemplo: ¿Cuántos tickets abiertos en el área de soporte? -> `...WHERE area_colaborador_asignado ILIKE '%SOPORTE%'`
+    - **Departamentos**, utiliza el campo `departamento_colaborador_asignado`
+        - Ejemplo: ¿Cuántos tickets abiertos en el departamento de Inteligencia Empresarial? -> `...WHERE departamento_colaborador_asignado ILIKE '%INTELIGENCIA%EMPRESARIAL%'`
+
 ---
 
 {context}
