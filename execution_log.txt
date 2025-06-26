@@ -6991,3 +6991,357 @@ FROM "ft_tickets_ia"
 WHERE
   "estatus_ticket" = 'EN PROCESO'
   AND "departamento_colaborador_asignado" ILIKE '%SERVIDORES%'
+[2025-06-25 16:10:47] [SQL EXECUTION OK] Tiempo: 0.15s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025
+  AND NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+[2025-06-25 16:11:52] [SQL EXECUTION OK] Tiempo: 0.06s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025
+  AND NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+[2025-06-25 16:13:40] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-25 16:49:50] [SQL EXECUTION OK] Tiempo: 0.14s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-25 17:01:20] [SQL EXECUTION OK] Tiempo: 0.19s
+SQL:
+SELECT
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'ATENDIDO') AS "tickets_atendidos",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL) AS "tickets_en_proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "departamento_colaborador_asignado" = 'Inteligencia Empresarial'
+  AND "fecha_registro" >= DATE_TRUNC('MONTH', CURRENT_DATE)
+  AND "fecha_registro" < DATE_TRUNC('MONTH', CURRENT_DATE) + INTERVAL '1 MONTH'
+[2025-06-25 17:05:00] [SQL EXECUTION OK] Tiempo: 0.15s
+SQL:
+WITH "tickets_departamento" AS (
+  SELECT
+    COUNT(*) AS "total_tickets",
+    COUNT(*) FILTER(WHERE
+      "estatus_ticket" = 'ATENDIDO') AS "tickets_atendidos"
+  FROM "ft_tickets_ia"
+  WHERE
+    "departamento_colaborador_asignado" ILIKE '%INTELIGENCIA%EMPRESARIAL%'
+)
+SELECT
+  (
+    CAST("tickets_atendidos" AS DOUBLE PRECISION) / "total_tickets"
+  ) AS "eficiencia_atencion"
+FROM "tickets_departamento"
+[2025-06-25 17:08:45] [SQL EXECUTION ERROR] Tiempo: 0.07s
+SQL:
+WITH "tickets_departamento" AS (
+  SELECT
+    "fecha_registro" AS "registro_fecha",
+    EXTRACT(YEAR FROM "fecha_registro") AS "anio_registro",
+    EXTRACT(MONTH FROM "fecha_registro") AS "mes_registro",
+    "departamento_colaborador_asignado" AS "departamento",
+    COUNT(*) FILTER(WHERE
+      "estatus_ticket" = 'ATENDIDO') AS "tickets_atendidos",
+    COUNT(*) FILTER(WHERE
+      NOT "estatus_ticket" IS NULL) AS "tickets_registrados"
+  FROM "ft_tickets_ia"
+  WHERE
+    "departamento_colaborador_asignado" ILIKE '%INTELIGENCIA%EMPRESARIAL%'
+    AND EXTRACT(YEAR FROM "fecha_registro") = EXTRACT(YEAR FROM CURRENT_DATE)
+  GROUP BY
+    1,
+    2,
+    3
+)
+SELECT
+  "departamento",
+  "tickets_registrados",
+  "tickets_atendidos",
+  CAST("tickets_atendidos" AS REAL) / CAST("tickets_registrados" AS REAL) AS "eficiencia_atencion"
+FROM "tickets_departamento"
+ORDER BY
+  "eficiencia_atencion" DESC NULLS LAST
+Error: la columna «ft_tickets_ia.departamento_colaborador_asignado» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 6:     "departamento_colaborador_asignado" AS "departamento",
+            ^
+
+[2025-06-25 17:10:11] [SQL EXECUTION OK] Tiempo: 0.21s
+SQL:
+WITH "tickets_ia" AS (
+  SELECT
+    "fecha_registro",
+    EXTRACT(YEAR FROM "fecha_registro") AS "anio_registro",
+    EXTRACT(MONTH FROM "fecha_registro") AS "mes_registro",
+    "fecha_cierre",
+    "estatus_ticket",
+    "folio_ticket",
+    "sistema",
+    "motivo_ticket",
+    "motivo_cierre_ticket",
+    "servicio_cierre_ticket",
+    "centro_trabajo",
+    "ciudad",
+    "empresa",
+    "unidad_negocio",
+    "personal_reporta",
+    "colaborador_asignado",
+    "departamento_colaborador_asignado",
+    "area_colaborador_asignado",
+    "servicio",
+    "tiempo_solucion_total",
+    "tiempo_sla_servicio",
+    "tiempo_atencion",
+    "estatus_atencion"
+  FROM "ft_tickets_ia"
+  WHERE
+    "departamento_colaborador_asignado" ILIKE '%INTELIGENCIA%EMPRESARIAL%'
+)
+SELECT
+  "anio_registro",
+  "mes_registro",
+  COUNT(*) AS "total_tickets",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'ATENDIDO') AS "atendidos",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO') AS "en_proceso",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'ABIERTO') AS "abiertos",
+  AVG(CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN "tiempo_atencion" ELSE NULL END) AS "promedio_tiempo_atencion_atendidos",
+  AVG(CASE WHEN "estatus_ticket" = 'EN PROCESO' THEN "tiempo_atencion" ELSE NULL END) AS "promedio_tiempo_atencion_en_proceso",
+  AVG(CASE WHEN "estatus_ticket" = 'ABIERTO' THEN "tiempo_atencion" ELSE NULL END) AS "promedio_tiempo_atencion_abiertos",
+  (
+    CAST(COUNT(*) FILTER(WHERE
+      "estatus_ticket" = 'ATENDIDO') * 100.0 AS DOUBLE PRECISION) / COUNT(*)
+  ) AS "porcentaje_atendidos",
+  (
+    CAST(COUNT(*) FILTER(WHERE
+      "estatus_ticket" = 'EN PROCESO') * 100.0 AS DOUBLE PRECISION) / COUNT(*)
+  ) AS "porcentaje_en_proceso",
+  (
+    CAST(COUNT(*) FILTER(WHERE
+      "estatus_ticket" = 'ABIERTO') * 100.0 AS DOUBLE PRECISION) / COUNT(*)
+  ) AS "porcentaje_abiertos"
+FROM "tickets_ia"
+GROUP BY
+  "anio_registro",
+  "mes_registro"
+ORDER BY
+  "anio_registro" NULLS FIRST,
+  "mes_registro" NULLS FIRST
+[2025-06-25 17:21:36] [SQL EXECUTION ERROR] Tiempo: 0.06s
+SQL:
+WITH "tickets_karol" AS (
+  SELECT
+    "fecha_registro",
+    "estatus_ticket",
+    "folio_ticket"
+  FROM "ft_tickets_ia"
+  WHERE
+    "personal_reporta" ILIKE '%KAROL MANDUJANO%'
+    AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+)
+SELECT
+  ROUND(
+    CAST(COUNT(*) FILTER(WHERE
+      "estatus_ticket" = 'ATENDIDO') AS DOUBLE PRECISION) / COUNT(*) FILTER(WHERE
+      "estatus_ticket" IN ('ATENDIDO', 'EN PROCESO')),
+    2
+  ) AS "eficiencia"
+FROM "tickets_karol"
+ORDER BY
+  "eficiencia" DESC NULLS LAST
+LIMIT 1
+Error: no existe la función round(double precision, integer)
+LINE 12:   ROUND(
+           ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-25 17:31:26] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+WITH "tickets_karol" AS (
+  SELECT
+    "fecha_registro",
+    CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 END AS "ticket_cerrado",
+    COUNT(*) FILTER(WHERE
+      "estatus_ticket" <> 'CANCELADO') AS "tickets_abiertos"
+  FROM "ft_tickets_ia"
+  WHERE
+    "personal_reporta" ILIKE '%KAROL MANDUJANO%'
+    AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  GROUP BY
+    "fecha_registro"
+)
+SELECT
+  AVG("ticket_cerrado") AS "eficiencia"
+FROM "tickets_karol"
+Error: la columna «ft_tickets_ia.estatus_ticket» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 4:     CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 EN...
+                      ^
+
+[2025-06-25 17:34:39] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+WITH "tickets_karol" AS (
+  SELECT
+    "fecha_registro",
+    CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 END AS "ticket_cerrado",
+    COUNT(*) FILTER(WHERE
+      "estatus_ticket" <> 'CANCELADO') AS "tickets_abiertos"
+  FROM "ft_tickets_ia"
+  WHERE
+    "personal_reporta" ILIKE '%KAROL MANDUJANO%'
+    AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  GROUP BY
+    "fecha_registro"
+)
+SELECT
+  AVG("ticket_cerrado") AS "eficiencia"
+FROM "tickets_karol"
+Error: la columna «ft_tickets_ia.estatus_ticket» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 4:     CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 EN...
+                      ^
+
+[2025-06-25 17:36:59] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+WITH "tickets_karol" AS (
+  SELECT
+    "fecha_registro",
+    CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 END AS "ticket_cerrado",
+    COUNT(*) FILTER(WHERE
+      "estatus_ticket" <> 'CANCELADO') AS "tickets_abiertos"
+  FROM "ft_tickets_ia"
+  WHERE
+    "personal_reporta" ILIKE '%KAROL MANDUJANO%'
+    AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  GROUP BY
+    "fecha_registro"
+)
+SELECT
+  AVG("ticket_cerrado") AS "eficiencia"
+FROM "tickets_karol"
+Error: la columna «ft_tickets_ia.estatus_ticket» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 4:     CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 EN...
+                      ^
+
+[2025-06-25 17:46:00] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+WITH "tickets_karol" AS (
+  SELECT
+    "fecha_registro",
+    CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 END AS "ticket_cerrado",
+    COUNT(*) FILTER(WHERE
+      "estatus_ticket" <> 'CANCELADO') AS "tickets_abiertos"
+  FROM "ft_tickets_ia"
+  WHERE
+    "personal_reporta" ILIKE '%KAROL MANDUJANO%'
+    AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  GROUP BY
+    "fecha_registro"
+)
+SELECT
+  AVG("ticket_cerrado") AS "eficiencia"
+FROM "tickets_karol"
+Error: la columna «ft_tickets_ia.estatus_ticket» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 4:     CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 EN...
+                      ^
+
+[2025-06-25 17:47:55] [SQL EXECUTION ERROR] Tiempo: 0.06s
+SQL:
+WITH "tickets_karol" AS (
+  SELECT
+    "fecha_registro",
+    CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 END AS "ticket_cerrado",
+    COUNT(*) FILTER(WHERE
+      "estatus_ticket" <> 'CANCELADO') AS "tickets_abiertos"
+  FROM "ft_tickets_ia"
+  WHERE
+    "personal_reporta" ILIKE '%KAROL MANDUJANO%'
+    AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  GROUP BY
+    "fecha_registro"
+)
+SELECT
+  AVG("ticket_cerrado") AS "eficiencia"
+FROM "tickets_karol"
+Error: la columna «ft_tickets_ia.estatus_ticket» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 4:     CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 EN...
+                      ^
+
+[2025-06-25 17:49:17] [SQL EXECUTION ERROR] Tiempo: 0.04s
+SQL:
+WITH "tickets_karol" AS (
+  SELECT
+    "fecha_registro",
+    CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 END AS "ticket_cerrado",
+    COUNT(*) FILTER(WHERE
+      "estatus_ticket" <> 'CANCELADO') AS "tickets_abiertos"
+  FROM "ft_tickets_ia"
+  WHERE
+    "personal_reporta" ILIKE '%KAROL MANDUJANO%'
+    AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  GROUP BY
+    "fecha_registro"
+)
+SELECT
+  AVG("ticket_cerrado") AS "eficiencia"
+FROM "tickets_karol"
+Error: la columna «ft_tickets_ia.estatus_ticket» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 4:     CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 EN...
+                      ^
+
+[2025-06-25 17:57:37] [SQL EXECUTION OK] Tiempo: 0.18s
+SQL:
+WITH "tickets_cerrados_en_plazo" AS (
+  SELECT
+    "folio_ticket",
+    COUNT(*) AS "tickets_cerrados"
+  FROM "ft_tickets_ia"
+  WHERE
+    NOT "fecha_cierre" IS NULL
+    AND "fecha_cierre" >= DATE_TRUNC('YEAR', CURRENT_DATE)
+    AND "fecha_cierre" < DATE_TRUNC('YEAR', CURRENT_DATE) + INTERVAL '1 YEAR'
+    AND "colaborador_asignado" ILIKE '%KAROL MANDUJANO%'
+    AND "tiempo_atencion" <= "tiempo_sla_servicio"
+  GROUP BY
+    "folio_ticket"
+), "tickets_abiertos" AS (
+  SELECT
+    "folio_ticket",
+    COUNT(*) AS "tickets_abiertos"
+  FROM "ft_tickets_ia"
+  WHERE
+    "fecha_cierre" IS NULL
+    AND "fecha_registro" >= DATE_TRUNC('YEAR', CURRENT_DATE)
+    AND "fecha_registro" < DATE_TRUNC('YEAR', CURRENT_DATE) + INTERVAL '1 YEAR'
+    AND "colaborador_asignado" ILIKE '%KAROL MANDUJANO%'
+  GROUP BY
+    "folio_ticket"
+)
+SELECT
+  (
+    CAST("tickets_cerrados"."tickets_cerrados" AS REAL) / CAST("tickets_abiertos"."tickets_abiertos" AS REAL)
+  ) * 100 AS "eficiencia"
+FROM "tickets_cerrados_en_plazo" AS "tickets_cerrados"
+JOIN "tickets_abiertos" AS "tickets_abiertos"
+  ON "tickets_cerrados"."folio_ticket" = "tickets_abiertos"."folio_ticket"
+ORDER BY
+  "eficiencia" DESC NULLS LAST
+LIMIT 10

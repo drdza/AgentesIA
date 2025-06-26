@@ -666,3 +666,32 @@ Cuantos tickets ha atendido o cerrado la colaboradora BERENICE%FERNANDEZ? | Domi
 [2025-06-25 13:01:35] API Request 6351f50f-b6b0-48e6-84c9-bb154f3a4bce desde 127.0.0.1 | Pregunta: Cuantos tickets ha generado Juan José Martinez Lopez? | Dominio: tickets
 [2025-06-25 13:02:06] API Request 719be6ed-7972-474e-baf1-9453cac7a450 desde 127.0.0.1 | Pregunta: Cuantos tickets ha generado Juan Martinez? | Dominio: tickets
 [2025-06-25 13:02:49] API Request c365b0ef-3a37-4d54-a934-d9470bf92342 desde 127.0.0.1 | Pregunta: Tickets en proceso del área de Servidores? | Dominio: tickets
+[2025-06-25 15:37:12] API Request a9159222-682e-46d6-8d6f-2d524d7d4ac3 desde 127.0.0.1 | Pregunta: Me puedes decir cuantos tickets abiertos hay ahorita? | Dominio: tickets
+[2025-06-25 15:51:33] API Request 37c2be9f-6715-42e1-bbc5-13d4a3180f87 desde 127.0.0.1 | Pregunta: Tickets en proceso del área de Servidores? | Dominio: tickets
+[2025-06-25 15:52:02] API Request dc20af76-b056-4fad-97f0-0de59ef8476f desde 127.0.0.1 | Pregunta: Tickets en proceso del área de Servidores?
+
+ | Dominio: tickets
+[2025-06-25 15:53:21] API Request c713a4f5-8b8b-4e0c-a61b-c351a59d1f30 desde 127.0.0.1 | Pregunta: Tickets en proceso del área de Servidores? | Dominio: tickets
+[2025-06-25 15:54:28] API Request 67b1e39f-6188-4211-9fb9-45e01f0aea1e desde 127.0.0.1 | Pregunta: Tickets en proceso del área de Servidores?
+ | Dominio: tickets
+[2025-06-25 15:56:53] API Request cbcb1308-198b-47b5-b652-cc332d945501 desde 127.0.0.1 | Pregunta: Tickets en proceso del área de Servidores? | Dominio: tickets
+[2025-06-25 16:07:49] API Request 0e5125a1-727f-4cb9-8d10-28418609b2c9 desde 127.0.0.1 | Pregunta: Tickets en proceso del área de Servidores? | Dominio: tickets
+[2025-06-25 16:08:09] API Request f1dc40ec-5868-47ef-a704-31dd2099aba8 desde 127.0.0.1 | Pregunta: Tickets abiertos en el 2025? | Dominio: tickets
+[2025-06-25 16:09:25] API Request e206f2dd-aacf-4977-b3f8-c41f2efa3c6c desde 127.0.0.1 | Pregunta: Tickets abiertos en el 2025? | Dominio: tickets
+[2025-06-25 16:10:11] API Request 349f01eb-3d1e-4f29-b18a-c18e93ff3648 desde 127.0.0.1 | Pregunta: Tickets abiertos en el 2025? | Dominio: tickets
+[2025-06-25 16:10:40] API Request 72e29c82-027f-41d1-9cde-cb3aed358782 desde 127.0.0.1 | Pregunta: Tickets abiertos en el 2025 | Dominio: tickets
+[2025-06-25 16:11:46] API Request 45e058f6-c898-4556-b3a3-a87e0de92ecc desde 127.0.0.1 | Pregunta: Tickets abiertos en el 2025 | Dominio: tickets
+[2025-06-25 16:13:32] API Request 26da3f82-42fd-44f2-b3e2-86167f655193 desde 127.0.0.1 | Pregunta: Dime cuales son los tickets abiertos | Dominio: tickets
+[2025-06-25 16:49:42] API Request 9d511121-aa9a-44a7-9650-29ac1503f935 desde 127.0.0.1 | Pregunta: Dime cuales son los tickets abiertos | Dominio: tickets
+[2025-06-25 17:01:07] API Request fb049524-df1a-4b83-82e1-d3699850d4ec desde 127.0.0.1 | Pregunta: Puedes decirme la eficiencia de atención que tiene el departamento de Inteligencia Empresarial? | Dominio: tickets
+[2025-06-25 17:04:48] API Request c541c1ed-6778-4e9a-af49-a5845bfe3843 desde 127.0.0.1 | Pregunta: Puedes decirme la eficiencia de atención que tiene el departamento de Inteligencia Empresarial? | Dominio: tickets
+[2025-06-25 17:08:26] API Request a1741770-22d3-44a1-a935-c43f41fea9a3 desde 127.0.0.1 | Pregunta: Puedes decirme la eficiencia de atención (tiempos de respuesta) que tiene el departamento de Inteligencia Empresarial? | Dominio: tickets
+[2025-06-25 17:09:37] API Request 157e8f72-9a11-4445-8da0-ac7babce7422 desde 127.0.0.1 | Pregunta: Puedes decirme la eficiencia de atención (tiempos de respuesta) que tiene el departamento de Inteligencia Empresarial? | Dominio: tickets
+[2025-06-25 17:21:22] API Request b9379b73-a851-4202-9fb8-f4cfd9951d0c desde 127.0.0.1 | Pregunta: Dame la eficiencia del colaborador Karol Mandujano | Dominio: tickets
+[2025-06-25 17:31:13] API Request add43ce5-d7f9-40f5-9e5f-ae245e84ccf5 desde 127.0.0.1 | Pregunta: Dame la eficiencia del colaborador Karol Mandujano | Dominio: tickets
+[2025-06-25 17:34:26] API Request 8d1d9f26-62ea-4e0f-8505-b570adfea508 desde 127.0.0.1 | Pregunta: Dame la eficiencia del colaborador Karol Mandujano | Dominio: tickets
+[2025-06-25 17:36:46] API Request d7dd6d96-2641-4356-8fa6-225fb486daab desde 127.0.0.1 | Pregunta: Dame la eficiencia del colaborador Karol Mandujano | Dominio: tickets
+[2025-06-25 17:45:47] API Request 52dd22d4-f926-4371-a5fe-02212b72a855 desde 127.0.0.1 | Pregunta: Dame la eficiencia del colaborador Karol Mandujano | Dominio: tickets
+[2025-06-25 17:47:42] API Request bdc08378-f091-4d10-91a0-70be7a6a8786 desde 127.0.0.1 | Pregunta: Dame la eficiencia del colaborador Karol Mandujano | Dominio: tickets
+[2025-06-25 17:49:04] API Request d8886c9e-6ae7-4200-8bd3-d5e0afff7de0 desde 127.0.0.1 | Pregunta: Dame la eficiencia del colaborador Karol Mandujano | Dominio: tickets
+[2025-06-25 17:57:16] API Request 4282a5fe-a99c-4ec3-b8ab-cbb70ac4cb31 desde 127.0.0.1 | Pregunta: Dame la eficiencia de la colaboradora Karol Mandujano | Dominio: tickets

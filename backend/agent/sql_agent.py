@@ -45,7 +45,7 @@ def clean_enhanced_question(response: str, user_question: str) -> dict:
 
     return enhanced_dict
 
-def _join_rag_context(rag_context: dict):
+def join_rag_context(rag_context: dict):
 
     if not rag_context:
         return rag_context

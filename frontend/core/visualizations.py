@@ -56,13 +56,13 @@ def _rename_columns_flexibly(df: pd.DataFrame) -> pd.DataFrame:
     
 def _prepare_chart_data(raw_df: pd.DataFrame, config: dict = None) -> tuple[pd.DataFrame, list[str], list[str], str]:    
     df = raw_df.copy()
-    df = _rename_columns_flexibly(df)
+    df = _rename_columns_flexibly(df)    
 
     try:
         # Identificar métricas y dimensiones
         metric_cols = df.select_dtypes(include=["number"]).columns.tolist()
         dimension_cols = df.select_dtypes(exclude=["number"]).columns.tolist()
-
+        
         # Forzar dimensiones si aplica
         forced_dimensions = ["año", "mes", "anio", "month", "year", "folio"]
         for col in metric_cols[:]:
@@ -74,7 +74,7 @@ def _prepare_chart_data(raw_df: pd.DataFrame, config: dict = None) -> tuple[pd.D
         df = df.loc[~(df[metric_cols].fillna(0) == 0).all(axis=1)]
         for col in dimension_cols:
             df[col] = df[col].fillna("NO DEFINIDO").replace("", "NO DEFINIDO")
-
+                
         # Paso 5: Conversión inteligente de métricas
         for col in metric_cols:
             df[col] = _convert_numeric_column(df[col])
@@ -91,6 +91,13 @@ def _prepare_chart_data(raw_df: pd.DataFrame, config: dict = None) -> tuple[pd.D
                 except Exception:
                     pass
 
+        df = df.drop(columns=[
+            col for col in dimension_cols
+            if df[col].apply(lambda x: pd.isna(x) or x == 0 or (isinstance(x, str) and x.strip() == "")).all()
+        ])
+        
+        dimension_cols = [col for col in dimension_cols if col in df.columns]
+        metric_cols = [col for col in metric_cols if col in df.columns]
         # Paso 7: Ordenar por la primera métrica
         if metric_cols:
             df.sort_values(by=metric_cols[0], ascending=False, inplace=True)
@@ -106,24 +113,27 @@ def _render_dataframe(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGen
                       dimensions: List[str], metrics: List[str]) -> None:
     styled = df.style
     format_dict = {}    
-    
-    for col in df.columns:
-        col_lower = col.lower()
-        
-        if "%" in col_lower or "porcentaje" in col_lower:
-            format_dict[col] = lambda x: f"{int(x)/100:.2%}" 
 
-        elif any(kw in col_lower for kw in ["folio", "ticket", "tiempo"]):
-            format_dict[col] = lambda x: f"{int(x):,}" if pd.notnull(x) else ""            
+    try:
+        for col in metrics:
+            col_lower = col.lower()
+            print(col_lower)
+            if "%" in col_lower or "porcentaje" in col_lower:
+                format_dict[col] = lambda x: f"{int(x)/100:.2%}" 
 
-        elif "fecha" in col_lower:
-            format_dict[col] = lambda x: x.strftime("%Y-%m-%d") if pd.notnull(x) else ""                       
+            elif any(kw in col_lower for kw in ["folio", "ticket", "tiempo"]):
+                format_dict[col] = lambda x: f"{int(x):,}" if pd.notnull(x) else ""            
 
-        elif "count" in col_lower:
-            format_dict[col] = "{:,}"            
+            elif "fecha" in col_lower:
+                format_dict[col] = lambda x: x.strftime("%Y-%m-%d") if pd.notnull(x) else ""                       
 
-        if pd.api.types.is_numeric_dtype(df[col]):
-            styled = styled.background_gradient(cmap="Blues", subset=[col])
+            elif "count" in col_lower:
+                format_dict[col] = "{:,}"            
+
+            if pd.api.types.is_numeric_dtype(df[col]):
+                styled = styled.background_gradient(cmap="Blues", subset=[col])
+    except Exception as e:
+        print(f"Error: {e}")
 
     styled = styled.format(format_dict)
     placeholder.dataframe(styled, hide_index=True, use_container_width=True)
@@ -162,11 +172,6 @@ def _render_kpis(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGenerato
         with cols[i]:
             st.metric(label=col, value=val, delta=delta)
 
-import streamlit as st
-import altair as alt
-import pandas as pd
-from typing import List
-
 def _render_bar_chart(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGenerator,
                       dimensions: List[str], metrics: List[str]) -> None:
     """
@@ -175,8 +180,13 @@ def _render_bar_chart(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGen
     if not dimensions or not metrics:
         placeholder.warning("Se requieren al menos una dimensión y una métrica para graficar barras.")
         return
+    
+    # if len(dimensions) > 5:
+    #     placeholder.warning("Se excede la cantidad de dimensiones")
+    #     return
 
     columns_per_row = 3
+
     rows = [
         dimensions[i:i + columns_per_row]
         for i in range(0, len(dimensions), columns_per_row)
@@ -221,9 +231,7 @@ def _render_bar_chart(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGen
                     )
 
                 st.markdown(f"**📊 {dim}**")
-                st.altair_chart(chart, use_container_width=True)
-
-
+                st.altair_chart(chart, use_container_width=False)
 
 def _render_line_chart(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGenerator,
                        dimensions: List[str], metrics: List[str]) -> None:
@@ -278,7 +286,7 @@ def _render_chart(
         return
 
     if chart_type == "DataFrame":
-        _render_dataframe(df, placeholder, metrics, dimensions)
+        _render_dataframe(df, placeholder, dimensions, metrics)
     elif chart_type == "Barras":
         _render_bar_chart(df, placeholder, dimensions, metrics)
     elif chart_type == "Lineas":

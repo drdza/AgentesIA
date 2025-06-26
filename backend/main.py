@@ -10,6 +10,7 @@ from fastapi.responses import JSONResponse
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from agent.langgraph_sql_agent import run_sql_graph
 from agent.sql_agent import handle_user_question
 from agent.rag_agent import generate_embedding, save_collection
 from shared.utils import init_config, generate_request_id, log_to_file, log_event, load_config
@@ -78,11 +79,17 @@ async def generate_sql(request: SQLRequest, http_request: Request):
     try:
         log_to_file(f"API Request {request_id} desde {client_ip} | Pregunta: {request.question} | Dominio: {request.domain}", api=True)
 
-        sql, result_exec, flow, reformulation, total_time, rag_context = handle_user_question(
-            request.question, 
-            domain=request.domain
-            )
-        
+        # Ejecutar el grafo LangGraph en lugar del handle tradicional
+        response = await run_sql_graph(request.question, request.domain)
+
+        # print(response)
+
+        sql = response.get("sql", "")
+        result_exec = response.get("result", {})
+        flow = response.get("flow", "")
+        reformulation = response.get("enhanced_question", "")
+        rag_context = response.get("rag_context", "")
+        total_time = response.get("duration", 0)
         return_type = 'success'
         
         return {

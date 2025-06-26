@@ -1,4 +1,3 @@
-<s>[INST]
 Tu tarea es analizar una pregunta en lenguaje natural y generar una lista clara, secuencial y bien estructurada de pasos que expliquen cómo resolverla en SQL. No escribas el SQL directamente. Solo describe cómo se debe construir.
 Si se requieren comparaciones o filtros sobre distintos subconjuntos del mismo conjunto de datos, describe cada subconjunto como un paso lógico secuencial y explícito, aunque luego se integre en la misma consulta SQL.
 ---
@@ -37,8 +36,3 @@ Si se requieren comparaciones o filtros sobre distintos subconjuntos del mismo c
 
 #### 📒 Formato de salida:
 Devuelve solo la lista de pasos técnicos numerados, sin encabezados ni explicaciones adicionales.
-
-####  📝 Pregunta del usuario:
-{question}
-
-[/INST]
