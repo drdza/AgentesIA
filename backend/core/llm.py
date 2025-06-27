@@ -86,7 +86,7 @@ def call_model(model: str, system_prompt: str, user_prompt: str = ""):
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
                 ]
-
+                #logger.info(messages)
                 payload = {
                     "messages": messages,
                     "temperature": 0.01,
@@ -108,7 +108,7 @@ def call_model(model: str, system_prompt: str, user_prompt: str = ""):
         if response.status_code != 200:
             raise InferenceServiceError(f"Error del modelo '{model_type}' – HTTP {response.status_code}: {response.text}")
 
-        data = response.json()                        
+        data = response.json()        
 
         if server_type == 'NIMs' or server_type == 'CHAT':
             content = data["choices"][0]["message"]["content"].strip()

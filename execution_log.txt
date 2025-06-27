@@ -7345,3 +7345,745 @@ JOIN "tickets_abiertos" AS "tickets_abiertos"
 ORDER BY
   "eficiencia" DESC NULLS LAST
 LIMIT 10
+[2025-06-26 09:37:06] [SQL EXECUTION OK] Tiempo: 0.15s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-26 09:45:53] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  "unidad_negocio",
+  SUM(
+    CASE
+      WHEN EXTRACT(MONTH FROM "fecha_registro") = 6
+      AND EXTRACT(YEAR FROM "fecha_registro") = 2025
+      THEN 1
+      ELSE 0
+    END
+  ) AS "tickets_junio_2025"
+FROM "ft_tickets_ia"
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "unidad_negocio" NULLS FIRST
+LIMIT 1
+[2025-06-26 10:03:12] [SQL EXECUTION OK] Tiempo: 0.14s
+SQL:
+WITH "tickets_asignados_karol" AS (
+  SELECT
+    "folio_ticket",
+    "estatus_ticket"
+  FROM "ft_tickets_ia"
+  WHERE
+    "colaborador_asignado" ILIKE '%Karol Mandujano%'
+), "tickets_atendidos_karol" AS (
+  SELECT
+    "folio_ticket"
+  FROM "tickets_asignados_karol"
+  WHERE
+    "estatus_ticket" = 'ATENDIDO'
+)
+SELECT
+  COUNT(*) AS "total_tickets_asignados",
+  COUNT(*) FILTER(WHERE
+    "folio_ticket" IN (
+      SELECT
+        "folio_ticket"
+      FROM "tickets_atendidos_karol"
+    )) AS "tickets_atendidos",
+  (
+    CAST(COUNT(*) FILTER(WHERE
+      "folio_ticket" IN (
+        SELECT
+          "folio_ticket"
+        FROM "tickets_atendidos_karol"
+      )) AS DOUBLE PRECISION) / COUNT(*)
+  ) * 100 AS "eficiencia"
+FROM "ft_tickets_ia"
+[2025-06-26 10:07:29] [SQL EXECUTION OK] Tiempo: 0.14s
+SQL:
+WITH "tickets_anio" AS (
+  SELECT
+    "fecha_registro",
+    "estatus_ticket",
+    COUNT(*) AS "total_tickets"
+  FROM "ft_tickets_ia"
+  WHERE
+    "fecha_registro" >= DATE_TRUNC('YEAR', CURRENT_DATE)
+    AND "fecha_registro" < DATE_TRUNC('YEAR', CURRENT_DATE) + INTERVAL '1 YEAR'
+  GROUP BY
+    "fecha_registro",
+    "estatus_ticket"
+), "tickets_cerrados" AS (
+  SELECT
+    "fecha_registro",
+    COUNT(*) AS "tickets_cerrados"
+  FROM "tickets_anio"
+  WHERE
+    "estatus_ticket" = 'ATENDIDO'
+  GROUP BY
+    "fecha_registro"
+), "tickets_abiertos" AS (
+  SELECT
+    "fecha_registro",
+    COUNT(*) AS "tickets_abiertos"
+  FROM "tickets_anio"
+  WHERE
+    "estatus_ticket" <> 'ATENDIDO'
+  GROUP BY
+    "fecha_registro"
+)
+SELECT
+  (
+    CAST(SUM("tickets_cerrados"."tickets_cerrados") AS DOUBLE PRECISION) / SUM("tickets_abiertos"."tickets_abiertos")
+  ) * 100 AS "eficiencia_karol_mandujano"
+FROM "tickets_cerrados"
+JOIN "tickets_abiertos"
+  ON "tickets_cerrados"."fecha_registro" = "tickets_abiertos"."fecha_registro"
+ORDER BY
+  "eficiencia_karol_mandujano" DESC NULLS LAST
+LIMIT 10
+[2025-06-26 11:59:18] [SQL EXECUTION OK] Tiempo: 0.14s
+SQL:
+SELECT
+  "unidad_negocio",
+  "departamento_colaborador_asignado",
+  COUNT(*) AS "total_tickets",
+  COUNT("folio_ticket") FILTER(WHERE
+    NOT "personal_reporta" IS NULL) AS "tickets_por_usuario_final"
+FROM "ft_tickets_ia"
+WHERE
+  "mes_registro" = EXTRACT(MONTH FROM CURRENT_DATE)
+  AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  AND "estatus_ticket" IN ('EN PROCESO', 'ATENDIDO')
+GROUP BY
+  "unidad_negocio",
+  "departamento_colaborador_asignado"
+ORDER BY
+  "total_tickets" DESC NULLS LAST,
+  "tickets_por_usuario_final" ASC NULLS FIRST
+[2025-06-26 12:05:20] [SQL EXECUTION OK] Tiempo: 0.10s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "cantidad_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "cantidad_tickets" DESC NULLS LAST
+LIMIT 1
+[2025-06-26 14:08:52] [SQL EXECUTION OK] Tiempo: 0.12s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-26 15:05:55] [SQL EXECUTION OK] Tiempo: 0.21s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+[2025-06-26 15:07:58] [SQL EXECUTION OK] Tiempo: 0.19s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-26 15:21:30] [SQL EXECUTION OK] Tiempo: 0.13s
+SQL:
+SELECT
+  "mes_registro",
+  COUNT(*) AS "tickets_abiertos"
+FROM "ft_tickets_ia"
+WHERE
+  "mes_registro" = EXTRACT(MONTH FROM CURRENT_DATE)
+  AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  AND NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+GROUP BY
+  "mes_registro"
+[2025-06-26 15:21:57] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  "mes_registro",
+  COUNT(*) AS "tickets_abiertos"
+FROM "ft_tickets_ia"
+WHERE
+  "mes_registro" = EXTRACT(MONTH FROM CURRENT_DATE)
+  AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  AND NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+GROUP BY
+  "mes_registro"
+[2025-06-26 15:23:43] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-26 15:26:00] [SQL EXECUTION OK] Tiempo: 0.11s
+SQL:
+SELECT
+  COUNT(*) AS "tickets_abiertos_actuales"
+FROM "ft_tickets_ia"
+WHERE
+  "fecha_registro" <= CURRENT_DATE
+  AND NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+[2025-06-26 15:26:34] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+[2025-06-26 15:26:53] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  COUNT(*) AS "tickets_cerrados_actuales"
+FROM "ft_tickets_ia"
+WHERE
+  NOT "fecha_cierre" IS NULL
+  AND "estatus_ticket" <> 'CANCELADO'
+  AND CAST(DATE_TRUNC('MONTH', "fecha_cierre") AS DATE) = CAST(DATE_TRUNC('MONTH', CURRENT_DATE) AS DATE)
+[2025-06-26 15:27:18] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%ABRAHAM%SEVILLANO%'
+  AND NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+[2025-06-26 15:27:43] [SQL EXECUTION ERROR] Tiempo: 0.04s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+  AND EXTRACT(EPOCH FROM (
+    CURRENT_DATE - "fecha_registro"
+  )) > (
+    30 * 24 * 60 * 60
+  )
+Error: no existe la función pg_catalog.extract(unknown, integer)
+LINE 7:   AND EXTRACT(EPOCH FROM (
+              ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-26 15:28:32] [SQL EXECUTION OK] Tiempo: 0.04s
+SQL:
+SELECT
+  "personal_reporta" AS "usuario",
+  COUNT(*) AS "cantidad_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+GROUP BY
+  "personal_reporta"
+[2025-06-26 15:29:23] [SQL EXECUTION OK] Tiempo: 0.06s
+SQL:
+SELECT
+  "departamento_colaborador_asignado" AS "Departamento",
+  COUNT(*) AS "Tickets En Proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+GROUP BY
+  "departamento_colaborador_asignado"
+ORDER BY
+  "departamento_colaborador_asignado" NULLS FIRST
+[2025-06-26 15:31:09] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  "departamento_colaborador_asignado" AS "Departamento",
+  COUNT(*) AS "Cantidad de Tickets En Proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+GROUP BY
+  "departamento_colaborador_asignado"
+ORDER BY
+  COUNT(*) DESC NULLS LAST
+LIMIT 1
+[2025-06-26 15:35:06] [SQL EXECUTION OK] Tiempo: 0.12s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+[2025-06-26 15:35:12] [SQL EXECUTION ERROR] Tiempo: 0.12s
+SQL:
+WITH "tickets_por_departamento" AS (
+  SELECT
+    "departamento_colaborador_asignado" AS "departamento",
+    "folio_ticket",
+    CAST('epoch' AS TIMESTAMP) + (
+      CAST("tiempo_solucion_total" AS DOUBLE PRECISION) / 1000
+    ) AS "fecha_cierre",
+    EXTRACT(YEAR FROM "fecha_cierre") AS "anio_cierre",
+    EXTRACT(MONTH FROM "fecha_cierre") AS "mes_cierre"
+  FROM "ft_tickets_ia"
+  WHERE
+    "fecha_registro" >= DATE_TRUNC('YEAR', CURRENT_DATE)
+    AND "estatus_ticket" IN ('ATENDIDO', 'EN PROCESO')
+)
+SELECT
+  "departamento",
+  COUNT(*) AS "cantidad_tickets"
+FROM "tickets_por_departamento"
+WHERE
+  "tiempo_solucion_total" = (
+    SELECT
+      MAX("tiempo_solucion_total")
+    FROM "tickets_por_departamento"
+  )
+GROUP BY
+  "departamento"
+ORDER BY
+  "cantidad_tickets" DESC NULLS LAST
+LIMIT 1
+Error: el operador no existe: timestamp without time zone + double precision
+LINE 5:     CAST('epoch' AS TIMESTAMP) + (
+                                       ^
+HINT:  Ningún operador coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-26 15:36:48] [SQL EXECUTION ERROR] Tiempo: 0.06s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  CAST('now' AS TIMESTAMP) - "fecha_registro" AS "tiempo_en_proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+  AND "fecha_cierre" IS NULL
+  AND "tiempo_en_proceso" > INTERVAL '30 DAYS'
+Error: no existe la columna «tiempo_en_proceso»
+LINE 10:   AND "tiempo_en_proceso" > INTERVAL '30 DAYS'
+               ^
+
+[2025-06-26 15:36:52] [SQL EXECUTION OK] Tiempo: 0.14s
+SQL:
+WITH "tickets_junio_2025" AS (
+  SELECT
+    "fecha_registro",
+    "departamento_colaborador_asignado"
+  FROM "ft_tickets_ia"
+  WHERE
+    EXTRACT(MONTH FROM "fecha_registro") = 6
+    AND EXTRACT(YEAR FROM "fecha_registro") = 2025
+)
+SELECT
+  "departamento_colaborador_asignado",
+  COUNT(*) AS "tickets"
+FROM "tickets_junio_2025"
+GROUP BY
+  "departamento_colaborador_asignado"
+ORDER BY
+  "tickets" DESC NULLS LAST
+LIMIT 1
+[2025-06-26 15:38:03] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  "area_colaborador_asignado" AS "Área",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL) AS "Tickets en proceso"
+FROM "ft_tickets_ia"
+GROUP BY
+  "area_colaborador_asignado"
+[2025-06-26 15:38:05] [SQL EXECUTION OK] Tiempo: 0.06s
+SQL:
+SELECT
+  COUNT(*) AS "tickets_en_proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "unidad_negocio" = 'Servidores'
+  AND "estatus_ticket" = 'EN PROCESO'
+  AND "fecha_cierre" IS NULL
+[2025-06-26 15:41:25] [SQL EXECUTION OK] Tiempo: 0.10s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "unidad_negocio" = 'Servidores'
+[2025-06-26 15:41:58] [SQL EXECUTION OK] Tiempo: 0.06s
+SQL:
+SELECT
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO'
+    AND "area_colaborador_asignado" ILIKE '%AUDITORIA%') AS "tickets_en_proceso"
+FROM "ft_tickets_ia"
+[2025-06-26 15:45:59] [SQL EXECUTION OK] Tiempo: 0.06s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "unidad_negocio" = 'Servidores'
+[2025-06-26 15:47:37] [SQL EXECUTION OK] Tiempo: 0.13s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+  AND "area_colaborador_asignado" ILIKE '%SERVIDORES%'
+[2025-06-26 15:48:20] [SQL EXECUTION OK] Tiempo: 0.04s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "unidad_negocio" ILIKE 'Construcción'
+  AND NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+[2025-06-26 15:48:24] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+  AND "area_colaborador_asignado" ILIKE '%SERVIDORES%'
+[2025-06-26 15:52:35] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "folio_ticket" AS "Ticket ID",
+  "fecha_registro" AS "Fecha de registro",
+  "estatus_ticket" AS "Estado actual",
+  "servicio" AS "Servicio asociado",
+  CAST('1970-01-01' AS TIMESTAMP) + (
+    CAST("tiempo_atencion" AS DOUBLE PRECISION) / 60
+  ) AS "Tiempo de atención",
+  CAST('1970-01-01' AS TIMESTAMP) + (
+    CAST("tiempo_sla_servicio" AS DOUBLE PRECISION) / 60
+  ) AS "SLA definido",
+  "estatus_atencion" AS "Estado de cumplimiento del SLA"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "estatus_atencion" = 'FUERA DE TIEMPO'
+Error: el operador no existe: timestamp without time zone + double precision
+LINE 6:   CAST('1970-01-01' AS TIMESTAMP) + (
+                                          ^
+HINT:  Ningún operador coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-26 15:53:45] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-26 15:54:52] [SQL EXECUTION OK] Tiempo: 0.06s
+SQL:
+SELECT
+  "personal_reporta" AS "usuario",
+  MAX("fecha_registro") AS "fecha_ticket_mas_reciente",
+  MAX("folio_ticket") AS "ticket_mas_reciente"
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+GROUP BY
+  "personal_reporta"
+ORDER BY
+  "fecha_ticket_mas_reciente" DESC NULLS LAST,
+  "personal_reporta" NULLS FIRST
+LIMIT 1
+[2025-06-26 15:55:12] [SQL EXECUTION OK] Tiempo: 0.14s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:00:35] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:05:08] [SQL EXECUTION OK] Tiempo: 0.13s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:05:33] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:07:20] [SQL EXECUTION OK] Tiempo: 0.23s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:16:13] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:23:40] [SQL EXECUTION OK] Tiempo: 0.12s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:27:38] [SQL EXECUTION OK] Tiempo: 0.12s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:30:20] [SQL EXECUTION OK] Tiempo: 0.71s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:35:27] [SQL EXECUTION OK] Tiempo: 0.21s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:36:54] [SQL EXECUTION OK] Tiempo: 0.13s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:38:10] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:39:12] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  "folio_ticket",
+  "fecha_registro",
+  "estatus_ticket",
+  "servicio"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" IN ('FUERA DE TIEMPO', 'EN PROCESO')
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-26 16:40:54] [SQL EXECUTION OK] Tiempo: 0.15s
+SQL:
+SELECT
+  "fecha_registro",
+  "anio_registro",
+  "mes_registro",
+  "fecha_cierre",
+  "estatus_ticket",
+  "folio_ticket",
+  "sistema",
+  "motivo_ticket",
+  "estatus_atencion",
+  "tiempo_solucion_total",
+  "tiempo_sla_servicio",
+  "tiempo_atencion",
+  "servicio",
+  "empresa",
+  "unidad_negocio",
+  "personal_reporta",
+  "centro_trabajo",
+  "ciudad",
+  "departamento_colaborador_asignado",
+  "area_colaborador_asignado",
+  "colaborador_asignado",
+  "servicio_cierre_ticket",
+  "motivo_cierre_ticket"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" = 'FUERA DE TIEMPO' AND "estatus_ticket" = 'EN PROCESO'
+[2025-06-26 16:42:25] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE) /* Filtrar por el año actual */
+  AND "estatus_ticket" = 'ATENDIDO' /* Filtrar solo los tickets atendidos */
+  AND "colaborador_asignado" ILIKE '%BERENICE FERNANDEZ%' /* Filtrar por Berenice Fernandez */
+  AND NOT "fecha_cierre" IS NULL /* Solo tickets cerrados */
+  AND "fecha_cierre" >= DATE_TRUNC('YEAR', DATE_TRUNC('YEAR', CURRENT_DATE)) /* Filtrar solo los tickets del año actual */
+  AND "fecha_cierre" < DATE_TRUNC('YEAR', CURRENT_DATE) + INTERVAL '1 YEAR'
+[2025-06-26 16:43:30] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+WITH "tickets_atendidos_anio" AS (
+  SELECT
+    COUNT(*) AS "total_tickets_atendidos_anio"
+  FROM "ft_tickets_ia"
+  WHERE
+    NOT "fecha_cierre" IS NULL AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+), "tickets_atendidos_elizabeth" AS (
+  SELECT
+    COUNT(*) AS "total_tickets_atendidos_elizabeth"
+  FROM "ft_tickets_ia"
+  WHERE
+    NOT "fecha_cierre" IS NULL
+    AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+    AND "personal_reporta" ILIKE '%ELIZABETH%SILVA%'
+)
+SELECT
+  (
+    CAST("tickets_atendidos_elizabeth"."total_tickets_atendidos_elizabeth" AS REAL) / "tickets_atendidos_anio"."total_tickets_atendidos_anio"
+  ) * 100 AS "porcentaje_tickets_atendidos_elizabeth",
+  "tickets_atendidos_elizabeth"."total_tickets_atendidos_elizabeth" AS "tickets_atendidos_elizabeth"
+FROM "tickets_atendidos_elizabeth", "tickets_atendidos_anio"
+ORDER BY
+  "porcentaje_tickets_atendidos_elizabeth" DESC NULLS LAST
+LIMIT 3
+[2025-06-26 16:44:21] [SQL EXECUTION OK] Tiempo: 0.06s
+SQL:
+SELECT
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL) AS "tickets_en_proceso",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO'
+    AND NOT "fecha_cierre" IS NULL
+    AND "estatus_atencion" = 'FUERA DE TIEMPO') AS "tickets_fuera_de_tiempo"
+FROM "ft_tickets_ia"
+WHERE
+  "unidad_negocio" = 'CONSTRUCCION'
+[2025-06-26 16:46:56] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL) AS "tickets_en_proceso",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO'
+    AND "tiempo_atencion" > "tiempo_sla_servicio"
+    AND "unidad_negocio" = 'CONSTRUCCION') AS "tickets_fuera_de_tiempo"
+FROM "ft_tickets_ia"
+GROUP BY
+  "unidad_negocio"
+[2025-06-26 16:49:11] [SQL EXECUTION OK] Tiempo: 0.13s
+SQL:
+SELECT
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL) AS "tickets_en_proceso",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO'
+    AND NOT "fecha_cierre" IS NULL
+    AND "estatus_atencion" = 'FUERA DE TIEMPO') AS "tickets_fuera_de_tiempo"
+FROM "ft_tickets_ia"
+WHERE
+  "unidad_negocio" ILIKE '%CONSTRUCCION%'
+[2025-06-26 17:06:23] [SQL EXECUTION OK] Tiempo: 0.17s
+SQL:
+SELECT
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL) AS "tickets_en_proceso",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO'
+    AND NOT "fecha_cierre" IS NULL
+    AND "estatus_atencion" = 'FUERA DE TIEMPO') AS "tickets_fuera_de_tiempo"
+FROM "ft_tickets_ia"
+WHERE
+  "unidad_negocio" ILIKE '%CONSTRUCCION%'
+[2025-06-26 17:32:37] [SQL EXECUTION OK] Tiempo: 0.11s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+[2025-06-26 17:33:11] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  "departamento_colaborador_asignado" AS "Departamento",
+  "area_colaborador_asignado" AS "Área",
+  COUNT(*) AS "Tickets En Proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+GROUP BY
+  "departamento_colaborador_asignado",
+  "area_colaborador_asignado"
+ORDER BY
+  "departamento_colaborador_asignado" NULLS FIRST,
+  "area_colaborador_asignado" NULLS FIRST

@@ -90,8 +90,8 @@ def search_collection(collection_name: str, query_embedding: list, fields: list,
 
         # logger.info(f"Hit Data.\n{hit_data}")
 
-        if hit_data:
-            logger.info(f"🕵🏻 Resultados encontrados en la colección '{collection_name}': {len(hit_data)} coincidencias.")
+        # if hit_data:
+        #     logger.info(f"🕵🏻 Resultados encontrados en la colección '{collection_name}': {len(hit_data)} coincidencias.")
         
         return hit_data
 

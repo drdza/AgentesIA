@@ -116,8 +116,7 @@ def _render_dataframe(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGen
 
     try:
         for col in metrics:
-            col_lower = col.lower()
-            print(col_lower)
+            col_lower = col.lower()            
             if "%" in col_lower or "porcentaje" in col_lower:
                 format_dict[col] = lambda x: f"{int(x)/100:.2%}" 
 
@@ -312,7 +311,7 @@ def _render_agent_details(data: dict) -> None:
 
 def render_visual_response(data: dict, index: int) -> None:
     """Muestra la visualización de resultados si el SQL se ejecutó correctamente."""
-    st.markdown("Aquí los resultados a tu pregunta.")
+    st.markdown("Esto fue lo que encontré relacionado a tu pregunta")
     df_raw = pd.DataFrame(data["result"]["rows"], columns=data["result"]["columns"])
 
     df, dimensions, metrics, chart_type = _prepare_chart_data(df_raw)
@@ -337,7 +336,7 @@ def render_visual_response(data: dict, index: int) -> None:
 
 def render_error_with_agent_context(data: dict, index: int) -> None:
     """Muestra el SQL y la reformulación del agente aunque el resultado haya fallado."""
-    st.markdown("##### El agente generó una consulta, pero falló al ejecutarla.")
+    st.markdown("Lo siento, algo falló al intentar responderte.")
 
     error_msg = data.get("result", {}).get("error", "Error desconocido.")
     st.error(f"😭 {error_msg}")

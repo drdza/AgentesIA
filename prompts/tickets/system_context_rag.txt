@@ -68,6 +68,11 @@ No inventes ni utilices tablas que no estén definidas en el DDL. Todos los camp
     - Remueve acentos si es posible y convierte el texto a mayúsculas.
     - Ejemplo: `area_colaborador_asignado ILIKE '%CENTRO%DE%ATENCION%A%USUARIOS%'`
 
+- Para **empresas o unidades de negocio**:
+    - Utiliza `ILIKE` y coloca `%` entre palabras clave.
+    - Remueve acentos si es posible y convierte el texto a mayúsculas.
+    - Ejemplo: `unidad_negocio ILIKE '%PLASTICOS%'`
+
 - Siempre que se refiera a:
     - **Áreas**, utiliza el campo `area_colaborador_asignado`
         - Ejemplo: ¿Cuántos tickets abiertos en el área de soporte? -> `...WHERE area_colaborador_asignado ILIKE '%SOPORTE%'`

@@ -33,10 +33,13 @@ KEYWORDS_DOMINIO = [
 def clean_enhanced_question(response: str, user_question: str) -> dict:
     user_question = user_question.lower()
     enhanced_dict = {}
-
-    try:        
+    logger.info(response)
+    try: 
+        #clean_response = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", response.strip(), flags=re.DOTALL | re.IGNORECASE)
         clean_response = re.sub(r"```(?:json)?\s*([\s\S]+?)\s*```", r"\1", response.strip())
-        clean_response = clean_response.replace("'", '"')
+        logger.info(clean_response)
+        #clean_response = clean_response.replace("'", '"')
+        #logger.info(clean_response)
         enhanced_dict = json.loads(clean_response)
 
     except Exception:
@@ -75,8 +78,7 @@ def handle_user_question(question: str, domain: str):
     
     total_time = 0
     flow_text = ''
-    result = {}
-    return_type = "fail"
+    result = {}    
 
     # Cargar prompt adecuado al dominio
     try:
@@ -134,7 +136,7 @@ def handle_user_question(question: str, domain: str):
             raise FlowGenerationError(f"[Generación de Flujo Técnico]. {str(e)}")
     
     logger.info("📝 Generando prompt para SQL...")
-    rag_context = _join_rag_context(rag_data)
+    rag_context = join_rag_context(rag_data)
 
     try:
         formatted_sql_prompt = sql_prompt_template.format(            

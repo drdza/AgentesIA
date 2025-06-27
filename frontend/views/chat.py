@@ -26,7 +26,7 @@ def fetch_sql_response(question: str, domain: str) -> dict:
         response = requests.post(
             API_SQL_GENERATION,
             json={"question": question, "domain": domain},
-            timeout=60,
+            timeout=120,
         )
         response.raise_for_status()
         return response.json()
@@ -116,20 +116,22 @@ def render_message_history():
             else:
                 st.write(content)
 
-def handle_chat():
+def _handle_chat():    
     caption_placeholder = st.empty()
-    caption_placeholder.caption(
-        f"¡Hola 🙋🏻‍♂️ {st.session_state.user_name}!, bienvenid@ al Agente SQL"
+    caption_placeholder.markdown(
+        f"""
+        <div class="init-message">
+            ¡Hola 🙋🏻‍♂️ {st.session_state.user_name}!
+            Te doy la bienvenida a <strong>AltheIA – Tickets</strong>, 
+            nuestro primer agente SQL con IA diseñado para ayudarte a consultar y entender nuestros datos.
+        </div>        
+        <div class='diss-message'>
+            <strong>⚠️ Este agente está en fase de prueba.</strong> Por favor, revisa con cuidado los resultados antes de tomar decisiones.
+        </div>        
+        """
+        , unsafe_allow_html=True
     )
-    with st.expander("ℹ️ Disclaimer", expanded=False):    
-        st.markdown(
-            """
-            <div style="font-size: 0.8rem; color: #6c757d; opacity: 0.6; text-align: justify">
-                El <strong>Agente SQL</strong> puede cometer errores. El modelo utiliza datos de tu <strong>sistema de tickets corporativo</strong> para responder tus preguntas.<br>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+    st.divider()
 
 
     # Inicializar variables de sesión si no existen
@@ -159,15 +161,66 @@ def handle_chat():
     # Renderizar historial completo
     render_message_history()   
 
+def _custom_agent():
+    st.markdown("""
+        <style>
+        
+        .init-message {            
+            color:#051e33;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .diss-message {
+            font-size: small;
+            color:#6f7070;
+            opacity: 0.7;            
+            padding-top: 10px;            
+            padding-bottom: 10px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+                
+        /* Estilo para h1 */
+        h1 {
+            color: #051e33 !important;  /* Azul institucional */
+            font-size: 2.3rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 1rem;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        /* Aplica sombra y fondo solo al asistente */
+        div[data-testid="stChatMessage"]:has(img[alt="assistant avatar"]) {            
+            background-color: rgba(255, 255, 255, 0.2);
+            back
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0px 1px 5px rgba(128, 116, 168, 0.5);
+        }
+
+        /* Aplica sombra y fondo distinto al usuario (cuando NO es el asistente) */
+        div[data-testid="stChatMessage"]:not(:has(img[alt="assistant avatar"])) {
+            background-color: rgba(12, 54, 89, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0px 1px 5px rgba(12, 54, 89, 0.2);
+        }
+                
+        </style>
+        """, unsafe_allow_html=True)
+
 def main():
-    st.set_page_config(page_title="Agente SQL")    
-    st.title("🤖 Agente SQL")
+    st.set_page_config(page_title="AltheIA SQL")    
+    _custom_agent()
+    st.title("AltheIA - Tickets")
     st.session_state.setdefault("assistant_avatar", "https://raw.githubusercontent.com/drdza/st-images/refs/heads/main/avatar/artificial-intelligence.png")
     st.session_state.setdefault("user_avatar", "https://raw.githubusercontent.com/drdza/st-images/refs/heads/main/avatar/user.png")
     st.session_state.setdefault("user_name", "InnovAmigo")
     st.session_state.setdefault("dominio", "tickets")    
-    handle_chat()
-
+    _handle_chat()
+    
 
 ## Arranque de la app
 main()
