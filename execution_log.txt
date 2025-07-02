@@ -8087,3 +8087,1867 @@ GROUP BY
 ORDER BY
   "departamento_colaborador_asignado" NULLS FIRST,
   "area_colaborador_asignado" NULLS FIRST
+[2025-06-27 11:11:09] [SQL EXECUTION OK] Tiempo: 0.14s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-27 11:14:58] [SQL EXECUTION OK] Tiempo: 0.06s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-27 11:16:22] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-27 11:20:13] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-27 11:22:00] [SQL EXECUTION OK] Tiempo: 0.12s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-27 11:31:19] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-27 11:35:07] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "fecha_registro" >= DATE_TRUNC('YEAR', CURRENT_DATE)
+  AND NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+[2025-06-27 11:35:46] [SQL EXECUTION ERROR] Tiempo: 0.03s
+SQL:
+SELECT
+  "colaborador_asignado",
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "fecha_registro" >= DATE_TRUNC('MONTH', '2020-06-01')
+  AND "fecha_registro" < DATE_TRUNC('MONTH', '2020-07-01')
+  AND "colaborador_asignado" ILIKE '%ELIZABETH SILVA%'
+GROUP BY
+  "colaborador_asignado"
+ORDER BY
+  COUNT(*) DESC NULLS LAST
+Error: la función date_trunc(unknown, unknown) no es única
+LINE 6:   "fecha_registro" >= DATE_TRUNC('MONTH', '2020-06-01')
+                              ^
+HINT:  No se pudo escoger la función más adecuada. Puede ser necesario agregar conversiones explícitas de tipos.
+
+[2025-06-27 11:36:59] [SQL EXECUTION OK] Tiempo: 0.15s
+SQL:
+SELECT
+  "departamento_colaborador_asignado" AS "Departamento",
+  "area_colaborador_asignado" AS "Área",
+  COUNT(*) AS "Tickets Abiertos"
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+  AND "fecha_registro" <= CURRENT_DATE
+GROUP BY
+  "departamento_colaborador_asignado",
+  "area_colaborador_asignado"
+ORDER BY
+  "departamento_colaborador_asignado" NULLS FIRST,
+  "area_colaborador_asignado" NULLS FIRST
+[2025-06-27 11:38:41] [SQL EXECUTION OK] Tiempo: 0.10s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "fecha_registro" >= DATE_TRUNC('YEAR', CURRENT_DATE)
+  AND "fecha_registro" < DATE_TRUNC('YEAR', CURRENT_DATE) + INTERVAL '1 YEAR'
+  AND "personal_reporta" ILIKE '%DANIEL%RODRÍGUEZ%'
+[2025-06-27 11:52:39] [SQL EXECUTION OK] Tiempo: 0.18s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "fecha_registro" >= DATE_TRUNC('YEAR', CURRENT_DATE)
+  AND "fecha_registro" < DATE_TRUNC('YEAR', CURRENT_DATE + INTERVAL '1 YEAR')
+  AND "personal_reporta" ILIKE '%DANIEL%RODRÍGUEZ%'
+[2025-06-27 12:02:06] [SQL EXECUTION ERROR] Tiempo: 0.04s
+SQL:
+Para responder a la pregunta, generaremos una consulta SQL que cumpla con las reglas establecidas.
+
+```sql
+WITH tickets_daniel AS (
+  SELECT
+    EXTRACT(MONTH FROM fecha_registro) AS mes_registro,
+    COUNT(*) FILTER (WHERE personal_reporta ILIKE '%DANIEL%RODR%') AS tickets_daniel,
+    COUNT(*) AS total_tickets
+  FROM
+    ft_tickets_ia
+  WHERE
+    anio_registro = CURRENT_DATE - INTERVAL '1 year'::interval
+  GROUP BY
+    mes_registro
+),
+porcentaje_tickets AS (
+  SELECT
+    mes_registro,
+    tickets_daniel / total_tickets AS porcentaje_tickets
+  FROM
+    tickets_daniel
+)
+SELECT
+  TRUNC(fecha_registro, 'QUARTER') AS trimestre,
+  AVG(porcentaje_tickets) AS promedio_tickets_daniel
+FROM
+  porcentaje_tickets
+GROUP BY
+  trimestre
+ORDER BY
+  promedio_tickets_daniel DESC
+LIMIT 5;
+```
+
+Esta consulta cumple con las reglas establecidas y responde a la pregunta planteada.
+
+1. Filtra tickets por el año actual.
+2. Agrupa tickets por el mes del registro.
+3. Conta el número de tickets generados por Daniel Rodríguez en cada mes.
+4. Calcula el porcentaje de tickets generados por Daniel Rodríguez en cada mes respecto al total de tickets generados en ese mes.
+5. Ordena los resultados por el porcentaje de tickets generados por Daniel Rodríguez en descenso.
+6. Selecciona los cinco primeros meses con mayor porcentaje de tickets generados por Daniel Rodríguez.
+7. Agrupa los resultados por trimestre.
+8. Calcula el promedio del porcentaje de tickets generados por Daniel Rodríguez en cada trimestre.
+Error: error de sintaxis en o cerca de «Para»
+LINE 1: Para responder a la pregunta, generaremos una consulta SQL q...
+        ^
+
+[2025-06-27 12:03:26] [SQL EXECUTION ERROR] Tiempo: 0.15s
+SQL:
+Para responder a la pregunta, generaremos una consulta SQL que cumpla con las reglas establecidas.
+
+```sql
+WITH tickets_daniel AS (
+  SELECT
+    EXTRACT(MONTH FROM fecha_registro) AS mes_registro,
+    COUNT(*) FILTER (WHERE personal_reporta ILIKE '%DANIEL%RODR%') AS tickets_daniel,
+    COUNT(*) AS total_tickets
+  FROM
+    ft_tickets_ia
+  WHERE
+    anio_registro = CURRENT_DATE - INTERVAL '1 year'::interval
+  GROUP BY
+    mes_registro
+),
+porcentaje_tickets AS (
+  SELECT
+    mes_registro,
+    tickets_daniel / total_tickets AS porcentaje_tickets
+  FROM
+    tickets_daniel
+)
+SELECT
+  TRUNC(fecha_registro, 'QUARTER') AS trimestre,
+  AVG(porcentaje_tickets) AS promedio_tickets_daniel
+FROM
+  porcentaje_tickets
+GROUP BY
+  trimestre
+ORDER BY
+  promedio_tickets_daniel DESC
+LIMIT 5;
+```
+
+Esta consulta cumple con las reglas establecidas y responde a la pregunta planteada.
+
+1. Filtra tickets por el año actual.
+2. Agrupa tickets por el mes del registro.
+3. Conta el número de tickets generados por Daniel Rodríguez en cada mes.
+4. Calcula el porcentaje de tickets generados por Daniel Rodríguez en cada mes respecto al total de tickets generados en ese mes.
+5. Ordena los resultados por el porcentaje de tickets generados por Daniel Rodríguez en descenso.
+6. Selecciona los cinco primeros meses con mayor porcentaje de tickets generados por Daniel Rodríguez.
+7. Agrupa los resultados por trimestre.
+8. Calcula el promedio del porcentaje de tickets generados por Daniel Rodríguez en cada trimestre.
+Error: error de sintaxis en o cerca de «Para»
+LINE 1: Para responder a la pregunta, generaremos una consulta SQL q...
+        ^
+
+[2025-06-27 12:07:55] [SQL EXECUTION OK] Tiempo: 0.14s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%DANIEL RODRÍGUEZ%'
+[2025-06-27 12:10:26] [SQL EXECUTION OK] Tiempo: 0.18s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%DANIEL%RODRÍGUEZ%'
+[2025-06-27 12:13:05] [SQL EXECUTION OK] Tiempo: 0.11s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%DANIEL%RODRÍGUEZ%'
+[2025-06-27 12:13:37] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%DANIEL%RODRÍGUEZ%'
+[2025-06-27 12:52:37] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  "estatus_ticket" AS "estatus_inicial",
+  COUNT(*) FILTER(WHERE
+    "personal_reporta" ILIKE '%DANIEL%RODRÍGUEZ%') AS "tickets_generados"
+FROM "ft_tickets_ia"
+GROUP BY
+  "estatus_ticket"
+[2025-06-27 13:08:07] [SQL EXECUTION OK] Tiempo: 0.15s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "fecha_registro" >= DATE_TRUNC('YEAR', CURRENT_DATE)
+  AND "personal_reporta" ILIKE '%DANIEL%RODRIGUEZ%'
+GROUP BY
+  "fecha_registro"
+[2025-06-27 13:08:58] [SQL EXECUTION OK] Tiempo: 0.15s
+SQL:
+SELECT
+  "estatus_ticket" AS "estatus",
+  COUNT(*) AS "total"
+FROM "ft_tickets_ia"
+GROUP BY
+  "estatus_ticket"
+[2025-06-27 13:09:41] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+WITH "tickets_daniel" AS (
+  SELECT
+    *
+  FROM "ft_tickets_ia"
+  WHERE
+    "personal_reporta" ILIKE '%DANIEL% RODRÍGUEZ%'
+), "tickets_karol" AS (
+  SELECT
+    *
+  FROM "ft_tickets_ia"
+  WHERE
+    "personal_reporta" ILIKE '%KAROL% MANDUJANO%'
+)
+SELECT
+  "tickets_daniel"."folio_ticket" AS "folio_ticket_daniel",
+  "tickets_daniel"."folio_ticket" AS "folio_ticket_karol",
+  COUNT(*) FILTER(WHERE
+    "tickets_daniel"."folio_ticket" = "tickets_karol"."folio_ticket") AS "tickets_en_común"
+FROM "tickets_daniel"
+FULL OUTER JOIN "tickets_karol"
+  ON "tickets_daniel"."folio_ticket" = "tickets_karol"."folio_ticket"
+GROUP BY
+  "tickets_daniel"."folio_ticket"
+[2025-06-27 13:11:28] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+  AND "fecha_cierre" IS NULL
+  AND (
+    (
+      "tiempo_atencion" > (
+        "tiempo_sla_servicio" * 60 * 24 * 7
+      )
+    )
+    OR (
+      "tiempo_sla_servicio" IS NULL
+    )
+  )
+GROUP BY
+  "folio_ticket",
+  "estatus_ticket",
+  "sistema",
+  "motivo_ticket",
+  "centro_trabajo",
+  "ciudad",
+  "empresa",
+  "unidad_negocio",
+  "personal_reporta",
+  "colaborador_asignado",
+  "departamento_colaborador_asignado",
+  "area_colaborador_asignado",
+  "servicio",
+  "tiempo_solucion_total",
+  "tiempo_sla_servicio",
+  "tiempo_atencion",
+  "estatus_atencion"
+[2025-06-27 13:20:36] [SQL EXECUTION OK] Tiempo: 0.25s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+  AND "fecha_cierre" IS NULL
+  AND "fecha_registro" < DATE_TRUNC('DAY', CURRENT_DATE) - INTERVAL '7 DAYS'
+[2025-06-27 13:21:34] [SQL EXECUTION OK] Tiempo: 0.17s
+SQL:
+SELECT
+  "area_colaborador_asignado" AS "area",
+  COUNT(*) AS "tickets"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" IN ('EN PROCESO', 'ATENDIDO', 'AUTORIZACIÓN', 'MESA DE AYUDA')
+GROUP BY
+  "area_colaborador_asignado"
+ORDER BY
+  "tickets" DESC NULLS LAST
+[2025-06-27 13:22:42] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  "personal_reporta"
+FROM (
+  SELECT
+    "personal_reporta",
+    COUNT(*) AS "tickets_asignados"
+  FROM (
+    SELECT
+      *
+    FROM "ft_tickets_ia"
+    WHERE
+      EXTRACT(MONTH FROM "fecha_registro") = 3
+      AND EXTRACT(YEAR FROM "fecha_registro") = 2024
+  ) AS "tickets_marzo_2024"
+  WHERE
+    NOT "personal_reporta" IS NULL
+  GROUP BY
+    "personal_reporta"
+) AS "tickets_por_usuario"
+WHERE
+  "tickets_asignados" > 10
+[2025-06-27 13:24:35] [SQL EXECUTION OK] Tiempo: 0.30s
+SQL:
+SELECT
+  "motivo_ticket" AS "tipo_solicitud",
+  COUNT(*) AS "cantidad"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "motivo_ticket"
+[2025-06-27 13:25:48] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+[2025-06-27 13:26:34] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  "departamento_colaborador_asignado" AS "departamento",
+  "area_colaborador_asignado" AS "area",
+  COUNT(*) AS "tickets_abiertos"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+GROUP BY
+  "departamento_colaborador_asignado",
+  "area_colaborador_asignado"
+[2025-06-27 13:28:14] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "colaborador_asignado" ILIKE '%DANIEL IBARRA%'
+[2025-06-27 13:29:08] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "colaborador_asignado" ILIKE '%NORA ELIZABETH REYES%'
+[2025-06-27 13:29:57] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%NORA ELIZABETH REYES%'
+  AND "estatus_ticket" <> 'Atendido'
+  AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+ORDER BY
+  "tiempo_sla_servicio" NULLS FIRST
+Error: la columna «ft_tickets_ia.tiempo_sla_servicio» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 10:   "tiempo_sla_servicio" NULLS FIRST
+           ^
+
+[2025-06-27 13:56:31] [SQL EXECUTION OK] Tiempo: 0.17s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%NORA ELIZABETH REYES%'
+  AND "estatus_atencion" = 'FUERA DE TIEMPO'
+[2025-06-27 14:03:18] [SQL EXECUTION OK] Tiempo: 0.11s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%DANIEL%RODRIGUEZ%'
+  AND NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+[2025-06-27 14:05:15] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%DANIEL%RODRIGUEZ%'
+  AND NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+[2025-06-27 14:08:12] [SQL EXECUTION ERROR] Tiempo: 0.06s
+SQL:
+SELECT
+  "personal_reporta" AS "nombre_personal"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" <> 'CANCELADO'
+  AND CAST("fecha_registro" AS DATE) = CAST(EXTRACT(MONTH FROM CURRENT_DATE) AS INT)
+  AND CAST("fecha_registro" AS DATE) = CAST(EXTRACT(YEAR FROM CURRENT_DATE) AS INT)
+  AND CAST("fecha_registro" AS DATE) <= CURRENT_DATE
+Error: el operador no existe: date = integer
+LINE 6:   AND CAST("fecha_registro" AS DATE) = CAST(EXTRACT(MONTH FR...
+                                             ^
+HINT:  Ningún operador coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-27 14:58:50] [SQL EXECUTION OK] Tiempo: 0.14s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-27 15:01:33] [SQL EXECUTION ERROR] Tiempo: 0.06s
+SQL:
+SELECT
+  EXTRACT(MONTH FROM "fecha_registro") AS "mes_registro",
+  COUNT(*) FILTER(WHERE
+    "personal_reporta" ILIKE '%DANIEL%RODRIGUEZ%') AS "tickets_reportados"
+FROM "ft_tickets_ia"
+GROUP BY
+  "mes_registro"
+Error: la columna «ft_tickets_ia.fecha_registro» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 2:   EXTRACT(MONTH FROM "fecha_registro") AS "mes_registro",
+                             ^
+
+[2025-06-27 15:11:17] [SQL EXECUTION OK] Tiempo: 0.15s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "colaborador_asignado" ILIKE '%DANIEL RODRÍGUEZ%'
+  AND "estatus_ticket" = 'ATENDIDO'
+[2025-06-27 15:14:48] [SQL EXECUTION ERROR] Tiempo: 0.03s
+SQL:
+Para contar el número de tickets generados por "Daniel Rodríguez", podemos utilizar la siguiente consulta SQL:
+
+```sql
+SELECT COUNT(*)
+FROM ft_tickets_ia
+WHERE personal_reporta ILIKE '%DANIEL%RODRIGUEZ%'
+```
+
+Esta consulta selecciona todos los registros de la tabla `ft_tickets_ia`, filtra los registros por el nombre del usuario final (`personal_reporta`), y luego conta el número total de registros filtrados.
+
+Nota: Recuerda que el campo `personal_reporta` contiene el nombre completo del usuario que reportó el ticket, por lo que se debe utilizar el nombre completo en la consulta.
+
+Para remover los acentos y convertir el texto a mayúsculas, puedes utilizar las siguientes funciones:
+
+```sql
+LOWER(REPLACE(personal_reporta, 'á', 'a')) ILIKE '%DANIEL%RODRIGUEZ%'
+```
+
+Esto remueve los acentos de la cadena y la convierte a minúsculas antes de compararla con el nombre buscado.
+Error: error de sintaxis en o cerca de «Para»
+LINE 1: Para contar el número de tickets generados por "Daniel Rodrí...
+        ^
+
+[2025-06-27 15:17:43] [SQL EXECUTION OK] Tiempo: 0.11s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%DANIEL%RODRIGUEZ%'
+[2025-06-27 15:18:34] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+  AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+ORDER BY
+  "tiempo_atencion" DESC NULLS LAST
+LIMIT 10
+[2025-06-27 15:20:17] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  'Soporte Técnico' AS "area",
+  SUM(
+    CASE WHEN "area_colaborador_asignado" ILIKE '%SOPORTE TÉCNICO%' THEN 1 ELSE 0 END
+  ) AS "total_tickets",
+  CAST(SUM(
+    CASE
+      WHEN "area_colaborador_asignado" ILIKE '%SOPORTE TÉCNICO%'
+      THEN "tiempo_atencion"
+      ELSE 0
+    END
+  ) AS DOUBLE PRECISION) / 3600 AS "promedio_tiempo_atencion",
+  CAST(SUM(
+    CASE
+      WHEN "area_colaborador_asignado" ILIKE '%SOPORTE TÉCNICO%'
+      THEN (
+        "tiempo_atencion" - "tiempo_sla_servicio"
+      )
+      ELSE 0
+    END
+  ) AS DOUBLE PRECISION) / 3600 AS "promedio_tiempo_fuera_de_tiempo"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  AND "estatus_ticket" IN ('EN PROCESO', 'ATENDIDO')
+UNION ALL
+SELECT
+  'Soporte Foráneos' AS "area",
+  SUM(
+    CASE WHEN "area_colaborador_asignado" ILIKE '%SOPORTE FORÁNEOS%' THEN 1 ELSE 0 END
+  ) AS "total_tickets",
+  CAST(SUM(
+    CASE
+      WHEN "area_colaborador_asignado" ILIKE '%SOPORTE FORÁNEOS%'
+      THEN "tiempo_atencion"
+      ELSE 0
+    END
+  ) AS DOUBLE PRECISION) / 3600 AS "promedio_tiempo_atencion",
+  CAST(SUM(
+    CASE
+      WHEN "area_colaborador_asignado" ILIKE '%SOPORTE FORÁNEOS%'
+      THEN (
+        "tiempo_atencion" - "tiempo_sla_servicio"
+      )
+      ELSE 0
+    END
+  ) AS DOUBLE PRECISION) / 3600 AS "promedio_tiempo_fuera_de_tiempo"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  AND "estatus_ticket" IN ('EN PROCESO', 'ATENDIDO')
+ORDER BY
+  "promedio_tiempo_fuera_de_tiempo" DESC NULLS LAST
+[2025-06-27 16:01:32] [SQL EXECUTION ERROR] Tiempo: 0.22s
+SQL:
+SELECT
+  'Soporte Técnico' AS "area_servicio",
+  SUM(
+    CASE WHEN "area_colaborador_asignado" ILIKE '%SOPORTE TÉCNICO%' THEN 1 ELSE 0 END
+  ) AS "total_tickets",
+  ROUND(
+    CAST(SUM(
+      CASE WHEN "area_colaborador_asignado" ILIKE '%SOPORTE TÉCNICO%' THEN 1 ELSE 0 END
+    ) AS DECIMAL) / (
+      SUM(
+        CASE WHEN "area_colaborador_asignado" ILIKE '%SOPORTE TÉCNICO%' THEN 1 ELSE 0 END
+      ) + SUM(
+        CASE WHEN "area_colaborador_asignado" ILIKE '%SOPORTE FORÁNEOS%' THEN 1 ELSE 0 END
+      )
+    ) * 100,
+    2
+  ) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE) - 1
+UNION ALL
+SELECT
+  'Soporte Foráneos',
+  SUM(
+    CASE WHEN "area_colaborador_asignado" ILIKE '%SOPORTE FORÁNEOS%' THEN 1 ELSE 0 END
+  ) AS "total_tickets",
+  ROUND(
+    CAST(SUM(
+      CASE WHEN "area_colaborador_asignado" ILIKE '%SOPORTE FORÁNEOS%' THEN 1 ELSE 0 END
+    ) AS DECIMAL) / (
+      SUM(
+        CASE WHEN "area_colaborador_asignado" ILIKE '%SOPORTE TÉCNICO%' THEN 1 ELSE 0 END
+      ) + SUM(
+        CASE WHEN "area_colaborador_asignado" ILIKE '%SOPORTE FORÁNEOS%' THEN 1 ELSE 0 END
+      )
+    ) * 100,
+    2
+  ) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE) - 1
+ORDER BY
+  "total_tickets" DESC NULLS LAST
+Error: división por cero
+
+[2025-06-27 16:13:50] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+WITH "tickets_por_area" AS (
+  SELECT
+    EXTRACT(YEAR FROM "fecha_registro") AS "anio_registro",
+    "area_colaborador_asignado",
+    COUNT(*) AS "tickets"
+  FROM "ft_tickets_ia"
+  WHERE
+    "anio_registro" = (
+      SELECT
+        EXTRACT(YEAR FROM CURRENT_DATE) - 1
+    )
+  GROUP BY
+    "area_colaborador_asignado"
+)
+SELECT
+  "area_colaborador_asignado",
+  "tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM("tickets") OVER (), 2) AS "porcentaje"
+FROM "tickets_por_area"
+WHERE
+  "area_colaborador_asignado" ILIKE ANY(
+    ARRAY['SOPORTE TECNICO', 'SOPORTE FORANEOS']
+  )
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: la columna «ft_tickets_ia.fecha_registro» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 3:     EXTRACT(YEAR FROM "fecha_registro") AS "anio_registro",
+                              ^
+
+[2025-06-27 16:17:33] [SQL EXECUTION ERROR] Tiempo: 0.06s
+SQL:
+WITH "tickets_por_area" AS (
+  SELECT
+    EXTRACT(YEAR FROM "fecha_registro") AS "anio_registro",
+    "area_colaborador_asignado",
+    COUNT(*) AS "tickets"
+  FROM "ft_tickets_ia"
+  WHERE
+    "fecha_registro" <= CURRENT_DATE - INTERVAL '1 YEAR'
+  GROUP BY
+    "area_colaborador_asignado"
+)
+SELECT
+  "area_colaborador_asignado",
+  "tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM("tickets") OVER (), 2) AS "porcentaje"
+FROM "tickets_por_area"
+WHERE
+  "area_colaborador_asignado" ILIKE ANY(
+    ARRAY['SOPORTE TECNICO', 'SOPORTE FORANEOS']
+  )
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: la columna «ft_tickets_ia.fecha_registro» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 3:     EXTRACT(YEAR FROM "fecha_registro") AS "anio_registro",
+                              ^
+
+[2025-06-27 16:36:17] [SQL EXECUTION ERROR] Tiempo: 0.06s
+SQL:
+WITH "tickets_por_area" AS (
+  SELECT
+    EXTRACT(YEAR FROM "fecha_registro") AS "anio_registro",
+    "area_colaborador_asignado",
+    COUNT(*) AS "tickets"
+  FROM "ft_tickets_ia"
+  WHERE
+    "anio_registro" = (
+      SELECT
+        EXTRACT(YEAR FROM CURRENT_DATE) - 1
+    )
+  GROUP BY
+    "area_colaborador_asignado"
+)
+SELECT
+  "area_colaborador_asignado",
+  "tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM("tickets") OVER (), 2) AS "porcentaje"
+FROM "tickets_por_area"
+WHERE
+  "area_colaborador_asignado" ILIKE '%SOPORTE%'
+  OR "area_colaborador_asignado" ILIKE '%FORÁNEOS%'
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: la columna «ft_tickets_ia.fecha_registro» debe aparecer en la cláusula GROUP BY o ser usada en una función de agregación
+LINE 3:     EXTRACT(YEAR FROM "fecha_registro") AS "anio_registro",
+                              ^
+
+[2025-06-27 16:51:44] [SQL EXECUTION ERROR] Tiempo: 0.06s
+SQL:
+WITH "tickets_por_area" AS (
+  SELECT
+    "servicio",
+    COUNT(*) AS "total_tickets",
+    ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+  FROM "ft_tickets_ia"
+  WHERE
+    "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE) - 1
+  GROUP BY
+    "servicio"
+)
+SELECT
+  "servicio",
+  "total_tickets",
+  "porcentaje"
+FROM "tickets_por_area"
+WHERE
+  "servicio" IN ('Soporte Técnico', 'Soporte Foráneos')
+ORDER BY
+  "total_tickets" DESC NULLS LAST,
+  "porcentaje" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 5:     ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(C...
+            ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-27 16:55:01] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+WITH "tickets_por_area" AS (
+  SELECT
+    "servicio",
+    "area_colaborador_asignado",
+    COUNT(*) AS "total_tickets"
+  FROM "ft_tickets_ia"
+  WHERE
+    "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE) - 1
+  GROUP BY
+    "servicio",
+    "area_colaborador_asignado"
+)
+SELECT
+  "servicio",
+  "area_colaborador_asignado",
+  "total_tickets",
+  ROUND(
+    CAST("total_tickets" * 100.0 AS DOUBLE PRECISION) / SUM("total_tickets") OVER (),
+    2
+  ) AS "porcentaje"
+FROM "tickets_por_area"
+WHERE
+  "area_colaborador_asignado" ILIKE '%SOPORTE%'
+  OR "area_colaborador_asignado" ILIKE '%SOPORTE% FOR%'
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 17:   ROUND(
+           ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-27 17:08:50] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  COUNT(*) AS "tickets_fuera_de_tiempo",
+  SUM("tiempo_atencion") AS "tiempo_total_fuera_de_tiempo"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" = 'FUERA DE TIEMPO'
+  OR "estatus_ticket" = 'EN PROCESO'
+  AND "tiempo_atencion" > "tiempo_sla_servicio"
+[2025-06-27 17:09:40] [SQL EXECUTION OK] Tiempo: 0.11s
+SQL:
+SELECT
+  "estatus_ticket",
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "colaborador_asignado" ILIKE '%DANIEL RODRÍGUEZ%'
+GROUP BY
+  "estatus_ticket"
+[2025-06-27 17:10:06] [SQL EXECUTION OK] Tiempo: 0.10s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "colaborador_asignado" ILIKE '%DANIEL RODRIGUEZ%'
+[2025-06-27 17:12:32] [SQL EXECUTION OK] Tiempo: 0.12s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "colaborador_asignado" ILIKE '%DANIEL RODRIGUEZ%'
+[2025-06-27 17:13:38] [SQL EXECUTION OK] Tiempo: 0.10s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%DANIEL%RODRIGUEZ%'
+[2025-06-27 17:14:00] [SQL EXECUTION OK] Tiempo: 0.10s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%DANIEL%RODRIGUEZ%'
+[2025-06-27 17:14:37] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "colaborador_asignado" ILIKE '%Berenice Fernández%'
+[2025-06-27 17:23:51] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "colaborador_asignado" ILIKE '%BERENICE%FERNANDEZ%'
+[2025-06-27 17:25:50] [SQL EXECUTION OK] Tiempo: 0.20s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%BERENICE ROBLEDO%'
+  AND "mes_registro" = EXTRACT(MONTH FROM CURRENT_DATE)
+[2025-06-27 17:26:36] [SQL EXECUTION OK] Tiempo: 0.12s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%ELIZABETH SILVA%'
+[2025-06-27 17:27:00] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%ALMA%ROBLEDO%' AND "estatus_ticket" <> 'CANCELADO'
+[2025-06-27 17:28:41] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%BERENICE%ROBLEDO%'
+[2025-06-27 17:29:03] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%JUAN%' AND "estatus_ticket" <> 'CANCELADO'
+[2025-06-27 17:30:49] [SQL EXECUTION ERROR] Tiempo: 0.06s
+SQL:
+```sql
+SELECT
+    "area_colaborador_asignado",
+    COUNT(*) AS "total_tickets",
+    ROUND(COUNT(*) * 100.0 / (
+        SELECT COUNT(*) FROM ft_tickets_ia WHERE mes_registro = EXTRACT(MONTH FROM CURRENT_DATE) AND anio_registro = EXTRACT(YEAR FROM CURRENT_DATE)
+    ) OVER (), 2) AS porcentaje
+FROM "ft_tickets_ia"
+WHERE mes_registro = EXTRACT(MONTH FROM CURRENT_DATE) AND anio_registro = EXTRACT(YEAR FROM CURRENT_DATE)
+AND "area_colaborador_asignado" ILIKE '%SOPORTE%'
+GROUP BY "area_colaborador_asignado";
+
+SELECT
+    "area_colaborador_asignado",
+    COUNT(*) AS "total_tickets",
+    ROUND(COUNT(*) * 100.0 / (
+        SELECT COUNT(*) FROM ft_tickets_ia WHERE mes_registro = EXTRACT(MONTH FROM CURRENT_DATE) AND anio_registro = EXTRACT(YEAR FROM CURRENT_DATE)
+    ) OVER (), 2) AS porcentaje
+FROM "ft_tickets_ia"
+WHERE mes_registro = EXTRACT(MONTH FROM CURRENT_DATE) AND anio_registro = EXTRACT(YEAR FROM CURRENT_DATE)
+AND "area_colaborador_asignado" ILIKE '%FORANEOS%'
+GROUP BY "area_colaborador_asignado";
+```
+Error: error de sintaxis en o cerca de «```»
+LINE 1: ```sql
+        ^
+
+[2025-06-27 17:43:47] [SQL EXECUTION ERROR] Tiempo: 0.06s
+SQL:
+SELECT
+  "area_colaborador_asignado" AS "area_servicio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE) - 1
+  AND "area_colaborador_asignado" ILIKE ANY(
+    ARRAY['%SOPORTE%TECNICO%', '%SOPORTE%FORANEOS%']
+  )
+GROUP BY
+  "area_colaborador_asignado"
+ORDER BY
+  "total_tickets" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COU...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-27 17:44:28] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "area_colaborador_asignado" AS "area_servicio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE) - 1
+  AND "area_colaborador_asignado" ILIKE ANY(
+    ARRAY['%SOPORTE%TECNICO%', '%SOPORTE%FORANEOS%']
+  )
+GROUP BY
+  "area_colaborador_asignado"
+ORDER BY
+  "total_tickets" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COU...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-27 17:48:08] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "area_colaborador_asignado" AS "area_servicio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE) - 1
+  AND "area_colaborador_asignado" ILIKE ANY(
+    ARRAY['%SOPORTE%TECNICO%', '%SOPORTE%FORANEOS%']
+  )
+GROUP BY
+  "area_colaborador_asignado"
+ORDER BY
+  "total_tickets" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COU...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-27 17:49:36] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "area_colaborador_asignado" AS "area_servicio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE) - 1
+  AND "area_colaborador_asignado" ILIKE ANY(
+    ARRAY['%SOPORTE%TECNICO%', '%SOPORTE%FORANEOS%']
+  )
+GROUP BY
+  "area_colaborador_asignado"
+ORDER BY
+  "total_tickets" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COU...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-06-30 10:05:44] [SQL EXECUTION OK] Tiempo: 0.21s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO') AND "fecha_cierre" IS NULL
+[2025-06-30 10:17:31] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  "fecha_registro",
+  "anio_registro",
+  "mes_registro",
+  "folio_ticket",
+  "sistema",
+  "motivo_ticket",
+  "estatus_ticket",
+  "personal_reporta",
+  "colaborador_asignado",
+  "area_colaborador_asignado",
+  "servicio",
+  "tiempo_solucion_total",
+  "tiempo_sla_servicio",
+  "tiempo_atencion",
+  "estatus_atencion"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+[2025-06-30 10:23:10] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+[2025-06-30 10:27:26] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'ATENDIDO') AS "atendidos"
+FROM "ft_tickets_ia"
+WHERE
+  "mes_registro" = 6 AND "anio_registro" = 2025
+[2025-06-30 10:29:08] [SQL EXECUTION OK] Tiempo: 0.44s
+SQL:
+SELECT
+  "colaborador_asignado",
+  COUNT(*) AS "tickets_en_proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+GROUP BY
+  "colaborador_asignado"
+ORDER BY
+  "tickets_en_proceso" DESC NULLS LAST
+LIMIT 1
+[2025-07-01 12:40:39] [SQL EXECUTION OK] Tiempo: 0.17s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "mes_registro" = 6 AND "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+[2025-07-01 12:41:05] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "mes_registro" = 5
+  AND "anio_registro" = 2025
+  AND "estatus_ticket" IN ('ATENDIDO', 'EN PROCESO', 'AUTORIZACIÓN', 'MESA DE AYUDA')
+  AND "personal_reporta" ILIKE '%%'
+[2025-07-01 12:41:38] [SQL EXECUTION ERROR] Tiempo: 0.03s
+SQL:
+SELECT
+  "zapatos"
+FROM "ft_tickets_ia"
+WHERE
+  "personal_reporta" ILIKE '%USUARIO%'
+Error: no existe la columna «zapatos»
+LINE 2:   "zapatos"
+          ^
+
+[2025-07-01 12:46:09] [SQL EXECUTION OK] Tiempo: 0.14s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025
+[2025-07-01 12:53:57] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025
+  AND NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "estatus_ticket" = 'EN PROCESO'
+  AND "fecha_cierre" IS NULL
+[2025-07-01 12:54:12] [SQL EXECUTION ERROR] Tiempo: 0.03s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'ATENDIDO'
+  AND "anio_registro" = 2025
+  AND "estatus_ticket_cierre" = 'CERRADO'
+Error: no existe la columna «estatus_ticket_cierre»
+LINE 7:   AND "estatus_ticket_cierre" = 'CERRADO'
+              ^
+
+[2025-07-01 12:54:39] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+WITH "tickets_actual_mes" AS (
+  SELECT
+    "folio_ticket",
+    "estatus_ticket",
+    "servicio_cierre_ticket"
+  FROM "ft_tickets_ia"
+  WHERE
+    "fecha_registro" >= DATE_TRUNC('MONTH', CURRENT_DATE)
+    AND "fecha_registro" < DATE_TRUNC('MONTH', CURRENT_DATE) + INTERVAL '1 MONTH'
+)
+SELECT
+  AVG(CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 ELSE 0 END) AS "promedio_atendidos",
+  AVG(CASE WHEN "estatus_ticket" = 'EN PROCESO' THEN 1 ELSE 0 END) AS "promedio_en_proceso",
+  AVG(CASE WHEN "estatus_ticket" = 'CANCELADO' THEN 1 ELSE 0 END) AS "promedio_cancelados",
+  AVG(CASE WHEN "estatus_ticket" = 'AUTORIZACIÓN' THEN 1 ELSE 0 END) AS "promedio_autorizacion",
+  AVG(CASE WHEN "estatus_ticket" = 'MESA DE AYUDA' THEN 1 ELSE 0 END) AS "promedio_mesa_ayuda"
+FROM "tickets_actual_mes"
+[2025-07-01 13:20:05] [SQL EXECUTION OK] Tiempo: 0.11s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'EN PROCESO'
+[2025-07-01 13:20:28] [SQL EXECUTION OK] Tiempo: 0.23s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE) - 1
+[2025-07-01 13:44:02] [SQL EXECUTION OK] Tiempo: 0.17s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+[2025-07-01 13:44:34] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "fecha_registro" >= DATE_TRUNC('MONTH', CURRENT_DATE)
+  AND "fecha_registro" < DATE_TRUNC('MONTH', CURRENT_DATE) + INTERVAL '1 MONTH'
+  AND NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+[2025-07-01 13:45:13] [SQL EXECUTION OK] Tiempo: 3.51s
+SQL:
+SELECT
+  EXTRACT(MONTH FROM "fecha_registro") AS "mes_registro",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" <> 'ATENDIDO INICIAL'
+    AND "estatus_ticket" <> 'EN PROCESO INICIAL'
+    AND "estatus_ticket" <> 'CANCELADO'
+    AND "estatus_ticket" <> 'AUTORIZACIÓN'
+    AND "estatus_ticket" <> 'MESA DE AYUDA') AS "tickets_atendidos"
+FROM "ft_tickets_ia"
+WHERE
+  "area_colaborador_asignado" ILIKE '%SOPORTE%'
+GROUP BY
+  EXTRACT(MONTH FROM "fecha_registro")
+ORDER BY
+  EXTRACT(MONTH FROM "fecha_registro") NULLS FIRST
+[2025-07-01 13:47:46] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025
+  AND "estatus_ticket" = 'EN PROCESO'
+  AND "fecha_cierre" IS NULL
+[2025-07-01 13:48:12] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025
+  AND "estatus_ticket" = 'EN PROCESO'
+  AND "fecha_cierre" IS NULL
+[2025-07-01 13:48:44] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "mes_registro" = 6 AND "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+[2025-07-01 13:49:46] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "area_colaborador_asignado" ILIKE '%SERVIDORES%'
+  AND CAST(DATE_TRUNC('MONTH', "fecha_cierre") AS DATE) = CAST(DATE_TRUNC('MONTH', CURRENT_DATE) AS DATE)
+  AND "estatus_ticket" <> 'CANCELADO'
+[2025-07-01 13:51:30] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+  AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+[2025-07-01 13:51:56] [SQL EXECUTION OK] Tiempo: 0.06s
+SQL:
+SELECT
+  DATE_PART('month', CURRENT_DATE) AS "mes_actual",
+  DATE_PART('year', CURRENT_DATE) AS "año_actual",
+  COUNT(*) AS "tickets_en_proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+  AND "fecha_cierre" IS NULL
+  AND CAST(DATE_TRUNC('MONTH', "fecha_registro") AS DATE) = CAST(DATE_TRUNC('MONTH', CURRENT_DATE) AS DATE)
+[2025-07-01 13:52:16] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "area_colaborador_asignado" ILIKE '%SERVIDORES%'
+  AND EXTRACT(MONTH FROM "fecha_registro") = EXTRACT(MONTH FROM CURRENT_DATE)
+  AND EXTRACT(YEAR FROM "fecha_registro") = EXTRACT(YEAR FROM CURRENT_DATE)
+[2025-07-01 15:21:46] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+[2025-07-01 15:22:09] [SQL EXECUTION OK] Tiempo: 0.04s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "mes_registro" = 6 AND "estatus_ticket" = 'CERRADO'
+[2025-07-02 15:43:16] [SQL EXECUTION OK] Tiempo: 0.12s
+SQL:
+SELECT
+  EXTRACT(YEAR FROM "fecha_registro") AS "anio",
+  EXTRACT(MONTH FROM "fecha_registro") AS "mes",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'ATENDIDO'
+    OR (
+      NOT "fecha_cierre" IS NULL AND "estatus_ticket" <> 'CANCELADO'
+    )) AS "tickets_atendidos",
+  COUNT(*) FILTER(WHERE
+    "estatus_ticket" = 'EN PROCESO') AS "tickets_en_proceso"
+FROM "ft_tickets_ia"
+WHERE
+  EXTRACT(YEAR FROM "fecha_registro") = 2025
+  AND EXTRACT(MONTH FROM "fecha_registro") = 6
+GROUP BY
+  EXTRACT(YEAR FROM "fecha_registro"),
+  EXTRACT(MONTH FROM "fecha_registro")
+[2025-07-02 15:44:09] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+```sql
+SELECT
+    area_colaborador_asignado,
+    COUNT(*) AS total_tickets,
+    ROUND(COUNT(*) * 100.0 / (
+        SELECT COUNT(*) FROM ft_tickets_ia WHERE estatus_ticket = 'ATENDIDO'
+    ) OVER (), 2) AS porcentaje
+FROM ft_tickets_ia
+WHERE estatus_ticket = 'ATENDIDO'
+GROUP BY area_colaborador_asignado;
+```
+Error: error de sintaxis en o cerca de «```»
+LINE 1: ```sql
+        ^
+
+[2025-07-02 15:44:29] [SQL EXECUTION ERROR] Tiempo: 0.03s
+SQL:
+```sql
+SELECT
+    area_colaborador_asignado,
+    COUNT(*) AS total_tickets,
+    ROUND(COUNT(*) * 100.0 / (
+        SELECT COUNT(*) FROM ft_tickets_ia WHERE estatus_ticket = 'ATENDIDO'
+    ) OVER (), 2) AS porcentaje
+FROM ft_tickets_ia
+WHERE estatus_ticket = 'ATENDIDO'
+GROUP BY area_colaborador_asignado;
+```
+Error: error de sintaxis en o cerca de «```»
+LINE 1: ```sql
+        ^
+
+[2025-07-02 15:45:13] [SQL EXECUTION OK] Tiempo: 0.61s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'ATENDIDO' AND "area_colaborador_asignado" ILIKE '%SOPORTE%'
+[2025-07-02 15:45:37] [SQL EXECUTION OK] Tiempo: 0.12s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  NOT "estatus_ticket" IN ('ATENDIDO', 'CANCELADO')
+  AND "fecha_cierre" IS NULL
+  AND EXTRACT(MONTH FROM "fecha_registro") = EXTRACT(MONTH FROM CURRENT_DATE)
+[2025-07-02 15:46:19] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "colaborador_asignado" ILIKE '%DANIEL IBARRA%'
+[2025-07-02 15:46:43] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+  AND "fecha_cierre" IS NULL
+  AND "colaborador_asignado" ILIKE '%DANIEL%IBARRA%'
+[2025-07-02 16:00:19] [SQL EXECUTION OK] Tiempo: 2.88s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets_junio_2025",
+  COUNT(CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 END) AS "tickets_atendidos_junio_2025"
+FROM "ft_tickets_ia"
+WHERE
+  EXTRACT(MONTH FROM "fecha_registro") = 6
+  AND EXTRACT(YEAR FROM "fecha_registro") = 2025
+[2025-07-02 17:01:42] [SQL EXECUTION OK] Tiempo: 0.21s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'ATENDIDO' AND "area_colaborador_asignado" ILIKE '%REDES%'
+[2025-07-02 17:02:30] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  EXTRACT(MONTH FROM "fecha_registro") = EXTRACT(MONTH FROM CURRENT_DATE)
+  AND EXTRACT(YEAR FROM "fecha_registro") = EXTRACT(YEAR FROM CURRENT_DATE)
+[2025-07-02 17:03:04] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "tiempo_atencion" > 604800
+[2025-07-02 17:03:52] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  AND "mes_registro" = EXTRACT(MONTH FROM CURRENT_DATE)
+[2025-07-02 17:04:20] [SQL EXECUTION ERROR] Tiempo: 0.07s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COU...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:04:20] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COU...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:05:26] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COU...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:05:29] [SQL EXECUTION ERROR] Tiempo: 0.08s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / COUNT(*) * 100, 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / COUNT(*...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:08:40] [SQL EXECUTION ERROR] Tiempo: 0.07s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COU...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:08:43] [SQL EXECUTION ERROR] Tiempo: 0.07s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / COUNT(*) * 100, 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / COUNT(*...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:11:34] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(
+    CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / (
+      SELECT
+        COUNT(*)
+      FROM "ft_tickets_ia"
+      WHERE
+        "anio_registro" = 2025
+    ),
+    2
+  ) AS "porcentaje_atendidos"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje_atendidos" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:11:37] [SQL EXECUTION OK] Tiempo: 0.17s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(
+    CAST(COUNT(*) * 100.0 AS DECIMAL(10, 2)) / (
+      SELECT
+        COUNT(*)
+      FROM "ft_tickets_ia"
+      WHERE
+        "anio_registro" = 2025
+    ),
+    2
+  ) AS "porcentaje_atendidos"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje_atendidos" DESC NULLS LAST
+[2025-07-02 17:26:16] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(
+    CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / (
+      SELECT
+        COUNT(*)
+      FROM "ft_tickets_ia"
+      WHERE
+        "anio_registro" = 2025
+    ),
+    2
+  ) AS "porcentaje_atendidos"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje_atendidos" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:26:19] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(
+    CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / (
+      SELECT
+        COUNT(*)
+      FROM "ft_tickets_ia"
+      WHERE
+        "anio_registro" = 2025
+    ),
+    2
+  ) AS "porcentaje_atendidos"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje_atendidos" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:30:34] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COU...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:30:36] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / COUNT(*) * 100, 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / COUNT(*...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:36:18] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(
+    CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / (
+      SELECT
+        COUNT(*)
+      FROM "ft_tickets_ia"
+      WHERE
+        "anio_registro" = 2025
+    ),
+    2
+  ) AS "porcentaje_atendidos"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje_atendidos" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:36:21] [SQL EXECUTION ERROR] Tiempo: 0.04s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(
+    CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / (
+      SELECT
+        COUNT(*)
+      FROM "ft_tickets_ia"
+      WHERE
+        "anio_registro" = 2025
+    ),
+    2
+  ) AS "porcentaje_atendidos"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje_atendidos" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:38:52] [SQL EXECUTION ERROR] Tiempo: 0.05s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / SUM(COU...
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:38:54] [SQL EXECUTION OK] Tiempo: 0.11s
+SQL:
+SELECT
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(CAST(COUNT(*) * 100.0 AS DECIMAL(10, 2)) / COUNT(*) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "estatus_ticket" = 'ATENDIDO'
+GROUP BY
+  "unidad_negocio"
+ORDER BY
+  "porcentaje" DESC NULLS LAST
+[2025-07-02 17:40:47] [SQL EXECUTION ERROR] Tiempo: 0.04s
+SQL:
+SELECT
+  "servicio",
+  COUNT(*) AS "total_tickets",
+  ROUND(
+    CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / (
+      SELECT
+        COUNT(*)
+      FROM "ft_tickets_ia"
+      WHERE
+        "estatus_atencion" = 'EN TIEMPO'
+    ),
+    2
+  ) AS "porcentaje_cumplimiento"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" = 'FUERA DE TIEMPO'
+GROUP BY
+  "servicio"
+HAVING
+  ROUND(
+    CAST(COUNT(*) * 100.0 AS DOUBLE PRECISION) / (
+      SELECT
+        COUNT(*)
+      FROM "ft_tickets_ia"
+      WHERE
+        "estatus_atencion" = 'EN TIEMPO'
+    ),
+    2
+  ) > 10
+Error: no existe la función round(double precision, integer)
+LINE 4:   ROUND(
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:40:52] [SQL EXECUTION ERROR] Tiempo: 0.12s
+SQL:
+SELECT
+  "servicio",
+  COUNT(*) AS "total_tickets",
+  ROUND(
+    CAST(COUNT(*) * 100.0 AS DECIMAL(10, 2)) / (
+      SELECT
+        COUNT(*)
+      FROM "ft_tickets_ia"
+      WHERE
+        "estatus_atencion" = 'EN TIEMPO'
+    ),
+    2
+  ) AS "porcentaje_cumplimiento"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_atencion" = 'FUERA DE TIEMPO'
+GROUP BY
+  "servicio"
+HAVING
+  ROUND(
+    CAST(COUNT(*) * 100.0 AS DECIMAL(10, 2)) / (
+      SELECT
+        COUNT(*)
+      FROM "ft_tickets_ia"
+      WHERE
+        "estatus_atencion" = 'EN TIEMPO'
+    ),
+    2
+  ) > 10
+Error: división por cero
+
+[2025-07-02 17:45:02] [SQL EXECUTION OK] Tiempo: 0.04s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+[2025-07-02 17:45:31] [SQL EXECUTION ERROR] Tiempo: 0.07s
+SQL:
+SELECT
+  ROUND(
+    CAST(COUNT(*) FILTER(WHERE
+      "estatus_ticket" = 'CANCELADO' AND "anio_registro" = 2025) * 100.0 AS DOUBLE PRECISION) / COUNT(*) FILTER(WHERE
+      "anio_registro" = 2025),
+    2
+  ) AS "tasa_cancelacion"
+FROM "ft_tickets_ia"
+Error: no existe la función round(double precision, integer)
+LINE 2:   ROUND(
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:45:33] [SQL EXECUTION OK] Tiempo: 0.11s
+SQL:
+SELECT
+  ROUND(
+    CAST(COUNT(*) FILTER(WHERE
+      "estatus_ticket" = 'CANCELADO' AND "anio_registro" = 2025) * 100.0 AS DECIMAL) / COUNT(*) FILTER(WHERE
+      "anio_registro" = 2025),
+    2
+  ) AS "tasa_cancelacion"
+FROM "ft_tickets_ia"
+[2025-07-02 17:46:13] [SQL EXECUTION ERROR] Tiempo: 0.03s
+SQL:
+SELECT
+  ROUND(
+    CAST(COUNT(*) FILTER(WHERE
+      "estatus_ticket" = 'EN PROCESO' AND "tiempo_atencion" > 5 * 24 * 60 * 60) * 100.0 AS DOUBLE PRECISION) / COUNT(*),
+    2
+  ) AS "porcentaje"
+FROM "ft_tickets_ia"
+Error: no existe la función round(double precision, integer)
+LINE 2:   ROUND(
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:46:15] [SQL EXECUTION OK] Tiempo: 0.19s
+SQL:
+SELECT
+  ROUND(
+    CAST(COUNT(*) FILTER(WHERE
+      "estatus_ticket" = 'EN PROCESO' AND "tiempo_atencion" > 5 * 24 * 60 * 60) * 100.0 AS DECIMAL) / COUNT(*),
+    2
+  ) AS "porcentaje"
+FROM "ft_tickets_ia"
+[2025-07-02 17:47:59] [SQL EXECUTION ERROR] Tiempo: 0.03s
+SQL:
+SELECT
+  ROUND(
+    CAST(COUNT(*) FILTER(WHERE
+      "estatus_ticket" = 'EN PROCESO'
+      AND "fecha_registro" < CURRENT_DATE - INTERVAL '5 DAYS') * 100.0 AS DOUBLE PRECISION) / COUNT(*) FILTER(WHERE
+      "fecha_registro" < CURRENT_DATE - INTERVAL '5 DAYS'),
+    2
+  ) AS "porcentaje_tickets_en_proceso"
+FROM "ft_tickets_ia"
+Error: no existe la función round(double precision, integer)
+LINE 2:   ROUND(
+          ^
+HINT:  Ninguna función coincide en el nombre y tipos de argumentos. Puede ser necesario agregar conversión explícita de tipos.
+
+[2025-07-02 17:48:01] [SQL EXECUTION OK] Tiempo: 0.13s
+SQL:
+SELECT
+  ROUND(
+    CAST(COUNT(*) FILTER(WHERE
+      "estatus_ticket" = 'EN PROCESO'
+      AND "fecha_registro" < CURRENT_DATE - INTERVAL '5 DAYS') * 100.0 AS DECIMAL) / COUNT(*) FILTER(WHERE
+      "fecha_registro" < CURRENT_DATE - INTERVAL '5 DAYS'),
+    2
+  ) AS "porcentaje_tickets_en_proceso"
+FROM "ft_tickets_ia"

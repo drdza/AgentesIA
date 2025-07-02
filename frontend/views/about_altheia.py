@@ -1,39 +1,15 @@
+import os
+import sys
 import streamlit as st
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from shared.utils import  load_css_style
 
 st.set_page_config(page_title="Sobre AltheIA – Tickets", page_icon="🧬")
 
-st.markdown("""
-<style>
-.justify-content {
-    text-align: justify;
-    text-justify: inter-word;
-}
-
-.info-message {
-    background-color: #e8f1fb; 
-    color: #0f4c81;            
-    border-left: 6px solid #4c96e0;
-    padding: 10px 16px;
-    border-radius: 6px;
-    font-size: 0.95rem;
-}
-
-.contact-banner {
-    background-color: #e7f5ec;
-    color: #1b4332;
-    border-left: 6px solid #95d5b2;
-    padding: 12px 20px;
-    border-radius: 6px;
-    margin-top: 1.5rem;
-    font-size: 0.95rem;
-}
-
-</style>
-""", unsafe_allow_html=True)
+st.markdown(load_css_style("about_style.css"), unsafe_allow_html=True)
 
 
-
-st.markdown("## 🧬 ¿Cómo fue desarrollado AltheIA?")
+st.markdown("## 🧬 ¿Cómo fue desarrollada AltheIA?")
 st.markdown("Un vistazo técnico y humano detrás del primer agente especializado en consultas inteligentes sobre tickets.")
 
 st.markdown("---")
@@ -134,12 +110,12 @@ st.markdown("""
 ---
 """, unsafe_allow_html=True)
 
-### 🌟 ¿Por qué se llama AltheIA?
+
 st.markdown(
 """
 <div class='justify-content'>
 
-### 📖 El origen
+### 🌟 ¿Por qué AltheIA?
 
 **AltheIA** nació de una combinación de inspiración y casualidad. En un principio, partimos de la palabra griega **Aletheia**, que significa *“verdad revelada”* — un concepto que resonaba con nuestra visión de una inteligencia artificial que no solo responde, sino que **descubre, aclara y revela**.
 
@@ -149,14 +125,16 @@ st.markdown(
 Este nuevo nombre cobró un nuevo sentido: no solo evoca verdad y profundidad, sino también un enfoque integrador, elegante e innovador.
 
 <div class='info-message'>
-<strong>AltheIA no es solo un asistente:</strong> es la puerta a una nueva forma de pensar los datos, 
+<strong>AltheIA no es solo una asistente:</strong> es la puerta a una nueva forma de pensar los datos, 
 las decisiones y el conocimiento en la organización.
 </div>
 
 </div>
+
+---
+
 """, unsafe_allow_html=True)
 
-st.divider()
 
 st.markdown("""
 <div class='contact-banner'>            

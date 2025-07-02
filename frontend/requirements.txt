@@ -1,3 +1,8 @@
+# Frontend
 streamlit
+altair
+
+# Backend
+fastapi
+uvicorn
 requests
-pandas

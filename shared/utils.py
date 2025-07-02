@@ -23,7 +23,6 @@ def load_config():
     else:
         raise "No existe un archivo de configuración <<config.json>>"
 
-
 def init_config():
     global LOG_FOLDER, OUTPUT_FOLDER, JSONL_OUTPUT, API_LOG_FILE, LOG_FILE
 
@@ -74,6 +73,7 @@ def format_log_entry(entry: dict) -> str:
         f"Tiempo: {entry.get('response_time', 0):.2f}s"
     )
 
+# Utilidad para cargar prompts según el dominio.
 def load_prompt_template( domain: str, template_name: str) -> str:
     """
     Carga una plantilla de prompt desde el directorio /prompts.
@@ -95,6 +95,19 @@ def load_prompt_template( domain: str, template_name: str) -> str:
     except FileNotFoundError:
         raise FileNotFoundError(f"⚠️ No se encontró la plantilla de prompt: {domain}")
     
+def load_css_style(css_name: str) -> str:
+    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'frontend', 'css'))
+    css_file= os.path.join(base_path, css_name)
+    css = ""
+
+    try:
+        with open(css_file, "r") as f:
+            css = f"<style>{f.read()}</style>"
+        
+        return css
+
+    except Exception as e:
+        raise FileNotFoundError(f"⚠️ No se encontró el css: {css_name}")
 
 def log_event(
     request_id: str,

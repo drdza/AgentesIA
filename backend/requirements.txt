@@ -1,10 +1,29 @@
-    fastapi
-    uvicorn
-    pydantic
-    sqlglot
-    openai
-    psycopg2-binary
-    speechrecognition
-    pydub
-    requests 
-    python-multipart
+# Backend
+fastapi
+uvicorn
+pydantic
+requests
+python-multipart
+
+# LLM y Agentes
+openai
+langgraph
+langchain
+
+# SQL
+sqlglot
+psycopg2-binary
+
+# Embeddings y análisis semántico
+scikit-learn
+
+# VectorStore
+pymilvus
+
+# Data
+pandas
+numpy
+
+# Utilidades
+python-dotenv
+

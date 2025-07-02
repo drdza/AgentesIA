@@ -1,16 +1,38 @@
-#version: "3.8"
+#version: "3.9"
 
 services:
 
-  llm-sql-inference:
-    container_name: llm-sql-inference
-    image: ghcr.io/huggingface/text-generation-inference:latest
+  llm-sql-inference-tf:
+    container_name: llm-sql-inference-tf
+    build:
+      context: ./inference_sql_service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=/models/mistral
+    volumes:
+      - ./inference_sql_service/Mistral-7B-Instruct-v0.3.bak:/models/mistral
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ['1']
+              device_ids: ['all']
+              capabilities: [gpu]
+    runtime: nvidia
+    profiles: ['disable']
+
+  llm-sql-inference-tgi:
+    container_name: llm-sql-inference
+    image: ghcr.io/huggingface/text-generation-inference:3.3.2
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['all']
               capabilities: [gpu]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80/health"]
@@ -20,12 +42,13 @@ services:
     ports:
       - "8000:80"
     volumes:
-       - ./inference_sql_service/Mistral-7B-Instruct-v0.3:/model
+       - ./inference_sql_service/Mistral-7B-Instruct-v0.3.bak:/model
     command:
       --model-id /model
-      --max-input-length 1024
-      --max-total-tokens 2048
+      --max-input-length 3072
+      --max-total-tokens 4096
     restart: unless-stopped
+    profiles: ['sql-stack']
 
   llm-context-inference:
     container_name: llm-context-inference-microservice
@@ -54,14 +77,7 @@ services:
     mem_limit: 64g
     memswap_limit: 64g
     user: "${USERID}"
-
-  auto-genia-app:
-    container_name: app-chat-sql-microservice
-    image: app_chat_sql:latest
-    ports:
-      - "8501:8501"
-    volumes:
-      - ./chat_sql:/app
+    profiles: ['disable']
 
   llm-embeddings:
     container_name: embedding-microservice
@@ -69,7 +85,7 @@ services:
     environment:
       - NGC_API_KEY=${NGC_API_KEY}
     depends_on:
-      llm-context-inference:
+      llm-sql-inference-tgi:
         condition: service_started
     healthcheck:
       test: ["CMD", "curl", "-sf", "http://localhost:8000/v1/health/ready"]
@@ -87,76 +103,55 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ['0']
+              device_ids: ['all']
               capabilities: [gpu]
     user: "${USERID}"
+    profiles: ['sql-stack']
 
-  agente_sql_backend:
-    container_name: agente_sql_backend
+  altheia_sql_backend:
+    container_name: altheia_sql_backend
     build:
-      context: ./agentes_sql_ia
+      context: ./altheia-sql
       dockerfile: backend/Dockerfile
-    image: ia-bot_agentes_sql_backend:latest
+    # image: altheia/sql_backend:latest
     ports:
       - "8010:8000"
     volumes:
-      - ./agentes_sql_ia/backend:/app/backend
-      - ./agentes_sql_ia/shared:/app/shared
-      - ./agentes_sql_ia/prompts:/app/prompts
-      - ./agentes_sql_ia/logs:/app/logs
-      - ./agentes_sql_ia/outputs:/app/outputs
+      - ./altheia-sql/backend:/app/backend
+      - ./altheia-sql/shared:/app/shared
+      - ./altheia-sql/prompts:/app/prompts
+      - ./altheia-sql/logs:/app/logs
+      - ./altheia-sql/outputs:/app/outputs
     depends_on:
-      - llm-context-inference
+      - llm-sql-inference-tgi
+    profiles: ['sql-stack']
 
-  agente_sql_frontend:
-    container_name: agente_sql_frontend
+  altheia_sql_frontend:
+    container_name: altheia_sql_frontend
     build:
-      context: ./agentes_sql_ia
+      context: ./altheia-sql
       dockerfile: frontend/Dockerfile
-    image: ia-bot_agentes_sql_frontend:latest
+    # image: altheia/sql_frontend:latest
     ports:
       - "8510:8501"
     volumes:
-      - ./agentes_sql_ia/frontend:/app/frontend
-      - ./agentes_sql_ia/shared:/app/shared
-      - ./agentes_sql_ia/prompts:/app/prompts
-      - ./agentes_sql_ia/logs:/app/logs
-      - ./agentes_sql_ia/outputs:/app/outputs
+      - ./altheia-sql/frontend:/app/frontend
+      - ./altheia-sql/shared:/app/shared
+      - ./altheia-sql/prompts:/app/prompts
+      - ./altheia-sql/logs:/app/logs
+      - ./altheia-sql/outputs:/app/outputs
     depends_on:
-      - agente_sql_backend
-
-  milvus:
-    container_name: milvus
-    image: milvusdb/milvus:v2.4.23
-    command: ["milvus", "run", "standalone"]
-    ports:
-      - "19530:19530"   # Puerto gRPC
-      - "9091:9091"     # Puerto HTTP REST
-    depends_on:
-      - etcd
-      - minio
-      - pulsar
-    environment:
-      ETCD_ENDPOINTS: etcd:2379
-      MINIO_ADDRESS: minio:9000
-      KNOWHERE_GPU_MEM_POOL_SIZE: 2048;4096
-      PULSAR_ADDRESS: pulsar://pulsar:6650
-    volumes:
-      - milvus_data:/var/lib/milvus
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9091/healthy"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      - altheia_sql_backend
+    profiles: ['sql-stack']
 
   etcd:
     container_name: etcd
-    image: quay.io/coreos/etcd:v3.6.0
+    image: quay.io/coreos/etcd:v3.5.16
     environment:
+      - ETCD_AUTO_COMPACTION_MODE=revision
       - ETCD_AUTO_COMPACTION_RETENTION=1000
-      - ETCD_QUOTA_BACKEND_BYTES=8589934592
-      - ETCD_HEARTBEAT_INTERVAL=500
-      - ETCD_ELECTION_TIMEOUT=2500
+      - ETCD_QUOTA_BACKEND_BYTES=4294967296
+      - ETCD_SNAPSHOT_COUNT=50000
     volumes:
       - etcd_data:/etcd
     command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
@@ -165,12 +160,11 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
-    ports:
-      - "2379:2379"
+    profiles: ['sql-stack']
 
   minio:
     container_name: minio
-    image: minio/minio:RELEASE.2025-05-24T17-08-30Z
+    image: minio/minio:RELEASE.2024-05-01T01-11-10Z
     environment:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
@@ -178,27 +172,49 @@ services:
       - "9011:9011"
       - "9010:9010"
     volumes:
-      - minio_data:/minio_data
-    command: minio server /minio_data --console-address ":9011" --address ":9010"
+      - minio_data:/data
+      #- minio_data:/minio_data
+    command: minio server /data --console-address ":9011" --address ":9010"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9010/minio/health/live"]
       interval: 30s
       timeout: 20s
       retries: 3
+    profiles: ['sql-stack']
 
-  pulsar:
-    container_name: pulsar
-    image: apachepulsar/pulsar:3.3.7
-    command: bin/pulsar standalone
-    ports:
-      - "6650:6650"
-      - "8080:8080"
+  milvus:
+    container_name: milvus
+    image: milvusdb/milvus:v2.4.23
+    command: ["milvus", "run", "standalone"]
+    environment:
+      ETCD_ENDPOINTS: etcd:2379
+      MINIO_ADDRESS: minio:9010
+      KNOWHERE_GPU_MEM_POOL_SIZE: 2048;4096
+      MINIO_BUCKET_NAME: milvus-bucket
     volumes:
-      - pulsar_data:/pulsar/data
-      - pulsar_data:/pulsar/logs
+      - milvus_data:/var/lib/milvus
+    ports:
+      - "19530:19530"
+      - "9091:9091"
+    depends_on:
+      - "etcd"
+      - "minio"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      interval: 30s
+      start_period: 90s
+      timeout: 20s
+      retries: 3
+    profiles: ['sql-stack']
 
 volumes:
   milvus_data:
+    name: milvus_data
   minio_data:
+    name: minio_data
   etcd_data:
-  pulsar_data:
+    name: etcd_data
+
+networks:
+  defualt:
+    name: altheia_network

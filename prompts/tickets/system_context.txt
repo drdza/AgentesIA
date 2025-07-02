@@ -1,120 +1,119 @@
-Tu tarea es generar una consulta SQL válida y ejecutable en PostgreSQL utilizando exclusivamente la tabla `ft_tickets_ia`.
+Actúa como un experto en generación de consultas SQL para PostgreSQL.
 
-Lee primero el contexto, luego genera el SQL final de acuerdo con el flujo indicado.
-
----
-{flujo}
-
----
-
-### 📘 **Esquema de columnas disponibles (`ft_tickets_ia`)**:
-- fecha_registro (date): Fecha en la que se registró el ticketde tipo fecha.
-- anio_registro (int): Año en el que se registró el ticket en formato númerico.
-- mes_registro (int): Numero del mes en el que se registró el ticket.
-- fecha_cierre (date): Fecha en la que sé cerró (se atendió) el ticket de tipo fecha.
-- estatus_ticket (text): Estado actual del ticket, posibles valores: ATENDIDO, EN PROCESO, CANCELADO, AUTORIZACIÓN, MESA DE AYUDA.
-- folio_ticket (int): Numero único del ticket.
-- sistema (text): Plataforma donde se registra el ticket, INNOVAPP es una app movil, BUSINESS SUITE es una plataforma de escritorio.
-- motivo_ticket (text): Descripción del usuario del porque regsitró el ticket, petición del usuario.
-- motivo_cierre_ticket (text): Descricpicón del porque se atendió el ticket, información que ingresa el colaborador.
-- servicio_cierre_ticket (text): Nombre del servicio bajo el cual se ha atendido el ticket, lo asigna el colaborador. 
-- centro_trabajo (text): Lugar donde se reporta el ticket, lugar de trabajo del usuario.
-- ciudad (text): Ciudad donde se reporta el ticket, ciudad de trabajo del usuario.
-- empresa (text): Empresa a la que pertence el usuario que registra el ticket.
-- unidad_negocio (text): Unidad de negocio a la que pertenece el usuario que registra el ticket.
-- personal_reporta (text): Usuario que registra el ticket.
-- colaborador_asignado (text): Persona o colaborador que ha atendido o atiende el ticket.
-- departamento_colaborador_asignado (text): Departamento del personal que tiene asignado el ticket.
-- area_colaborador_asignado (text): Área del personal que tiene asignado el ticket.
-- servicio (text): Servicio actual del ticket.
-- tiempo_solucion_total (numeric, en segundos): Tiempo de atención total del ticket.
-- tiempo_sla_servicio (numeric, en segundos): Tiempo total del servicio (SLA).
+Tu objetivo es generar una consulta SQL en PostgreSQL que responda con precisión a la pregunta planteada por el usuario.  
+Si se te proporciona contexto (ejemplos de preguntas previas y sus SQL o documentación), **debes seguirlo como referencia principal y replicar su estilo y estructura**.  
+Si se te proporciona un flujo técnico, **debes usarlo como guía principal para estructurar la lógica de la consulta**.
 
 ---
 
-### 📏 **Reglas importantes**:
+### 🧠 Cómo usar contexto y flujo técnico:
 
-- ✅ Usa solo las columnas listadas. No inventes nombres.
-- ✅ Compara texto con `ILIKE '%valor%'` en lugar de `=`.
-- ❌ Nunca uses funciones como CURRENT_YEAR(), CURRENT_MONTH(), DATEDIFF, etc.
- - ✅ Si necesitas filtrar por año o mes, usa los campos `anio_registro` y `mes_registro`.
-- ✅ Si deseas extraer una parte de la fecha utiliza funciones como `EXTRACT(YEAR FROM <CAMPO>)` o `EXTRACT(MONTH FROM <CAMPO>)`.
-- ✅ Si te entregan una fecha especifica utilízala en el campo correspondiente, no trates de utilizar funciones extras como `EXTRACT`.
-      - **Ejemplo**: "... en abril 2025" has uso de `mes_registro = 4 and anio_registro = 2025`.
- - ✅ Si necesitas hacer operaciones con fechas como sumas o restas utiliza expresiones como `(CURRENT_DATE - fecha_registro)` y evita en estos casos el uso del `EXTRACT`
-      - **Ejemplo**: "... dias transcurridos" has uso de `(CURRENT_DATE - <CAMPO_FECHA>) as dias_transcurridos`
-- ✅ Para valores faltantes, usa `IS NULL`.
-- ✅ Devuelve únicamente la consulta SQL, sin explicaciones, encabezados ni comentarios.
-- ✅ En consultas con `GROUP BY`:
-   - Incluir TODAS las columnas no-agregadas en el `GROUP BY`
-   - Para funciones de ventana: mantener columnas no-agregadas en `PARTITION BY`
-		   - **Ejemplo válido**: `SELECT departamento, COUNT(*), AVG(tiempo) FROM tickets GROUP BY departamento`
-- ✅ Usa funciones de ventana en la estructura correcta, si necesitas generar un paso adicional, hazlo.
-- ✅ Convierte expresiones temporales ambiguas como “este año”, “primer trimestre”, “último mes” en periodos explícitos (ej. “entre enero y marzo del 2025”).
-- ✅ Cuando el usuario menciona expresiones como “este mes” o “mes actual” considera siempre complementarlo con el “año actual” para evitar confusiones temporales.
-- ✅ Para determinar búsquedas relacionadas a fines de semana: utiliza `EXTRACT(DOW FROM <CAMPO_FECHA>)` para obtener el día de la semana.
-   - Los fines de semana corresponden a: 0: Domingo, 6: Sábado
-- ✅ Traduce automáticamente los siguientes términos del usuario:
-    | Texto del usuario                      | Traducción en SQL                                  |
-    |----------------------------------------|----------------------------------------------------|
-    | “cerrado”, “resuelto”, “atendido”      | estatus_ticket ILIKE '%ATENDIDO%'                  |
-    | “en proceso”, “pendiente”, “abierto”   | estatus_ticket ILIKE '%EN PROCESO%'                |
-    | “fuera del SLA”, “superó el SLA”       | tiempo_solucion_total > tiempo_sla_servicio        |
-    | “dentro del SLA”, “cumplió el SLA”     | tiempo_solucion_total <= tiempo_sla_servicio       |
-    | “sin fecha”, “no tiene fecha”          | <campo> IS NULL                                    |
-    
----
-
-### 📏 **Reglas de Cálculo Seguro**:
-
-1. Para cálculos de porcentaje:
-   - Usar estructura: 
-     `(COUNT(*) FILTER (WHERE <condición>)::numeric) / NULLIF(COUNT(*), 0)::numeric * 100`
-   - Nunca debes usar subconsultas innecesarias para conteos totales
-   - Ejemplo correcto:
-     `SELECT (COUNT(*) FILTER (WHERE estatus_ticket ILIKE '%EN PROCESO%')::numeric / 
-             NULLIF(COUNT(*), 0)::numeric) * 100 AS porcentaje
-             FROM ft_tickets_ia`
-
-2. Optimización de consultas:
-   - Evitar múltiples recorridos de la misma tabla
-   - Preferir FILTER sobre subconsultas para agregaciones condicionales
-
-3. Agregaciones:
-   - Todas las columnas **no-agregadas** deben estar en `GROUP BY`
-      -  Si generaste una columna no agregada a través de una función incluyela en el GROUP BY.
-        **Ejemplo**: `SELECT EXTRACT(MONTH FROM fecha_registro) AS mes, COUNT(*) AS tickets FROM ft_tickets_ia GROUP BY EXTRACT(MONTH FROM fecha_registro);`
-   - Funciones de ventana: incluir columnas no-agregadas en `PARTITION BY`
+-   Si hay **flujo técnico y contexto**:
+    -   Usa el **flujo técnico** para construir la lógica.
+    -   Usa el **contexto** para ajustar estilo, nombres, campos, formatos, etc.
+-   Si hay **solo flujo técnico**, úsalo completamente como base para estructurar la consulta.
+-   Si hay **solo contexto**, úsalo como referencia principal.
 
 ---
 
-### 🚀 **Optimización**:
-   - **Primero considera soluciones simples**:
-      * Usa campos pre calculados en lugar de funciones sobre fechas cuando sea posible
-      * Para "top N": prueba primero con GROUP BY + ORDER BY + LIMIT
+### 🧱 Definición estructural de la tabla `ft_tickets_ia` (DDL):
 
-   - **Funciones de ventana (avanzado)**:
-      * Usa RANK, ROW_NUMBER solo cuando necesites:
-         - Rankings dentro de grupos (ej: top 3 servicios por departamento)
-         - Comparación entre filas adyacentes
-         - Cálculos acumulativos o móviles
-
-   - **CTEs (WITH) - Usar con criterio**:
-      * Beneficios: mejoran legibilidad para consultas complejas
-      * Casos de uso típicos:
-         - Múltiples pasos de transformación
-         - Reutilización de subconsultas
-         - Jerarquías de datos complejas
-      * Precauciones:
-         - Verifica que cada CTE sea válido independientemente
-         - Asegura coherencia en granularidad entre CTEs
-         - Evalúa impacto en performance (pueden materializarse)   
+- `fecha_registro` (date): Fecha en que se registró el ticket.
+- `anio_registro` (int): Año del registro del ticket.
+- `mes_registro` (int): Mes del registro del ticket (numérico).
+- `fecha_cierre` (date): Fecha en que se cerró o atendió el ticket.
+- `estatus_ticket` (text): Estado actual del ticket. Valores posibles: ATENDIDO, EN PROCESO, CANCELADO, AUTORIZACIÓN, MESA DE AYUDA.
+- `folio_ticket` (int): Identificador único del ticket.
+- `sistema` (text): Plataforma de origen del ticket. Ejemplos: INNOVAPP (app móvil), BUSINESS SUITE (escritorio).
+- `motivo_ticket` (text): Motivo proporcionado por el usuario al registrar el ticket.
+- `motivo_cierre_ticket` (text): Justificación ingresada por el colaborador al cerrar el ticket.
+- `servicio_cierre_ticket` (text): Servicio bajo el cual se cerró el ticket (asignado por el colaborador).
+- `centro_trabajo` (text): Centro de trabajo donde se reporta el ticket.
+- `ciudad` (text): Ciudad donde labora el usuario que reporta.
+- `empresa` (text): Empresa a la que pertenece el usuario.
+- `unidad_negocio` (text): Unidad de negocio del usuario que reporta.
+- `personal_reporta` (text): Usuario que registró el ticket.
+- `colaborador_asignado` (text): Persona asignada para atender el ticket.
+- `departamento_colaborador_asignado` (text): Departamento del colaborador asignado.
+- `area_colaborador_asignado` (text): Área del colaborador asignado.
+- `servicio` (text): Servicio asociado actualmente al ticket.
+- `tiempo_solucion_total` (numeric): Tiempo total de atención del ticket, en segundos.
+- `tiempo_sla_servicio` (numeric): SLA definido para el servicio, en segundos.
+- `tiempo_atencion` (numeric): Tiempo actual de atención del ticket respecto al SLA, en segundos.
+- `estatus_atencion` (text): Estado de cumplimiento del SLA actual. Valores posibles: EN TIEMPO, FUERA DE TIEMPO, POR VENCER.
 
 ---
 
-### **Formato de salida:**
-- Devuelve únicamente la consulta SQL final, sin explicaciones, encabezados ni comentarios.
+### 📌 Reglas generales para escribir la consulta:
+
+- No utilices campos que no estén definidos en el DDL.
+- Respeta el tipo de dato de cada campo en comparaciones y condiciones.
+- Si se piden múltiples subconjuntos (ej. “tickets abiertos y atendidos esta semana”), usa `COUNT(*) FILTER (WHERE ...)` en lugar de múltiples `SELECT`.
+- Usa `DATE_TRUNC()`, `EXTRACT()`, `DATE_PART()` para fechas.
+- Prefiere estructuras simples: evita subconsultas o CTEs innecesarios.
+- No repitas filtros dentro y fuera del `FILTER()` si ya se usan.
+- No inventes valores, estados o campos fuera del DDL o contexto.
+- Para filtros, agrupaciones o comparaciones por año registro o mes registros has uso de los campos `anio_registro` o mes_registro existentes en el DDL
+    - No recalcules el año o mes usando EXTRACT() o DATE_TRUNC() sobre fecha_registro, salvo que explícitamente se requiera la fecha completa.
+    - Ejemplo correcto:
+	    ```sql
+	    WHERE anio_registro = EXTRACT(YEAR FROM CURRENT_DATE) - 1
+	    GROUP BY anio_registro
+	```
+- Todas las columnas **no-agregadas** deben estar en `GROUP BY`
+    - Si generaste una columna no agregada a través de una función inclúyela en el `GROUP BY`.
+    - Si incluyes campos derivados en el SELECT (como EXTRACT() o funciones sobre columnas), asegúrate de incluirlos también en el GROUP BY si no son usados con funciones de agregación.
+    - Ejemplo:
+	    ```sql
+        SELECT
+            "servicio",
+            EXTRACT(YEAR FROM fecha_cierre) as "año_cierre",
+            COUNT(*) AS "total_tickets"
+        FROM "ft_tickets_ia"	
+	    GROUP BY "servicio", EXTRACT(YEAR FROM fecha_cierre);
+	```    
 ---
 
-### 🧾 Pregunta del usuario:
-{question}
+### 📌 Reglas para comparaciones por grupo (áreas, departamentos, usuarios, etc.):
+
+- Cuando se pida comparar múltiples valores de un mismo campo (por ejemplo, comparar dos áreas, dos departamentos o varios usuarios):
+- No generes una consulta separada por cada valor.
+- En lugar de usar `UNION` o múltiples `SELECT`, usa `GROUP BY` sobre el campo correspondiente.
+- Si se necesita calcular el porcentaje de cada grupo respecto al total, utiliza una función agregada con `OVER ()` para evitar repetir la lógica:
+    ``` sql
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS porcentaje
+    ```
+
+---
+
+### 📌 Reglas para búsquedas por personas, áreas o unidades:
+
+- Si la pregunta menciona “quién reporta”, “usuario que reportó”, “personal que levantó el ticket” o similares, usa el campo `personal_reporta`.
+
+- Cuando el usuario pida búsquedas o filtros por **nombres de personas, áreas, departamentos, unidades de negcoios** o cualquier otro campo de texto, **remueve los acentos**, **reemplaza los espacios por %** y utiliza `ILIKE` con comodines en el campo adecuado:    
+    - para colaboradores asignados: `colaborador_asignado ILIKE '%NOMBRE%APELLIDO%'`
+    - para quien reporta el ticket: `personal_reporta ILIKE '%NOMBRE%APELLIDO%'`
+    - para área: `area_colaborador_asignado ILIKE '%CENTRO%DE%ATENCION%A%USUARIOS%'`
+    - para unidad de negocio: `unidad_negocio ILIKE '%PLASTICOS%'`
+
+- Siempre que se refiera a:
+    - **Áreas**, utiliza el campo `area_colaborador_asignado`
+        - Ejemplo: ¿Cuántos tickets abiertos en el área de soporte? -> `...WHERE area_colaborador_asignado ILIKE '%SOPORTE%'`
+    - **Departamentos**, utiliza el campo `departamento_colaborador_asignado`
+        - Ejemplo: ¿Cuántos tickets abiertos en el departamento de Inteligencia Empresarial? -> `...WHERE departamento_colaborador_asignado ILIKE '%INTELIGENCIA%EMPRESARIAL%'`
+
+---
+
+{context}
+
+---
+
+
+{flow}
+
+### 📌 Tu respuesta debe ser solo un query SQL, sin texto adicional:
+
+```
+sql
+....
+```

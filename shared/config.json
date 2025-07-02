@@ -26,9 +26,9 @@
       "host": "http://milvus",
       "port": 19530,
       "similarity_thresholds":{
-        "sql_agent_questions": 0.80,
+        "sql_agent_questions": 0.82,
         "sql_ddl": 0.90,
-        "sql_docs": 0.80
+        "sql_docs": 0.75
       },
       "collections": {
         "questions": "sql_agent_questions",

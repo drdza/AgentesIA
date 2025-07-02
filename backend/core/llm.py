@@ -4,7 +4,6 @@ import sys
 import os
 import requests
 import time
-import json
 import logging
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from shared.utils import load_config, log_to_file

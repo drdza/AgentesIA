@@ -3,15 +3,14 @@
 from pymilvus import connections, Collection
 import sys
 import os
-import requests
-from fastapi import FastAPI, HTTPException, Request, UploadFile, File
+from typing import Optional
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from agent.langgraph_sql_agent import run_sql_graph
-from agent.sql_agent import handle_user_question
 from agent.rag_agent import generate_embedding, save_collection
 from shared.utils import init_config, generate_request_id, log_to_file, log_event, load_config
 from core.query_validator import validate_sql, preprocess_sql
@@ -20,9 +19,7 @@ from core.init_collections import init_milvus_collections
 from core.exceptions import (
     AgentException,
     EmbeddingGenerationError,
-    InvalidCollectionNameError,
-    QueryExecutionError,
-    QueryValidationError
+    InvalidCollectionNameError
 )
 
 init_config()
@@ -43,8 +40,9 @@ app = FastAPI(
 )
 
 class SQLRequest(BaseModel):
-    question: str
+    question: str    
     domain: str
+    previous_question: Optional[str] = None
 
 class TrainingInput(BaseModel):
     question: str
@@ -80,22 +78,23 @@ async def generate_sql(request: SQLRequest, http_request: Request):
         log_to_file(f"API Request {request_id} desde {client_ip} | Pregunta: {request.question} | Dominio: {request.domain}", api=True)
 
         # Ejecutar el grafo LangGraph en lugar del handle tradicional
-        response = await run_sql_graph(request.question, request.domain)
-
-        # print(response)
+        response = await run_sql_graph(request.question, request.domain, request.previous_question)
+        
 
         sql = response.get("sql", "")
         result_exec = response.get("result", {})
         flow = response.get("flow", "")
-        reformulation = response.get("enhanced_question", "")
+        reformulation = response.get("enhanced_question_llm", "")
+        reformulation_agent = response.get("enhanced_question", "")
         rag_context = response.get("rag_context", "")
-        total_time = response.get("duration", 0)
+        total_time = response.get("total_time", 0)
         return_type = 'success'
         
         return {
             "sql": sql,
             "flow": flow,
             "reformulation": reformulation,
+            "reformulation_agent": reformulation_agent,
             "client_ip": client_ip,
             "domain": request.domain,
             "request_id": request_id,

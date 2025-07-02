@@ -3,6 +3,7 @@ import os
 import json
 import re
 import logging
+import unicodedata
 from datetime import datetime
 from shared.utils import load_prompt_template, log_event
 from core.llm import call_model
@@ -29,17 +30,33 @@ KEYWORDS_DOMINIO = [
     "fecha cierre"
 ]
 
+TILDE = '\u0303'
+PAT_ENIE_MIN = f"n{TILDE}"
+PAT_ENIE_MAY = f"N{TILDE}"
+
+
+def clean_text(text: str) -> str:
+    try:
+        text = unicodedata.normalize('NFKD', text)        
+        text = text.replace(PAT_ENIE_MIN, "__ni__") \
+               .replace(PAT_ENIE_MAY, "__NI__")    
+        text = ''.join(c for c in text if not unicodedata.combining(c))        
+        text = text.replace('__ni__', 'ñ').replace('__NI__', 'Ñ')                        
+        text = re.sub(r'[^\w\s]', ' ', text)        
+        text = text.lower()        
+        text = re.sub(r'\s+', ' ', text).strip()                    
+        return text
+    
+    except Exception as e:
+        print(f"Error al limpiar texto: {e}")
+        return text  
+    
 
 def clean_enhanced_question(response: str, user_question: str) -> dict:
     user_question = user_question.lower()
-    enhanced_dict = {}
-    logger.info(response)
-    try: 
-        #clean_response = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", response.strip(), flags=re.DOTALL | re.IGNORECASE)
-        clean_response = re.sub(r"```(?:json)?\s*([\s\S]+?)\s*```", r"\1", response.strip())
-        logger.info(clean_response)
-        #clean_response = clean_response.replace("'", '"')
-        #logger.info(clean_response)
+    enhanced_dict = {}    
+    try:     
+        clean_response = re.sub(r"```(?:json)?\s*([\s\S]+?)\s*```", r"\1", response.strip())        
         enhanced_dict = json.loads(clean_response)
 
     except Exception:
@@ -56,12 +73,12 @@ def join_rag_context(rag_context: dict):
     rag_parts = []
 
     if rag_context["sql"]:
-        rag_parts.append("#### ✅ SQL previamente validado como respuesta a preguntas similares:\n\n" + "\n".join(
+        rag_parts.append("### - Contexto - ✅ SQL previamente validado como referencia estructural (útil para formato, estilo y lógica similar):\n\n" + "\n".join(
             [f"• {item['question']} - ({item['score']:.2f})\n```sql\n{item['sql']}\n```" for item in rag_context["sql"]]
         ))
 
     if rag_context["docs"]:
-        rag_parts.append("\n\n#### 📚 Documentación útil o explicaciones relacionadas:\n\n" + "\n".join(
+        rag_parts.append("\n\n### - Contexto - 📚 Documentación relacionada (útil para interpretar conceptos o reglas de negocio):\n\n" + "\n".join(
             [f"{item['texto']} - ({item['score']:.2f})\n" for item in rag_context["docs"]]
         ))
 

@@ -1,9 +1,15 @@
 from typing import List
 from math import ceil
-
+import os
+import sys
 import pandas as pd
 import streamlit as st
 import altair as alt
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from shared.utils import  load_css_style
+
+
 
 
 def _convert_numeric_column(col: pd.Series) -> pd.Series:
@@ -59,27 +65,23 @@ def _prepare_chart_data(raw_df: pd.DataFrame, config: dict = None) -> tuple[pd.D
     df = _rename_columns_flexibly(df)    
 
     try:
-        # Identificar métricas y dimensiones
+        # Primer detección de Métricas y Dimensiones
         metric_cols = df.select_dtypes(include=["number"]).columns.tolist()
         dimension_cols = df.select_dtypes(exclude=["number"]).columns.tolist()
         
-        # Forzar dimensiones si aplica
+        # Forzar dimensiones con semantida de fecha (pueden ser númericas)
         forced_dimensions = ["año", "mes", "anio", "month", "year", "folio"]
         for col in metric_cols[:]:
             if any(kw in col.lower() for kw in forced_dimensions):
                 metric_cols.remove(col)
                 dimension_cols.append(col)
 
-        # Paso 4: Limpiar valores vacíos
+        # Limpieza de datos en Dimensiones
         df = df.loc[~(df[metric_cols].fillna(0) == 0).all(axis=1)]
         for col in dimension_cols:
-            df[col] = df[col].fillna("NO DEFINIDO").replace("", "NO DEFINIDO")
-                
-        # Paso 5: Conversión inteligente de métricas
-        for col in metric_cols:
-            df[col] = _convert_numeric_column(df[col])
+            df[col] = df[col].fillna("NO DEFINIDO").replace("", "NO DEFINIDO")                        
 
-        # Paso 6: Detección de fechas
+        # Detección de fechas y casteo a datetime
         for col in dimension_cols:
             if pd.api.types.is_datetime64_any_dtype(df[col]):
                 df[col] = pd.to_datetime(df[col], errors="coerce").dt.date
@@ -91,18 +93,24 @@ def _prepare_chart_data(raw_df: pd.DataFrame, config: dict = None) -> tuple[pd.D
                 except Exception:
                     pass
 
+        # Eliminación de COLUMNAS de tipo Dimensión que estén vacías, nulas o ceros
         df = df.drop(columns=[
             col for col in dimension_cols
             if df[col].apply(lambda x: pd.isna(x) or x == 0 or (isinstance(x, str) and x.strip() == "")).all()
         ])
         
+        # Definición final de dimensiones
         dimension_cols = [col for col in dimension_cols if col in df.columns]
-        metric_cols = [col for col in metric_cols if col in df.columns]
-        # Paso 7: Ordenar por la primera métrica
+        #metric_cols = [col for col in metric_cols if col in df.columns]
+
+        for col in metric_cols:
+            df[col] = _convert_numeric_column(df[col])
+
+        # Ordenamiento por la primera métrica
         if metric_cols:
             df.sort_values(by=metric_cols[0], ascending=False, inplace=True)
 
-        # Paso 8: Sugerir tipo de gráfico
+        # Sugerencia del tipo de gráfico
         chart_type = _suggest_chart_type(df, dimension_cols, metric_cols)
 
         return df, dimension_cols, metric_cols, chart_type
@@ -145,8 +153,8 @@ def _render_kpis(df: pd.DataFrame, placeholder: st.delta_generator.DeltaGenerato
     if df.shape[0] != 1 or not metrics:
         placeholder.warning("Los KPIs solo se muestran cuando hay una única fila con métricas.")
         return
-
-    values = df.iloc[0][metrics].round(2)    
+        
+    values = df.iloc[0][metrics]
     cols = st.columns(len(metrics))    
     
     for i, col in enumerate(metrics):
@@ -311,7 +319,7 @@ def _render_agent_details(data: dict) -> None:
 
 def render_visual_response(data: dict, index: int) -> None:
     """Muestra la visualización de resultados si el SQL se ejecutó correctamente."""
-    st.markdown("Esto fue lo que encontré relacionado a tu pregunta")
+    st.markdown(f"Esto fue lo que encontré relacionado a tu pregunta - ( {data['duration']:.2f} seg. )")
     df_raw = pd.DataFrame(data["result"]["rows"], columns=data["result"]["columns"])
 
     df, dimensions, metrics, chart_type = _prepare_chart_data(df_raw)
@@ -340,3 +348,25 @@ def render_error_with_agent_context(data: dict, index: int) -> None:
 
     error_msg = data.get("result", {}).get("error", "Error desconocido.")
     st.error(f"😭 {error_msg}")
+
+def render_out_domain_agent(data: dict, index: int) -> None:
+    st.markdown(load_css_style("out_domain.css"), unsafe_allow_html=True)    
+    dic_msg = data.get("result", {}).get("out_domain", "Error desconocido.")
+
+    st.markdown( f"{dic_msg['mensaje']}") 
+    
+    st.markdown(f"""  
+                <div class='out-domain-intention '>                
+                  
+                🧠 He detectado esta intención en tu pregunta: **{dic_msg['motivo']}**
+
+                </div>
+        """, unsafe_allow_html=True)
+    
+    st.divider()
+
+    st.markdown("""
+                <div class='out-domain-help'>                 
+                También puedes revisar nuestra guía de ayuda <a href='/help#guia-rapida-de-uso'> aquí </a>.
+                </div>
+        """, unsafe_allow_html=True)

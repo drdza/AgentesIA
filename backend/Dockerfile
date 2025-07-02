@@ -19,7 +19,7 @@ COPY outputs /app/outputs
 ENV PYTHONPATH="/app/backend"
 
 # Instalar dependencias Python
-RUN pip install --no-cache-dir requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
 

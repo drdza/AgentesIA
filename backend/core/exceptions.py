@@ -69,3 +69,7 @@ class SQLAgentPipelineError(AgentException):
 class MilvusConnectionError(AgentException):
     def __init__(self, message="Error al conectar o consultar Milvus"):
         super().__init__(message, status_code=500)
+
+class ContextVerificationError(AgentException):
+    def __init__(self, message="Error al verificar el contexto"):
+        super().__init__(message, status_code=500)

@@ -104,7 +104,7 @@ def get_context_by_type(question: str, top_k: int = 3) -> dict:
     embedding = generate_embedding(question)
 
     context = {"sql": [], "ddl": [], "docs": []}    
-    context["sql"] = search_collection(COLLECTIONS_NAME["questions"], embedding, ["question", "sql"], top_k)    
-    context["docs"] = search_collection(COLLECTIONS_NAME["docs"], embedding, ["question", "texto"], top_k)
+    context["sql"] = search_collection(COLLECTIONS_NAME["questions"], embedding, ["question", "sql"], 2)    
+    context["docs"] = search_collection(COLLECTIONS_NAME["docs"], embedding, ["question", "texto"], 1)
     
     return context

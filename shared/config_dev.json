@@ -8,12 +8,14 @@
     "log_file": "execution_log.txt",
     "model_endpoints": {
       "api_endpoints":{
-        "mistral": "http://appiaagent:8000/v1/chat/completions",
-        "gemma": "http://appiaagent:8001/v1/chat/completions"
+        "mistral": "http://altheia:8000/v1/chat/completions",
+        "gemma": "http://altheia:8001/v1/chat/completions",
+        "llama3":"http://altheia:8001/v1/chat/completions"
       },
       "server_type":{
         "mistral": "CHAT",
-        "gemma": "NIMs"
+        "gemma": "NIMs",
+        "llama3": "CHAT"
       }
     },
     "api_endpoints_base": "http://localhost:8000",
@@ -23,12 +25,12 @@
       "training": "/training"
     },
     "milvus_endpoint": {
-      "host": "appiaagent",
+      "host": "altheia",
       "port": 19530,
       "similarity_thresholds":{
-        "sql_agent_questions": 0.75,
+        "sql_agent_questions": 0.80,
         "sql_ddl": 0.90,
-        "sql_docs": 0.65
+        "sql_docs": 0.75
       },
       "collections": {
         "questions": "sql_agent_questions",
@@ -36,7 +38,7 @@
         "docs": "sql_docs"
       }
     },
-    "embedding_endpoint": "http://appiaagent:9080/v1/embeddings",
+    "embedding_endpoint": "http://altheia:9080/v1/embeddings",
     "domain_to_db": {
       "tickets": "DWHReymaOP",
       "proyectos": "DWHReymaOP",
