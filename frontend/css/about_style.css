@@ -1,0 +1,23 @@
+.justify-content {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.info-message {
+    background-color: #e8f1fb; 
+    color: #0f4c81;            
+    border-left: 6px solid #4c96e0;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.contact-banner {
+    background-color: #e7f5ec;
+    color: #1b4332;
+    border-left: 6px solid #95d5b2;
+    padding: 12px 20px;
+    border-radius: 6px;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+}

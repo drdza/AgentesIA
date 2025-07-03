@@ -1,0 +1,39 @@
+/* General spacing */
+.out-domain-intention{
+    margin-top: 0.5rem;
+    padding: 0rem 1rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Error message block */
+.out-domain-msg { 
+    border-left: 4px solid #d10000;
+    box-shadow: 0 2px 6px rgba(255, 0, 0, 0.1);
+}
+
+/* Intention detection */
+.out-domain-intention {
+    color: #02303c;
+    border-left: 4px solid #02303c;
+    font-style: italic;
+    box-shadow: 0 2px 4px rgba(0, 191, 255, 0.08);
+}
+
+/* Help message */
+.out-domain-help {    
+    color: #333;    
+    font-size: 0.85rem;    
+    padding: 0.5rem 0.5rem;
+}
+
+.out-domain-help a {
+    color: #007bff;
+    text-decoration: none;
+
+}
+
+.out-domain-help a:hover {
+    text-decoration: underline;
+}

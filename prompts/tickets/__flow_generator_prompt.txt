@@ -1,0 +1,110 @@
+Tu tarea es analizar una pregunta en lenguaje natural relacionada con la tabla `ft_tickets_ia` y generar una lista clara, secuencial y bien estructurada de pasos que expliquen cómo resolverla en SQL. No escribas el SQL directamente. Solo describe cómo se debe construir.
+
+---
+
+### 🎯 **Objetivo**:
+- Entrega entre 2 y 6 pasos técnicos ordenados.
+- Cada paso debe iniciar con un verbo (Ej: Filtrar, Agrupar, Calcular, Seleccionar).
+- Detalla campos, condiciones y funciones necesarias.
+
+---
+
+### 📘 **Esquema disponible (`ft_tickets_ia`)**:
+
+- fecha_registro (date): Fecha en la que se registró el ticketde tipo fecha.
+- anio_registro (int): Año en el que se registró el ticket en formato númerico.
+- mes_registro (int): Numero del mes en el que se registró el ticket.
+- fecha_cierre (date): Fecha en la que sé cerró (se atendió) el ticket de tipo fecha.
+- estatus_ticket (text): Estado actual del ticket, posibles valores: ATENDIDO, EN PROCESO, CANCELADO, AUTORIZACIÓN, MESA DE AYUDA.
+- folio_ticket (int): Numero único del ticket.
+- sistema (text): Plataforma donde se registra el ticket, INNOVAPP es una app movil, BUSINESS SUITE es una plataforma de escritorio.
+- motivo_ticket (text): Descripción del usuario del porque regsitró el ticket, petición del usuario.
+- motivo_cierre_ticket (text): Descricpicón del porque se atendió el ticket, información que ingresa el colaborador.
+- servicio_cierre_ticket (text): Nombre del servicio bajo el cual se ha atendido el ticket, lo asigna el colaborador. 
+- centro_trabajo (text): Lugar donde se reporta el ticket, lugar de trabajo del usuario.
+- ciudad (text): Ciudad donde se reporta el ticket, ciudad de trabajo del usuario.
+- empresa (text): Empresa a la que pertence el usuario que registra el ticket.
+- unidad_negocio (text): Unidad de negocio a la que pertenece el usuario que registra el ticket.
+- personal_reporta (text): Persona que registra el ticket.
+- colaborador_asignado (text): Persona o colaborador que ha atendido o atiende el ticket.
+- departamento_colaborador_asignado (text): Departamento del personal que tiene asignado el ticket.
+- area_colaborador_asignado (text): Área del personal que tiene asignado el ticket.
+- servicio (text): Servicio actual del ticket.
+- tiempo_solucion_total (numeric, en segundos): Tiempo de atención total del ticket.
+- tiempo_sla_servicio (numeric, en segundos): Tiempo total del servicio (SLA).
+
+---
+
+### 📌 **Reglas importantes**:
+- 🚫 Nunca uses funciones inexistentes como CURRENT_YEAR, CURRENT_MONTH, TODAY o similares. 
+- ✅ Si necesitas el año actual, usa EXTRACT(YEAR FROM CURRENT_DATE) o el campo anio_registro si ya existe.
+- ✅ Si el esquema ya tiene campos como anio_registro o mes_registro, deben usarse directamente para evitar funciones sobre fecha_registro.
+- ✅ Compara texto con `ILIKE '%valor%'` en lugar de `=`.
+- Si la pregunta implica comparar subconjuntos (como tickets dentro o fuera del SLA, o atendidos en menos de cierto tiempo), no filtres directamente en el WHERE. 
+   - Primero agrupa o cuenta todo el universo y luego aplica la condición dentro del SELECT usando:
+    - COUNT(*) FILTER (WHERE ...)
+    - AVG(...) FILTER (WHERE ...)
+    - CASE WHEN ... THEN ... ELSE ... END
+
+### 💡 **Consejo**:
+- Solo usa el WHERE para filtrar dimensiones generales (como año, empresa, o tipo de servicio). 
+- Nunca uses WHERE si eso elimina información necesaria para una comparación posterior.
+
+---
+
+### 🛠️ **Instrucciones clave**:
+
+1. **Aplica lógica secuencial**:
+   - Primero los filtros generales (`WHERE`)
+   - Luego identifica los filtros a subgrupos COUNT(*) FILTER (WHERE ...)
+   - Luego agrupaciones (`GROUP BY`)
+   - Luego cálculos (`AVG`, `COUNT`, `RANK`, etc.)
+   - Finalmente proyecciones y ordenamiento
+
+2. **Traduce términos comunes**:
+   - "cerrado", "resuelto" → `estatus_ticket ILIKE '%ATENDIDO%'`
+   - "en proceso", "pendiente" → `estatus_ticket ILIKE '%EN PROCESO%'`
+   - "fuera del SLA" → `tiempo_solucion_total > tiempo_sla_servicio`
+   - "dentro del SLA" → `tiempo_solucion_total <= tiempo_sla_servicio`
+   - "sin fecha" → usar `IS NULL`
+
+3. **Si se requiere ranking por grupo (mejores o peores por grupo), usa**:
+   - Funciones como `ROW_NUMBER()` con `PARTITION BY`
+   - Puedes indicar el uso de `WITH` si mejora la estructura   
+
+4. **Porcentajes generales**:
+   - Paso 1: Calcular el total con `COUNT(*)`
+   - Paso 2: Calcular el subconjunto con `COUNT(*) FILTER (WHERE ...)`
+   - Paso 3: Calcular `(parte / total) * 100`
+   - Paso 4: Para evitar divisiones por cero, usa `NULLIF(...)` en el denominador
+
+5. **Cálculos con fechas**:
+   - Para obtener el mes: `EXTRACT(MONTH FROM fecha_registro)`
+   - Para obtener el año: `EXTRACT(YEAR FROM fecha_registro)`
+   - Para calcular días transcurridos: `CURRENT_DATE - fecha_registro`
+   - Si se usan varias fechas, incluye operaciones como `fecha_cierre - fecha_registro`
+
+6. **Porcentajes por grupo (dentro de grupo)**:
+   - Paso 1: Filtrar registros base con `WHERE` (ej. solo los ATENDIDOS)
+   - Paso 2: Agrupar por grupo deseado (ej. departamento)
+   - Paso 3: Usar `COUNT(*)` como total por grupo
+   - Paso 4: Usar `COUNT(*) FILTER (WHERE ...)` como parcial dentro del grupo
+   - Paso 5: Dividir y multiplicar por 100 → `(parcial::float / NULLIF(total, 0)) * 100`
+
+---
+
+### ✏️ **Ejemplo**:
+
+Pregunta: "¿Qué colaborador tiene peor promedio por departamento en 2024?"
+
+Salida esperada:
+1. Filtrar tickets del año 2024 con estatus ATENDIDO.
+2. Agrupar por departamento y colaborador.
+3. Calcular `AVG(tiempo_solucion_total)` por cada colaborador.
+4. Generar un ranking por cada departamento (`ROW_NUMBER()`).
+5. Seleccionar solo los registros con ranking = 1.
+
+---
+
+###  📝 Pregunta del usuario:
+{question}
