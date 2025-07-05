@@ -930,3 +930,45 @@ Cuantos tickets ha atendido o cerrado la colaboradora BERENICE%FERNANDEZ? | Domi
 [2025-07-02 17:45:24] API Request ae1a87ba-8c5e-4f62-abee-0ecdac612552 desde 127.0.0.1 | Pregunta: Cual es la tasa de cancelación en los tickets del año 2025? | Dominio: tickets
 [2025-07-02 17:46:07] API Request 189db480-cf76-4353-a49f-3a65b4f9fbea desde 127.0.0.1 | Pregunta: ¿Que porcentaje de tickets en proceso tienen abiertos más de 5 días? | Dominio: tickets
 [2025-07-02 17:47:53] API Request 446568a5-7330-476a-a647-647f92eab061 desde 127.0.0.1 | Pregunta: ¿Que porcentaje de tickets en proceso tienen abiertos más de 5 días desde su fecha de registro? | Dominio: tickets
+[2025-07-03 13:06:39] API Request d6faa7db-8708-4367-b948-09b6d9c64cb3 desde 127.0.0.1 | Pregunta: de que color es el cielo? | Dominio: tickets
+[2025-07-03 13:08:19] API Request d478534b-6bdb-461f-a591-4ce35c5a827f desde 127.0.0.1 | Pregunta: ¿Tickets en proceso? | Dominio: tickets
+[2025-07-03 13:15:05] API Request f4234b31-489d-494a-ba69-c8d73ce2a663 desde 127.0.0.1 | Pregunta: ¿Tickets en proceso? | Dominio: tickets
+[2025-07-03 13:15:45] API Request b04619eb-e2f9-4370-a8ea-14666b42a01c desde 127.0.0.1 | Pregunta: ¿De que color es el cielo? | Dominio: tickets
+[2025-07-04 15:44:49] API Request 6933cab2-e742-4162-9bd6-03bed4133c8e desde 127.0.0.1 | Pregunta: Hola, me puedes decir cuantos tickets se han atendido por parte del departamento de Administración en junio 2025? | Dominio: tickets
+[2025-07-04 15:45:21] API Request 42679771-d2c4-4845-a13c-1197f6eec643 desde 127.0.0.1 | Pregunta: Me puedes decir cuantos tickets ha reportado Daniel Rodriguez en el 2025? | Dominio: tickets
+[2025-07-04 15:46:41] API Request 353f85be-aa73-4ba8-8b07-b715b57fceb3 desde 127.0.0.1 | Pregunta: Me puedes decir cuantos tickets ha generado yaneli mendiola? | Dominio: tickets
+[2025-07-04 15:47:06] API Request f927e73c-f093-4c86-9f62-7b8a48f45aca desde 127.0.0.1 | Pregunta: Me puedes decir cuantos tickets ha generado yaneli mendiola? | Dominio: tickets
+[2025-07-04 15:50:37] API Request ed9baeb2-b5e7-464c-8d36-4646a5d7e576 desde 127.0.0.1 | Pregunta: Me puedes decir cuantos tickets ha generado yaneli mendiola? | Dominio: tickets
+[2025-07-04 15:51:21] API Request 12ff23f0-a959-4451-8ebf-53c0010bdcc6 desde 127.0.0.1 | Pregunta: Me puedes decir cuantos tickets ha generado yaneli mendiola? | Dominio: tickets
+[2025-07-04 15:55:11] API Request e67bca33-3ec2-4534-ae5a-8c26f18037bf desde 127.0.0.1 | Pregunta: Me puedes decir cuantos tickets ha generado yaneli mendiola? | Dominio: tickets
+[2025-07-04 16:03:50] API Request 68b3a1a3-a90b-4ac5-94b0-35aae78d2f3b desde 127.0.0.1 | Pregunta: Me puedes decir cuantos tickets ha generado yaneli mendiola? | Dominio: tickets
+[2025-07-04 16:04:33] API Request 675da6d8-8a3c-455c-9469-76235507eb55 desde 127.0.0.1 | Pregunta: Me puedes decir cuantos tickets ha generado yanely mendiola? | Dominio: tickets
+[2025-07-04 16:05:01] API Request 7b8adee3-0429-418d-9239-b9de74b9364d desde 127.0.0.1 | Pregunta: ¿Dame el listado de los tickets que ha reporta Erika Barbosa en el 2025? | Dominio: tickets
+[2025-07-04 16:06:21] API Request 2bb57efa-3d2b-4dd5-a5fe-938a651a385e desde 127.0.0.1 | Pregunta: Dime cuantos tickets ha atendido el área de CENTRO DE ATENCIÓN A USUARIOS EN EL 2025? | Dominio: tickets
+[2025-07-04 16:06:55] API Request 2a84f99d-4448-4282-b4e7-a072f2d88606 desde 127.0.0.1 | Pregunta: Dame el detalle de los tickets que ha atendido el área de CENTRO DE ATENCIÓN A USUARIOS EN EL 2025? | Dominio: tickets
+[2025-07-04 16:07:44] API Request 111ceede-5d2c-4fb2-843d-2a162d908dfb desde 127.0.0.1 | Pregunta: Dame los detalles del ticket 94038. | Dominio: tickets
+[2025-07-04 16:08:16] API Request 1ee59118-388e-4e91-8915-cda10ffc63e7 desde 127.0.0.1 | Pregunta: Dime que estatus tiene el ticket: 94038? | Dominio: tickets
+[2025-07-04 16:16:16] API Request a1fe1478-cbd2-4a44-aea8-f2468c8bf231 desde 127.0.0.1 | Pregunta: Dame detalles del ticket con folio: 94038 | Dominio: tickets
+[2025-07-04 16:20:07] API Request 1adea34b-94dc-46ed-9873-63230c0eb1da desde 127.0.0.1 | Pregunta: Dame detalles del ticket con folio: 94038 | Dominio: tickets
+[2025-07-04 16:56:59] API Request 208fe377-aa7d-408f-8702-94c404f34d27 desde 127.0.0.1 | Pregunta: Dame detalles del ticket con folio: 94038 | Dominio: tickets
+[2025-07-04 16:58:00] API Request 25aab628-20c6-4876-b3a2-a492518f1fa5 desde 127.0.0.1 | Pregunta: Dame detalles del ticket con folio: 94038 | Dominio: tickets
+[2025-07-04 16:58:42] API Request 0b24a8f2-1489-4634-9651-439f164cedc9 desde 127.0.0.1 | Pregunta: Dame detalles del ticket con folio: 94038 | Dominio: tickets
+[2025-07-04 17:01:15] API Request 8c0952cf-3936-4abc-b089-996e8758d45b desde 127.0.0.1 | Pregunta: Dame detalles del ticket con folio: 94038 | Dominio: tickets
+[2025-07-04 17:01:53] API Request 00eeee19-95b4-45aa-b93e-e4c7ad4a58ff desde 127.0.0.1 | Pregunta: Dime que estatus tiene el ticket: 94038? | Dominio: tickets
+[2025-07-04 17:02:30] API Request 18a8f526-1351-4c47-a747-cbe3cbe0f471 desde 127.0.0.1 | Pregunta: Cuantos tickets se han atendido en el mes de Junio 2025? | Dominio: tickets
+[2025-07-05 13:14:37] API Request d07b7637-41c3-4307-ac35-20d2dbc172ef desde 127.0.0.1 | Pregunta: ¿Me puedes decir cuantos tickets hay en proceso actualmente? | Dominio: tickets
+[2025-07-05 13:20:52] API Request 30f65083-5bd3-4e2b-8a24-8bebff379a17 desde 127.0.0.1 | Pregunta: ¿Me puedes decir cuantos tickets hay en proceso actualmente? | Dominio: tickets
+[2025-07-05 13:22:27] API Request f103b939-3e53-4c6d-93c9-8981349e8c01 desde 127.0.0.1 | Pregunta: ¿Me puedes decir cuantos tickets hay en proceso actualmente? | Dominio: tickets
+[2025-07-05 13:23:57] API Request 05832fd2-693b-4692-95a1-d98d02a952aa desde 127.0.0.1 | Pregunta: Me puedes decir todo lo referente a mi ticket: 95674 | Dominio: tickets
+[2025-07-05 13:27:52] API Request 82f18258-10ad-4746-b120-a3d4f2003af5 desde 127.0.0.1 | Pregunta: Me puedes decir todo lo referente a mi ticket: 95674 | Dominio: tickets
+[2025-07-05 13:28:37] API Request b29bab5b-305a-4828-9b2f-d8d127acd2cf desde 127.0.0.1 | Pregunta: Dime por cada área y o departamento la cantidad de tickets que tienen en proceso. | Dominio: tickets
+[2025-07-05 13:33:52] API Request 7e82b728-6aeb-48a3-ae0e-4f20a3742f05 desde 127.0.0.1 | Pregunta: Dime por cada área y o departamento la cantidad de tickets que tienen en proceso. | Dominio: tickets
+[2025-07-05 13:37:12] API Request c40ee93a-ee3b-4b0e-92c5-c5469512af52 desde 127.0.0.1 | Pregunta: Dime por cada área y o departamento la cantidad de tickets que tienen en proceso. | Dominio: tickets
+[2025-07-05 13:47:13] API Request 9b752581-a2cb-4c67-a5a0-995deb6b6692 desde 127.0.0.1 | Pregunta: Dime por cada área y o departamento la cantidad de tickets que tienen en proceso. | Dominio: tickets
+[2025-07-05 13:50:24] API Request 17acd6bc-9d25-4d01-b395-f654d37ce526 desde 127.0.0.1 | Pregunta: Me puedes decir que está sucediendo con el ticket: 95748 | Dominio: tickets
+[2025-07-05 13:51:02] API Request cd1c2063-d934-4772-9a50-8754a10cb95a desde 127.0.0.1 | Pregunta: Me puedes decir que está sucediendo con el ticket: 95748 | Dominio: tickets
+[2025-07-05 13:52:08] API Request 11b8aa1e-1c45-47a3-a231-0ee26e41082b desde 127.0.0.1 | Pregunta: Dime cuantos tickets tiene en proceso Daniel Ibarra? | Dominio: tickets
+[2025-07-05 13:52:48] API Request 956faa5b-c051-4f7f-8ccf-60dd1cc10e17 desde 127.0.0.1 | Pregunta: Dame las estadísticas del colaborador Daniel Ibarra en lo que va del año? | Dominio: tickets
+[2025-07-05 13:54:08] API Request ae5ab7cc-796d-4671-a754-0aa90bb9ce9a desde 127.0.0.1 | Pregunta: Dame las estadísticas del colaborador Daniel Ibarra en lo que va del año incluyendo las empresas y unidades de negocios a las que ha atendido? | Dominio: tickets
+[2025-07-05 13:57:58] API Request 51e78432-317f-4ad8-848e-e06fe4157be9 desde 127.0.0.1 | Pregunta: Dame las estadísticas del colaborador asignado Daniel Ibarra en lo que va del año incluyendo las empresas y unidades de negocios a las que ha atendido?
+ | Dominio: tickets

@@ -5,6 +5,7 @@ from shared.utils import log_to_file, load_config
 from core.exceptions import QueryExecutionError
 import psycopg2
 import time
+import json
 
 CONFIG_JSON = load_config()
 SQL_EXECUTION_MODE = CONFIG_JSON['execution_mode']
@@ -53,3 +54,17 @@ def execute_sql(sql: str, domain: str):
     finally:        
         if cursor:
             cursor.close()
+
+def rows_to_json(result: dict, *, single=False) -> str | dict:
+    """
+    Convierte el dict {"columns": [...], "rows": [...]} a:
+      • JSON string (por defecto)  → lista de objetos
+      • dict/objeto Python         → si single=True y hay una sola fila
+    """
+    cols = result["columns"]
+    objs = [dict(zip(cols, row)) for row in result["rows"]]
+
+    if single and len(objs) == 1:
+        return objs[0]                       # objeto único (dict Python)
+
+    return json.dumps(objs, ensure_ascii=False, indent=2, default=str)  # string JSON

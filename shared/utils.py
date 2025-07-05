@@ -7,6 +7,7 @@ import uuid
 import csv
 import json
 import re
+import unicodedata
 from pathlib import Path
 from datetime import datetime
 
@@ -14,6 +15,28 @@ from datetime import datetime
 
 # Archivo de configuración
 CONFIG_FILE = "shared/config_dev.json"
+
+TILDE = '\u0303'
+PAT_ENIE_MIN = f"n{TILDE}"
+PAT_ENIE_MAY = f"N{TILDE}"
+
+
+def clean_text(text: str) -> str:
+    try:
+        text = unicodedata.normalize('NFKD', text)        
+        text = text.replace(PAT_ENIE_MIN, "__ni__") \
+               .replace(PAT_ENIE_MAY, "__NI__")    
+        text = ''.join(c for c in text if not unicodedata.combining(c))        
+        text = text.replace('__ni__', 'ñ').replace('__NI__', 'Ñ')                        
+        text = re.sub(r'[^\w\s]', ' ', text)        
+        text = text.lower()        
+        text = re.sub(r'\s+', ' ', text).strip()                    
+        return text
+    
+    except Exception as e:
+        print(f"Error al limpiar texto: {e}")
+        return text  
+
 
 def load_config():
     if os.path.exists(CONFIG_FILE):

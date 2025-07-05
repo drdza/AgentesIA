@@ -36,7 +36,7 @@ def _fetch_sql_response(domain: str, question: str, previous_question: str = Non
         "domain": domain
     }
 
-    logger.info(f"Payload: {payload}")
+    #logger.info(f"Payload: {payload}")
 
     try:
         response = requests.post(
@@ -46,7 +46,7 @@ def _fetch_sql_response(domain: str, question: str, previous_question: str = Non
         )
 
         response.raise_for_status()
-        logger.info(f"Response\n{response.json()}")
+        # logger.info(f"Response\n{response.json()}")
         return response.json()
 
     except requests.exceptions.HTTPError as e:
@@ -81,6 +81,7 @@ def _process_backend_response(response: dict) -> dict:
                 "context": response.get("rag_context", ""),
                 "result": response.get("result"),
                 "duration": response.get("duration_agent"),
+                "narrative": response.get("narrative", ""),
                 "viz_type": "DataFrame"
             },
             "avatar": st.session_state.assistant_avatar
@@ -95,6 +96,7 @@ def _process_backend_response(response: dict) -> dict:
                 "context": None,
                 "result": None,
                 "duration": None,
+                "narrative": None,
                 "viz_type": None,
                 "error": response.get("error", "⚠️ Error desconocido. Intenta nuevamente.")
             },
@@ -102,7 +104,10 @@ def _process_backend_response(response: dict) -> dict:
         }
 
 def _render_agent_details(data: dict):
-    """Renderiza la respuesta: SQL, contexto, resultado y visualización.""" 
+    """Renderiza la respuesta: SQL, contexto, resultado y visualización."""     
+    with st.expander("📖 Narrativa", expanded=False):
+        st.markdown(data["narrative"])
+    
     with st.expander("🧠 Detalles del agente", expanded=False):
         tabs = st.tabs(["🧠 Reformulación", "📘 Contexto", "💻 SQL Generado"])
         with tabs[0]:

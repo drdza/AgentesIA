@@ -60,7 +60,7 @@ def _rename_columns_flexibly(df: pd.DataFrame) -> pd.DataFrame:
     except Exception as e:
         return df
     
-def _prepare_chart_data(raw_df: pd.DataFrame, config: dict = None) -> tuple[pd.DataFrame, list[str], list[str], str]:    
+def _prepare_chart_data(raw_df: pd.DataFrame, config: dict = None) -> tuple[pd.DataFrame, list[str], list[str], str]:        
     df = raw_df.copy()
     df = _rename_columns_flexibly(df)    
 
@@ -68,6 +68,8 @@ def _prepare_chart_data(raw_df: pd.DataFrame, config: dict = None) -> tuple[pd.D
         # Primer detección de Métricas y Dimensiones
         metric_cols = df.select_dtypes(include=["number"]).columns.tolist()
         dimension_cols = df.select_dtypes(exclude=["number"]).columns.tolist()
+        
+        #print(f"Métricas: {metric_cols}\tDimensiones: {dimension_cols}")
         
         # Forzar dimensiones con semantida de fecha (pueden ser númericas)
         forced_dimensions = ["año", "mes", "anio", "month", "year", "folio"]
@@ -77,7 +79,9 @@ def _prepare_chart_data(raw_df: pd.DataFrame, config: dict = None) -> tuple[pd.D
                 dimension_cols.append(col)
 
         # Limpieza de datos en Dimensiones
-        df = df.loc[~(df[metric_cols].fillna(0) == 0).all(axis=1)]
+        if metric_cols:
+            df = df.loc[~(df[metric_cols].fillna(0) == 0).all(axis=1)]
+
         for col in dimension_cols:
             df[col] = df[col].fillna("NO DEFINIDO").replace("", "NO DEFINIDO")                        
 
@@ -112,7 +116,7 @@ def _prepare_chart_data(raw_df: pd.DataFrame, config: dict = None) -> tuple[pd.D
 
         # Sugerencia del tipo de gráfico
         chart_type = _suggest_chart_type(df, dimension_cols, metric_cols)
-
+        
         return df, dimension_cols, metric_cols, chart_type
     except Exception as e:                     
         return raw_df.copy(), [], [], "DataFrame"

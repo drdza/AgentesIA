@@ -3,14 +3,13 @@ import os
 import json
 import re
 import logging
-import unicodedata
 from datetime import datetime
-from shared.utils import load_prompt_template, log_event
+from shared.utils import load_prompt_template
 from core.llm import call_model
 from core.query_validator import validate_sql, preprocess_sql, safe_extract_sql
 from core.query_executor import execute_sql
-from core.exceptions import ReformulationError, RagContextError, FlowGenerationError, SQLAgentPipelineError, PromptTemplateLoadError, InferenceServiceError
-from agent.rag_agent import get_context_by_type 
+from core.exceptions import ReformulationError, RagContextError, FlowGenerationError, PromptTemplateLoadError, InferenceServiceError
+from agent.rag_agent import get_context_by_type
 
 
 logger = logging.getLogger("sql_agent")
@@ -29,27 +28,6 @@ KEYWORDS_DOMINIO = [
     "año", "sla", "colaborador", "servicio", "análisis", "tiempo atención",
     "fecha cierre"
 ]
-
-TILDE = '\u0303'
-PAT_ENIE_MIN = f"n{TILDE}"
-PAT_ENIE_MAY = f"N{TILDE}"
-
-
-def clean_text(text: str) -> str:
-    try:
-        text = unicodedata.normalize('NFKD', text)        
-        text = text.replace(PAT_ENIE_MIN, "__ni__") \
-               .replace(PAT_ENIE_MAY, "__NI__")    
-        text = ''.join(c for c in text if not unicodedata.combining(c))        
-        text = text.replace('__ni__', 'ñ').replace('__NI__', 'Ñ')                        
-        text = re.sub(r'[^\w\s]', ' ', text)        
-        text = text.lower()        
-        text = re.sub(r'\s+', ' ', text).strip()                    
-        return text
-    
-    except Exception as e:
-        print(f"Error al limpiar texto: {e}")
-        return text  
     
 
 def clean_enhanced_question(response: str, user_question: str) -> dict:

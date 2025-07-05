@@ -9951,3 +9951,373 @@ SELECT
     2
   ) AS "porcentaje_tickets_en_proceso"
 FROM "ft_tickets_ia"
+[2025-07-03 13:15:13] [SQL EXECUTION OK] Tiempo: 1.00s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+[2025-07-04 15:44:58] [SQL EXECUTION OK] Tiempo: 0.21s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'ATENDIDO'
+  AND unaccent(lower("departamento_colaborador_asignado")) ILIKE unaccent(lower('%ADMINISTRACION%'))
+  AND "mes_registro" = 6
+  AND "anio_registro" = 2025
+[2025-07-04 15:45:26] [SQL EXECUTION OK] Tiempo: 0.25s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  unaccent(lower("personal_reporta")) ILIKE unaccent(lower('%daniel%rodriguez%')) AND "anio_registro" = 2025
+[2025-07-04 15:46:45] [SQL EXECUTION OK] Tiempo: 0.20s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  unaccent(lower("personal_reporta")) ILIKE unaccent(lower('%yaneli mendiola%'))
+[2025-07-04 15:47:11] [SQL EXECUTION OK] Tiempo: 0.20s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  unaccent(lower("personal_reporta")) ILIKE unaccent(lower('%yaneli mendiola%'))
+[2025-07-04 15:50:42] [SQL EXECUTION OK] Tiempo: 0.22s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  unaccent(lower("personal_reporta")) ILIKE unaccent(lower('%yaneli mendiola%'))
+[2025-07-04 15:51:26] [SQL EXECUTION OK] Tiempo: 0.17s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  unaccent(lower("personal_reporta")) ILIKE unaccent(lower('%yaneli mendiola%'))
+[2025-07-04 15:55:15] [SQL EXECUTION ERROR] Tiempo: 0.06s
+SQL:
+```sql
+SELECT COUNT(*) AS "total_tickets"
+FROM "ft_tickets_ia"
+WHERE "personal_reporta" ILIKE '%yaneli mendiola%';
+```
+Error: error de sintaxis en o cerca de «```»
+LINE 1: ```sql
+        ^
+
+[2025-07-04 15:55:16] [SQL EXECUTION ERROR] Tiempo: 0.06s
+SQL:
+```sql
+SELECT COUNT(*) AS total_tickets
+FROM ft_tickets_ia
+WHERE personal_reporta ILIKE '%yaneli mendiola%';
+```
+Error: error de sintaxis en o cerca de «```»
+LINE 1: ```sql
+        ^
+
+[2025-07-04 16:03:54] [SQL EXECUTION OK] Tiempo: 0.19s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  unaccent(lower("personal_reporta")) ILIKE unaccent(lower('%yaneli%mendiola%'))
+[2025-07-04 16:04:41] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets"
+FROM "ft_tickets_ia"
+WHERE
+  unaccent(lower("personal_reporta")) ILIKE unaccent(lower('%Yanely%Mendiola%'))
+[2025-07-04 16:05:06] [SQL EXECUTION OK] Tiempo: 0.14s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  unaccent(lower("personal_reporta")) ILIKE unaccent(lower('%Erika%Barbosa%')) AND "anio_registro" = 2025
+[2025-07-04 16:06:28] [SQL EXECUTION OK] Tiempo: 0.17s
+SQL:
+SELECT
+  COUNT(*) AS "tickets_atendidos"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025
+  AND "estatus_ticket" = 'ATENDIDO'
+  AND unaccent(lower("area_colaborador_asignado")) ILIKE unaccent(lower('%CENTRO%DE%ATENCIÓN%A%USUARIOS%'))
+[2025-07-04 16:07:04] [SQL EXECUTION OK] Tiempo: 0.24s
+SQL:
+SELECT
+  "folio_ticket",
+  "estatus_ticket",
+  "motivo_ticket",
+  "motivo_cierre_ticket",
+  "servicio_cierre_ticket",
+  "centro_trabajo",
+  "ciudad",
+  "empresa",
+  "unidad_negocio",
+  "personal_reporta",
+  "colaborador_asignado",
+  "departamento_colaborador_asignado",
+  "area_colaborador_asignado",
+  "servicio",
+  "tiempo_solucion_total",
+  "tiempo_sla_servicio",
+  "tiempo_atencion",
+  "estatus_atencion"
+FROM "ft_tickets_ia"
+WHERE
+  unaccent(lower("area_colaborador_asignado")) ILIKE unaccent(lower('%CENTRO%DE%ATENCION%A%USUARIOS%'))
+  AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE) - 1
+ORDER BY
+  "folio_ticket"
+[2025-07-04 16:08:19] [SQL EXECUTION OK] Tiempo: 0.13s
+SQL:
+SELECT
+  "estatus_ticket"
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 94038
+[2025-07-04 16:20:10] [SQL EXECUTION OK] Tiempo: 0.17s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 94038
+[2025-07-04 16:57:02] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 94038
+[2025-07-04 16:57:03] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 94038
+[2025-07-04 16:58:03] [SQL EXECUTION OK] Tiempo: 0.13s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 94038
+[2025-07-04 16:58:04] [SQL EXECUTION OK] Tiempo: 0.05s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 94038
+[2025-07-04 16:58:46] [SQL EXECUTION OK] Tiempo: 0.12s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 94038
+[2025-07-04 16:58:46] [SQL EXECUTION OK] Tiempo: 0.06s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 94038
+[2025-07-04 17:01:19] [SQL EXECUTION OK] Tiempo: 0.19s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 94038
+[2025-07-04 17:01:56] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  "estatus_ticket"
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 94038
+[2025-07-04 17:02:35] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  COUNT(*)
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = 2025 AND "mes_registro" = 6 AND "estatus_ticket" = 'ATENDIDO'
+[2025-07-05 13:14:43] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  COUNT(*) AS "tickets_en_proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+[2025-07-05 13:20:56] [SQL EXECUTION OK] Tiempo: 0.24s
+SQL:
+SELECT
+  COUNT(*) AS "tickets_en_proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+[2025-07-05 13:22:31] [SQL EXECUTION OK] Tiempo: 0.09s
+SQL:
+SELECT
+  COUNT(*) AS "tickets_en_proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO' AND "fecha_cierre" IS NULL
+[2025-07-05 13:24:00] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 95674
+[2025-07-05 13:27:56] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 95674
+[2025-07-05 13:28:43] [SQL EXECUTION OK] Tiempo: 0.07s
+SQL:
+SELECT
+  "area_colaborador_asignado" AS "Área",
+  "departamento_colaborador_asignado" AS "Departamento",
+  COUNT(*) AS "Tickets En Proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+GROUP BY
+  "area_colaborador_asignado",
+  "departamento_colaborador_asignado"
+ORDER BY
+  "area_colaborador_asignado",
+  "departamento_colaborador_asignado"
+[2025-07-05 13:33:59] [SQL EXECUTION OK] Tiempo: 0.16s
+SQL:
+SELECT
+  "area_colaborador_asignado" AS "Área",
+  "departamento_colaborador_asignado" AS "Departamento",
+  COUNT(*) AS "Tickets En Proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+GROUP BY
+  "area_colaborador_asignado",
+  "departamento_colaborador_asignado"
+ORDER BY
+  "area_colaborador_asignado",
+  "departamento_colaborador_asignado"
+[2025-07-05 13:37:18] [SQL EXECUTION OK] Tiempo: 0.14s
+SQL:
+SELECT
+  "area_colaborador_asignado" AS "Área",
+  "departamento_colaborador_asignado" AS "Departamento",
+  COUNT(*) AS "Tickets En Proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+GROUP BY
+  "area_colaborador_asignado",
+  "departamento_colaborador_asignado"
+ORDER BY
+  "area_colaborador_asignado",
+  "departamento_colaborador_asignado"
+[2025-07-05 13:47:19] [SQL EXECUTION OK] Tiempo: 0.15s
+SQL:
+SELECT
+  "area_colaborador_asignado" AS "Área",
+  "departamento_colaborador_asignado" AS "Departamento",
+  COUNT(*) AS "Tickets En Proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+GROUP BY
+  "area_colaborador_asignado",
+  "departamento_colaborador_asignado"
+ORDER BY
+  "area_colaborador_asignado",
+  "departamento_colaborador_asignado"
+[2025-07-05 13:50:28] [SQL EXECUTION OK] Tiempo: 0.17s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 95748
+[2025-07-05 13:51:05] [SQL EXECUTION OK] Tiempo: 0.08s
+SQL:
+SELECT
+  *
+FROM "ft_tickets_ia"
+WHERE
+  "folio_ticket" = 95748
+[2025-07-05 13:52:12] [SQL EXECUTION OK] Tiempo: 0.12s
+SQL:
+SELECT
+  COUNT(*) AS "tickets_en_proceso"
+FROM "ft_tickets_ia"
+WHERE
+  "estatus_ticket" = 'EN PROCESO'
+  AND unaccent(lower("colaborador_asignado")) ILIKE unaccent(lower('%DANIEL%IBARRA%'))
+[2025-07-05 13:52:57] [SQL EXECUTION OK] Tiempo: 0.15s
+SQL:
+SELECT
+  COUNT(*) AS "total_tickets",
+  COUNT(CASE WHEN "estatus_ticket" = 'ATENDIDO' THEN 1 END) AS "tickets_atendidos",
+  COUNT(CASE WHEN "estatus_ticket" = 'EN PROCESO' THEN 1 END) AS "tickets_en_proceso",
+  COUNT(CASE WHEN "estatus_ticket" = 'CANCELADO' THEN 1 END) AS "tickets_cancelados",
+  COUNT(CASE WHEN "estatus_ticket" = 'AUTORIZACIÓN' THEN 1 END) AS "tickets_autorizados",
+  COUNT(CASE WHEN "estatus_ticket" = 'MESA DE AYUDA' THEN 1 END) AS "tickets_mesa_ayuda"
+FROM "ft_tickets_ia"
+WHERE
+  "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+  AND unaccent(lower("colaborador_asignado")) ILIKE unaccent(lower('%Daniel%Ibarra%'))
+[2025-07-05 13:54:18] [SQL EXECUTION OK] Tiempo: 0.13s
+SQL:
+SELECT
+  "empresa",
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  unaccent(lower("personal_reporta")) ILIKE unaccent(lower('%DANIEL%IBARRA%'))
+  AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+GROUP BY
+  "empresa",
+  "unidad_negocio"
+ORDER BY
+  "total_tickets" DESC
+[2025-07-05 13:58:06] [SQL EXECUTION OK] Tiempo: 0.15s
+SQL:
+SELECT
+  "empresa",
+  "unidad_negocio",
+  COUNT(*) AS "total_tickets",
+  ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS "porcentaje"
+FROM "ft_tickets_ia"
+WHERE
+  unaccent(lower("personal_reporta")) ILIKE unaccent(lower('%DANIEL%IBARRA%'))
+  AND "anio_registro" = EXTRACT(YEAR FROM CURRENT_DATE)
+GROUP BY
+  "empresa",
+  "unidad_negocio"
+ORDER BY
+  "porcentaje" DESC

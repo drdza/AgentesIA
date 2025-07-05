@@ -7,10 +7,11 @@ import time
 
 from shared.utils import load_prompt_template
 from core.llm import call_model
-from core.query_validator import validate_sql, preprocess_sql, safe_extract_sql
-from core.query_executor import execute_sql
+from core.query_validator import validate_sql, safe_extract_sql
+from core.query_executor import execute_sql, rows_to_json
+from core.query_sanitize import beautify_and_patch
 from agent.rag_agent import get_context_by_type
-from agent.sql_agent import clean_enhanced_question, join_rag_context, clean_text
+from agent.sql_agent import clean_enhanced_question, join_rag_context
 from core.exceptions import ReformulationError, RagContextError, FlowGenerationError, InferenceServiceError, ContextVerificationError
 
 logger = logging.getLogger("llm")
@@ -22,7 +23,6 @@ class AgentState(TypedDict):
     domain: str
     previous_question: Optional[str]
     enhanced_question: Optional[str]
-    enhanced_question_llm: Optional[str]
     enhanced_tags: Optional[list[str]]
     flow: Optional[str]
     rag_context: Optional[str]
@@ -34,8 +34,7 @@ class AgentState(TypedDict):
     execution_ok: Optional[bool]
     execution_error: Optional[str]
     repair_attempted: Optional[bool]
-
-
+    narrative:Optional[str]
 
 
 # --- 2. Nodos ---
@@ -50,7 +49,6 @@ async def fallback_node(state: AgentState):
 
 def route_after_verificator(state: AgentState) -> str:    
     return "enhance" if state.get("dominio_valido") else "fallback"
-
 
 
 async def verify_context_node(state: AgentState):
@@ -88,8 +86,7 @@ async def enhance_question_node(state: AgentState):
         
         return {
             **state,
-            "enhanced_question_llm": enhanced_dict["reformulacion"].strip(),
-            "enhanced_question": clean_text(enhanced_dict["reformulacion"].strip()),
+            "enhanced_question": enhanced_dict["reformulacion"].strip(),
             "enhanced_tags": enhanced_dict["tags"],
             "total_time": state["total_time"] + duration
         }
@@ -136,7 +133,7 @@ def extract_sql_node(state: AgentState):
         start_time = time.time()            
         
         safe_sql = safe_extract_sql(state["sql"])        
-        formatted_sql = preprocess_sql(safe_sql)        
+        formatted_sql =  beautify_and_patch(safe_sql) #preprocess_sql(safe_sql)        
         validate_sql(formatted_sql)
 
         duration = round(time.time() - start_time, 2)
@@ -151,6 +148,7 @@ def execute_sql_node(state: AgentState):
     try:
         formatted_sql = state['sql']        
         result, duration = execute_sql(formatted_sql, domain=state['domain'])
+
         return {**state,            
             "result": result,
             "execution_ok": True,
@@ -168,13 +166,12 @@ def execute_sql_node(state: AgentState):
 
 def route_after_execute(state: AgentState) -> str:    
     if state.get("execution_ok"):
-        return END
+        return "narrate"
 
     if not state.get("repair_attempted"):
         return "repair_sql"
 
     return END
-
 
 async def repair_sql_node(state: AgentState):
     """
@@ -188,7 +185,7 @@ async def repair_sql_node(state: AgentState):
         formatted_prompt = prompt_template.format(
             sql=state.get("sql", ""),
             execution_error=state.get("execution_error", ""),
-            question=state.get("enhanced_question_llm", "")            
+            question=state.get("enhanced_question", "")            
         )
                 
         fixed_sql, duration, _ = await asyncio.to_thread(call_model, "llama3", formatted_prompt, "Corrige la siguiente consulta fallida, por favor.")        
@@ -207,6 +204,39 @@ async def repair_sql_node(state: AgentState):
             "repair_attempted": True            
         }
 
+async def narrate_result_node(state: AgentState):
+    """Genera explicación si hay filas; si no, avisa que no hubo datos."""
+    sql_result = state["result"]        # {"columns": .., "rows": ..}    
+
+    if not sql_result["rows"]:
+        state["final_answer"] = (
+            "No se encontraron registros que coincidan con tu solicitud."
+        )
+        return state
+
+    try:
+        json_result = rows_to_json(sql_result, single=len(sql_result["rows"]) == 1)
+        # ↧ Invoca tu modelo (abreviado, usa tu wrapper habitual)
+        prompt_template = await asyncio.to_thread(load_prompt_template, state["domain"], "narrator_context.txt")
+        narrative_prompt = prompt_template.format(
+            question=state.get("enhanced_question", ""),
+            json_result=json_result
+        )
+         
+        narrative_response, duration, _ = await asyncio.to_thread(call_model, "llama3", narrative_prompt, "Genera una narrativa de este contexto.") 
+        logger.info(f"Narrativa:\n{narrative_response}")
+
+        return {**state, 
+                "narrative":narrative_response,
+                "total_time": state["total_time"] + duration
+                }
+    except Exception as e:
+    #state["final_answer"] = explanation
+        return {
+                **state, 
+                'narrative': None,
+                "total_time": state["total_time"]
+                }
 
 # --- 3. Definición del grafo LangGraph ---
 def build_sql_agent_graph():
@@ -219,6 +249,7 @@ def build_sql_agent_graph():
     builder.add_node("generate_sql", generate_sql_node)
     builder.add_node("extract_sql", extract_sql_node)
     builder.add_node("execute", execute_sql_node)
+    builder.add_node("narrate", narrate_result_node)
     builder.add_node("fallback", fallback_node)
     builder.add_node("repair_sql", repair_sql_node)
 
@@ -229,7 +260,7 @@ def build_sql_agent_graph():
         "verificator",
         route_after_verificator,
         {
-            "enhance": "enhance",
+            "enhance": "enhance",            
             "fallback": "fallback",
         },
     )
@@ -245,12 +276,14 @@ def build_sql_agent_graph():
         "execute", 
         route_after_execute,
         {
-            "repair_sql": "repair_sql",            
+            "repair_sql": "repair_sql",  
+            "narrate": "narrate",          
             END: END
         },
     )
 
     builder.add_edge("repair_sql", "extract_sql")    
+    builder.add_edge("narrate", END)
     builder.add_edge("fallback", END)
 
     return builder.compile()

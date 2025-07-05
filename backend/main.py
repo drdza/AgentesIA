@@ -84,23 +84,23 @@ async def generate_sql(request: SQLRequest, http_request: Request):
         sql = response.get("sql", "")
         result_exec = response.get("result", {})
         flow = response.get("flow", "")
-        reformulation = response.get("enhanced_question_llm", "")
-        reformulation_agent = response.get("enhanced_question", "")
+        reformulation = response.get("enhanced_question", "")
         rag_context = response.get("rag_context", "")
         total_time = response.get("total_time", 0)
+        narrative = response.get("narrative", "")
         return_type = 'success'
         
         return {
             "sql": sql,
             "flow": flow,
             "reformulation": reformulation,
-            "reformulation_agent": reformulation_agent,
             "client_ip": client_ip,
             "domain": request.domain,
             "request_id": request_id,
             "duration_agent": total_time,
             "result": result_exec,
-            "rag_context": rag_context
+            "rag_context": rag_context,
+            "narrative": narrative
         }
     except AgentException as e:
         result_exec = {f"error:{str(e)}"}        
