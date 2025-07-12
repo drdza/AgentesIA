@@ -51,7 +51,7 @@ if "admin" not in st.session_state or not st.session_state.admin:
     st.warning("🔒 Acceso restringido. Introduce contraseña para continuar.")
     password = st.text_input("Contraseña:", type="password")
     if st.button("Ingresar"):
-        if password == st.secrets["admin_password"]:  # o usa una constante
+        if password == st.secrets["auth"]["admin_password"]:  # o usa una constante
             st.session_state.admin = True
             st.success("✅ Acceso concedido")
             st.rerun()

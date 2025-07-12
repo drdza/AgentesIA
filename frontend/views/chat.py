@@ -178,7 +178,7 @@ def _handle_chat():
     st.session_state.setdefault("messages", [
         {
             "role": "assistant",
-            "content": "Hazme una pregunta y generaré la consulta **SQL por ti**. Te mostraré los resultados y algo de contexto útil.",
+            "content": "Hazme una pregunta sobre los tickets del área de I&N.",
             "avatar": st.session_state.assistant_avatar
         }
     ])
@@ -254,13 +254,17 @@ def _handle_chat():
         """, unsafe_allow_html=True)
 
 def main():
-    st.set_page_config(page_title="AltheIA SQL")        
-    st.markdown(load_css_style("about_style.css"), unsafe_allow_html=True)   
-    st.title("AltheIA")
+
+    st.set_page_config(page_title="AltheIA SQL")
+
+    st.markdown(load_css_style("about_style.css"), unsafe_allow_html=True)
+    
     st.session_state.setdefault("assistant_avatar", "https://raw.githubusercontent.com/drdza/st-images/refs/heads/main/avatar/artificial-intelligence.png")
     st.session_state.setdefault("user_avatar", "https://raw.githubusercontent.com/drdza/st-images/refs/heads/main/avatar/user.png")
     st.session_state.setdefault("user_name", "InnovAmigo")
-    st.session_state.setdefault("dominio", "tickets")    
+    st.session_state.setdefault("dominio", "tickets")
+    st.title("AltheIA")
+
     _handle_chat()
     
 

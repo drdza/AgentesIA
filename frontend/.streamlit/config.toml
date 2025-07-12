@@ -1,3 +1,7 @@
 # .streamlit/config.toml
 [theme]
-base = "light"         # fuerza la herencia del tema claro
+base = "light"
+
+[server]
+enableStaticServing = false
+

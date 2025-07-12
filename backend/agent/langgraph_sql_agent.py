@@ -17,6 +17,13 @@ from core.exceptions import ReformulationError, RagContextError, FlowGenerationE
 logger = logging.getLogger("llm")
 logger.setLevel(logging.INFO)
 
+MAX_ROWS      = 30      # a partir de aquí omitimos narración
+MAX_COLUMNS   = 8       # opcional: evita prompts enormes
+RESPONSE_HINT = (
+    "🔎 El resultado contiene {rows} filas y {cols} columnas, "
+    "lo cual es demasiado extenso para una explicación compacta."
+)
+
 # --- 1. Definición del estado compartido en el grafo
 class AgentState(TypedDict):
     question: str
@@ -81,7 +88,7 @@ async def enhance_question_node(state: AgentState):
         enhancer_question, duration, _ = await asyncio.to_thread(call_model, "llama3", enhancer_prompt, user_prompt)
         enhanced_dict = clean_enhanced_question(enhancer_question, state['question'])
         
-        # logger.info(f"User Prompt: {user_prompt}")
+        # logger.info(f"User Prompt: {enhancer_prompt}")
         # logger.info(f"Enhanced question: {enhanced_dict}")
         
         return {
@@ -179,7 +186,7 @@ async def repair_sql_node(state: AgentState):
     Solo se ejecuta si execute_sql_node dejó un error en state['execution_error'].
     """
     try:
-        # ── Carga el prompt template (.txt) ───────────────────
+        # ─────────────────── Carga el prompt template (.txt) ───────────────────
         prompt_template = await asyncio.to_thread(load_prompt_template, state["domain"], "repair_sql.txt")
 
         formatted_prompt = prompt_template.format(
@@ -207,31 +214,38 @@ async def repair_sql_node(state: AgentState):
 async def narrate_result_node(state: AgentState):
     """Genera explicación si hay filas; si no, avisa que no hubo datos."""
     sql_result = state["result"]        # {"columns": .., "rows": ..}    
-
+    rows, cols = sql_result["rows"], sql_result["columns"]
+    
     if not sql_result["rows"]:
-        state["final_answer"] = (
-            "No se encontraron registros que coincidan con tu solicitud."
-        )
+        state["narrative"] = ("No se encontraron registros que coincidan con tu solicitud.")
+        return state
+    
+    if len(rows) > MAX_ROWS or len(cols) > MAX_COLUMNS:
+        state["narrative"] = RESPONSE_HINT.format(rows=len(rows), cols=len(cols))                
         return state
 
-    try:
+    try:       
         json_result = rows_to_json(sql_result, single=len(sql_result["rows"]) == 1)
+        
         # ↧ Invoca tu modelo (abreviado, usa tu wrapper habitual)
         prompt_template = await asyncio.to_thread(load_prompt_template, state["domain"], "narrator_context.txt")
         narrative_prompt = prompt_template.format(
             question=state.get("enhanced_question", ""),
             json_result=json_result
         )
-         
+        
+        #logger.info(f"Narrative Prompt\n{narrative_prompt}")
+
         narrative_response, duration, _ = await asyncio.to_thread(call_model, "llama3", narrative_prompt, "Genera una narrativa de este contexto.") 
-        logger.info(f"Narrativa:\n{narrative_response}")
+        #logger.info(f"Narrativa:\n{narrative_response}")
 
         return {**state, 
                 "narrative":narrative_response,
                 "total_time": state["total_time"] + duration
                 }
     except Exception as e:
-    #state["final_answer"] = explanation
+    
+        logger.error(f"Se ha producido un error: {str(e)}")
         return {
                 **state, 
                 'narrative': None,

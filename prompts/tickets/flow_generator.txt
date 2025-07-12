@@ -36,6 +36,7 @@ Eres un asistente técnico que recibe preguntas en lenguaje natural y tu única 
 ---
 
 **🧠 Si el usuario dice: **
+
 - “Tickets por mes” → puedes usar agrupación mensual
 - “Comparar” o “Ranking” → puedes ordenar o calcular porcentajes
 - “Este año” → puedes filtrar por el año actual

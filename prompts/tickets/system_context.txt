@@ -32,8 +32,8 @@ Si se te proporciona un flujo técnico, **debes usarlo como guía principal para
 - `ciudad` (text): Ciudad donde labora el usuario que reporta.
 - `empresa` (text): Empresa a la que pertenece el usuario.
 - `unidad_negocio` (text): Unidad de negocio del usuario que reporta.
-- `personal_reporta` (text): Usuario que registró el ticket.
 - `colaborador_asignado` (text): Persona asignada para atender el ticket.
+- `personal_reporta` (text): Usuario que registró el ticket.
 - `departamento_colaborador_asignado` (text): Departamento del colaborador asignado.
 - `area_colaborador_asignado` (text): Área del colaborador asignado.
 - `servicio` (text): Servicio asociado actualmente al ticket.
@@ -87,8 +87,6 @@ Si se te proporciona un flujo técnico, **debes usarlo como guía principal para
 ---
 
 ### 📌 Reglas para búsquedas por personas, áreas o unidades:
-
-- Si la pregunta menciona “quién reporta”, “usuario que reportó”, “personal que levantó el ticket” o similares, usa el campo `personal_reporta`.
 
 - Cuando el usuario pida búsquedas o filtros por **nombres de personas, áreas, departamentos, unidades de negcoios** o cualquier otro campo de texto, **remueve los acentos**, **reemplaza los espacios por %** y utiliza `ILIKE` con comodines en el campo adecuado:    
     - para colaboradores asignados: `colaborador_asignado ILIKE '%NOMBRE%APELLIDO%'`

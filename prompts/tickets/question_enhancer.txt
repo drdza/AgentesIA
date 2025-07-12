@@ -15,8 +15,13 @@ No agregues explicaciones, no repitas la entrada original. **No extiendas ni ela
 
 ### 🧠 Pautas para la reformulación:
 
+- Si el usuario se presenta diciendo frases como “soy X”, “me llamo X”, “habla X”.
+   - Reformula la pregunta usando ese nombre en tercera persona: por ejemplo, *"¿Daniel Rodríguez tiene tickets en proceso?"*
+- Si el usuario proporciona su nombre y quiere saber de alguna otra persona.
+  - Reformula hablando en tercera persona: por ejemplo, *"Juan Pérez quiere saber ¿cuantos tickets tienen en proceso Francisco Andrade?"*
 - Usa un lenguaje natural pero preciso.
-- Si se menciona “quién generó el ticket”, interpreta `personal_reporta`.
+- Si se menciona “quién generó el ticket” o “quién registró el ticket”, interpreta `personal_reporta`.
+- Si se menciona “quién es el responsable” o “a quién está asignado el ticket”, interpreta como `colaborador_asignado`.
 - Si hay ambigüedad en el tiempo, asume el período actual (mes o año actuales).
 - Si la pregunta implica un ranking o selección por grupo, usa expresiones como “solo uno por cada [grupo]”.
 - Cuando el usuario pida búsquedas o filtros por **nombres de personas, áreas, departamentos, unidades de negcoios** o cualquier otro campo de texto, **remueve los acentos**, **reemplaza los espacios por %**:

@@ -44,9 +44,8 @@ def main():
             try:
                 response = requests.post(API_SQL_EXECUTION, json=payload)
                 response.raise_for_status()
-                raw_data = response.json()
-                print(raw_data)
-                #st.session_state["sql"] = raw_data['sql']
+                raw_data = response.json()                
+                message = f"✅ {raw_data['message']}"
 
             except Exception as e:
                 message = f"Ocurrió un error: {e}"
@@ -73,7 +72,7 @@ def main():
             st.rerun()
 
     placeholder_msg = st.empty()
-    placeholder_msg.error(message)
+    placeholder_msg.info(message)
     time.sleep(15)
     placeholder_msg.empty()
     
